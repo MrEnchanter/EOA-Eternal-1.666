@@ -1,0 +1,261 @@
+#library "HUDSTUFF"
+#include "zcommon.acs"
+#Define HUDBaseWidth 1280 //1120
+#Define HUDBaseHeight 960 //840
+#DEFINE GXHairW 1364
+#DEFINE GXHairH 1023
+
+Function Void DrawHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha) //copied from EOA
+{
+	SetFont(Font);
+	Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+	Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+	X = FixedMul(X, Scale) * 1.0 + 0.1;
+	Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+	SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+	HudMessage(s:Text;HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Script "HUDStuffSwitch" (void)
+{
+	SetActivator(0, AAPTR_PLAYER1);
+	If (GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11 )
+	{
+		SetResultValue(0);
+	}
+	Else
+	{
+		If (GetActorProperty(0, APROP_HEALTH) <= 0)
+		{
+			SetResultValue(0);
+		}
+		Else { SetResultValue(1); }
+	}
+}
+Script "SC_Icons" ENTER Clientside
+{
+	//SetHUDSize (4096, 3120, 0); 
+	
+	Int PNum = PlayerNumber();
+	Int U_XOffset = 210; //GetCvar("HUD_XOffset");
+	Int U_YOffset = 32; //GetCvar("HUD_YOffset");
+	Int Scale = 1.0; //GetCvar("HUD_ScaleAmount");
+	Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (370 - U_XOffset);
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	//Int HudLXOffset = (-210 + U_XOffset);
+	While (GetActorProperty(0, APROP_HEALTH) < 1 || GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11)
+	{
+		Delay(1);
+	}
+	
+	While (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		Int FTCT = CheckInventory("FlameThrowerCooldownToken");
+		Int IBCT = CheckInventory("IceBombCooldownToken");
+		Int FGCT = CheckInventory("GrenadeCooldownToken");
+		Int CBAM = CheckInventory("CrucibleAmmo");
+		Int FUAM = CheckInventory("EOA_FuelAmmo");
+		Int FCOL = CheckInventory("ChainsawCooldownToken");
+		Bool InfiniteAmmo = ScriptCall("EOA_Weapon", "CheckInfiniteAmmoFunction");
+	if(CheckInventory("DECrucible"))
+	{
+		If(!InfiniteAmmo)
+		{
+			If (CBAM >= 1)
+			{	
+				If (CBAM == 3) 
+					DrawHUDStuff("CRUCICO1", "A", HudRXOffset + FixedDiv(85, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+				Else If (CBAM == 2)
+					DrawHUDStuff("CRUCICO2", "A", HudRXOffset + FixedDiv(85, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+				Else 
+					DrawHUDStuff("CRUCICO3", "A", HudRXOffset + FixedDiv(85, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+			}
+			Else
+			{
+				DrawHUDStuff("CRUCICO4", "A", HudRXOffset + FixedDiv(85, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+			}
+		}
+		Else
+		{
+			DrawHUDStuff("CRUCICO1", "A", HudRXOffset + FixedDiv(85, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+		}
+	}
+		If(CheckInventory("FlameBelch"))
+		{
+			//DrawHUDStuff("EQUBASE", "A", HudRXOffset + FixedDiv(140, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+			If (FTCT >= 1)
+			{	
+				If (FTCT >=20) 
+					DrawHUDStuff("FLACOOL0", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FTCT >=15)
+					DrawHUDStuff("FLACOOL1", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FTCT >=10)
+					DrawHUDStuff("FLACOOL2", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FTCT >=5)
+					DrawHUDStuff("FLACOOL3", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else 
+					DrawHUDStuff("FLACOOL4", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+			Else
+			{
+				DrawHUDStuff("FLAMICO1", "A", HudRXOffset + FixedDiv(130, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+			DrawHUDStuff("FLAMIC", "A", HudRXOffset + FixedDiv(152, Scale), HudYOffset - 18 - FixedDiv(112, Scale), 0, 0, Scale, 5.0);
+		}
+		If(CheckInventory("EOA_Chainsaw"))
+		{
+			DrawHUDStuff("SAWIC", "A", HudRXOffset + FixedDiv(212, Scale), HudYOffset - 18 - FixedDiv(118, Scale), 0, 0, Scale, 5.0);
+		}
+		If(!InfiniteAmmo)
+		{
+			If (FUAM >= 1)
+			{	
+				If (FUAM == 3) 
+					DrawHUDStuff("SAWICO1", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FUAM == 2)
+					DrawHUDStuff("SAWICO2", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else 
+					DrawHUDStuff("SAWICO3", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+			Else
+			{
+				If (FCOL >=15) 
+					DrawHUDStuff("SAWCOOL0", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FCOL >=10)
+					DrawHUDStuff("SAWCOOL1", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FCOL >=5)
+					DrawHUDStuff("SAWCOOL2", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else If (FCOL >=1)
+					DrawHUDStuff("SAWCOOL3", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+				Else 
+					DrawHUDStuff("SAWCOOL0", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+		}
+		Else
+		{
+			DrawHUDStuff("SAWICO1", "A", HudRXOffset + FixedDiv(187, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+		}
+		
+		If(CheckInventory("IceBomb"))
+		{
+			If (IBCT >= 1 && !CheckInventory("grenadeselected"))
+			{	
+				If (IBCT >=35) 
+					DrawHUDStuff("ICECOOL0", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=30)
+					DrawHUDStuff("ICECOOL1", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=25)
+					DrawHUDStuff("ICECOOL2", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=20)
+					DrawHUDStuff("ICECOOL3", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=15)
+					DrawHUDStuff("ICECOOL4", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=10)
+					DrawHUDStuff("ICECOOL5", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (IBCT >=5)
+					DrawHUDStuff("ICECOOL6", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);	
+				Else
+					DrawHUDStuff("ICECOOL7", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);	
+				
+			}
+			Else if (!CheckInventory("grenadeselected"))
+			{
+				DrawHUDStuff("ICEICO1", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+			if (!CheckInventory("grenadeselected"))
+			{
+				DrawHUDStuff("ICEEICO", "A", HudRXOffset + FixedDiv(273, Scale), HudYOffset - 18 - FixedDiv(112, Scale), 0, 0, Scale, 5.0);
+			}
+		}
+		If(CheckInventory("FragGrenade"))
+		{
+			If (FGCT >= 1 && CheckInventory("grenadeselected"))
+			{	
+				If (FGCT >=35) 
+					DrawHUDStuff("GNDCOOL0", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=30)
+					DrawHUDStuff("GNDCOOL1", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=25)
+					DrawHUDStuff("GNDCOOL2", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=20)
+					DrawHUDStuff("GNDCOOL3", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=15)
+					DrawHUDStuff("GNDCOOL4", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=10)
+					DrawHUDStuff("GNDCOOL5", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);
+				Else If (FGCT >=5)
+					DrawHUDStuff("GNDCOOL6", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);	
+				Else
+					DrawHUDStuff("GNDCOOL7", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.8);	
+				
+			}
+			Else if (CheckInventory("grenadeselected"))
+			{
+				DrawHUDStuff("GNDICO1", "A", HudRXOffset + FixedDiv(250, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, HUDMSG_ADDBLEND, Scale, 1.0);
+			}
+			if (CheckInventory("grenadeselected"))
+			{
+				DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(272, Scale), HudYOffset - 18 - FixedDiv(112, Scale), 0, 0, Scale, 5.0);
+			}
+		}
+		
+		
+		Delay(1);
+	}	
+}
+
+
+/*
+Function Void ChainsawFuelIcon(void)
+{	
+	Int PNum = PlayerNumber();
+	Int U_XOffset = 210; //GetCvar("HUD_XOffset");
+	Int U_YOffset = 32; //GetCvar("HUD_YOffset");
+	Int Scale = 1.0; //GetCvar("HUD_ScaleAmount");
+	Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (210 - U_XOffset);
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	
+	While (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		Int FUAM = CheckInventory("EOA_FuelAmmo");
+		Bool InfiniteAmmo = ScriptCall("EOA_BaseWeapon", "CheckInfiniteAmmoFunction");
+		
+		If(!InfiniteAmmo)
+		{
+			If (FUAM >= 1)
+			{	
+				If (FUAM == 3) 
+					DrawHUDStuff("CSAWICO1", "A", HudRXOffset + FixedDiv(195, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+				Else If (FUAM == 2)
+					DrawHUDStuff("CSAWICO2", "A", HudRXOffset + FixedDiv(195, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+				Else 
+					DrawHUDStuff("CSAWICO3", "A", HudRXOffset + FixedDiv(195, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+			}
+			Else
+			{
+				DrawHUDStuff("CSAWICO4", "A", HudRXOffset + FixedDiv(195, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+			}
+		}
+		Else
+		{
+			DrawHUDStuff("CSAWICO1", "A", HudRXOffset + FixedDiv(195, Scale), HudYOffset - 18 - FixedDiv(105, Scale), 0, 0, Scale, 1.0);
+		}
+	}	
+}
+
+Function Void IceBombIcon(void)
+{
+	Int U_XOffset = 210; //GetCvar("HUD_XOffset");
+	Int U_YOffset = 32; //GetCvar("HUD_YOffset");
+	Int Scale = 1.0; //GetCvar("HUD_ScaleAmount");
+	Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (210 - U_XOffset);
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	If (CheckInventory("IceBombCooldownToken")>=1)
+	{	
+		DrawHUDStuff("ICEICO2", "A", HudRXOffset + FixedDiv(390, Scale), HudYOffset - 18 - FixedDiv(20, Scale), 0, 0, Scale, 1.0);
+	}
+	Else
+	{
+		DrawHUDStuff("ICEICO1", "A", HudRXOffset + FixedDiv(390, Scale), HudYOffset - 18 - FixedDiv(20, Scale), 0, 0, Scale, 1.0);
+	}	
+}	*/

@@ -1,0 +1,382 @@
+#library "HUD"
+#include "zcommon.acs"
+#Define HUDBaseWidth 1280 //1120
+#Define HUDBaseHeight 960 //840
+#Define PlayerLowHealth 40
+#Define MaxWeapons 12
+#DEFINE GXHairW 1364
+#DEFINE GXHairH 1023
+
+#Define WeapInfo_Ammo 1
+#Define WeapInfo_AmmoType 2
+#Define WeapInfo_MaxAmmo 3
+#Define WeapInfo_MaxAmmo2 4
+#Define WeapInfo_LowAmmo 5
+
+#Define WeapInfo_WeaponIcon 0
+//#Define WeapInfo_AmmoType 1
+#Define WeapInfo_AmmoAmount 1
+#Define WeapInfo_AmmoMaxAmount 2
+#Define WeapInfo_AmmoWarnAmount 3
+#Define WeapInfo_AmmoLowAmount 4
+//[DoomKrakken]: Taken from ZION, adjusted to fit this mod accordingly. ;)
+/*Str FunnyChainsawPics[5][8]={
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+};*/
+//[Fat tony]: no more chainsaw hud for you lolmao
+Str HUDWeaponIcons[14]={
+"ICOPISS",
+"ICONCSG",
+"ICOMCSG",
+"ICONHAR",
+"ICONRLR",
+"ICONPLR",
+"ICONPLR",
+"ICONHAR",
+"ICONBFG",
+"ICONBFG",
+"ICONSAW",
+"ICONSAW",
+"ICOFIST"
+};
+
+Str HUDWeaponMIcons[14]={
+"ICOPISS",
+"ICOMCSG",
+"ICOMCSG",
+"ICOMHAR",
+"ICOMRLR",
+"ICOMPLR",
+"ICOMPLR",
+"ICOMHAR",
+"ICONBFG",
+"ICONBFG",
+"ICONSAW",
+"ICONSAW",
+"ICOFIST"
+};
+
+
+Str SelectedWeapons[10]={
+"",
+"CombatShotgunSelected",
+"SuperShotgunSelected",
+"HeavyAssaultRifleSelected",
+"RocketLauncherSelected",
+"PlasmaRifleSelected",
+"GaussCannonSelected",
+"ChaingunSelected",
+""
+};
+
+Str SelectedMods[10][2]={
+{"",""},
+{"ChargedBurstSelected", "ExplosiveShotSelected"},
+{"", ""},
+{"MicroMissilesSelected", "TacticalScopeSelected"},
+{"LockOnBurstSelected", "RemoteDetonationSelected"},
+{"HeatBlastSelected", "StunBombSelected"},
+{"PrecisionBoltSelected", "SiegeModeSelected"},
+{"GatlingRotatorSelected", "MobileTurretSelected"},
+{"",""}
+};
+
+Str HUDAmmoTypeIcons[9]={
+"AMTPSHEL",
+"AMTPBOLT",
+"AMTPCELL",
+"AMTPRCKT",
+"AMTPBFG",
+"AMTPBFG",
+"AMTPFUEL",
+"AMTPCRUC",
+"ICOFIST"
+};
+
+Str HUDRuneIcons[9]={
+"VACUM",
+"DZDNCNF",
+"SAVGRY",
+"SEKDSTRY",
+"INFMOB",
+"ARMRDOF",
+"BLODFL",
+"IMTBST",
+"SVNGTHRW"
+};
+
+Function Int Min(Int x, Int y)
+{
+	If (x < y) { Return x; }
+	Return y;
+}
+
+Function Int Max (Int x, Int y)
+{
+	If (x > y) { Return x; }
+	Return y;
+}
+
+Function Void DrawHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha)
+{
+	SetFont(Font);
+	Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+	Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+	X = FixedMul(X, Scale) * 1.0 + 0.1;
+	Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+	SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+	HudMessage(s:Text;HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Int CurrentFrame;
+Int CurTick;
+
+Function Void DrawAnimatedHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha, Int FramesNumber, Int TickSpeed)
+{
+		CurTick -= 1;
+		If(CurTick <= 0)
+		{
+			CurrentFrame += 1;
+			CurTick = TickSpeed;
+		}
+		If (CurrentFrame > FramesNumber)
+		{CurrentFrame = 0;}
+		Str sFont = StrParam(s:Font, d:CurrentFrame);
+		SetFont(sFont);
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		X = FixedMul(X, Scale) * 1.0 + 0.1;
+		Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:Text;HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Function Void DrawReadyEquipment(Int PosX, Int PosY, Int Alpha)
+{
+	Int U_XOffset = 210;
+	Int U_YOffset = 32;
+	Int Scale = 1.1 + 0.4;
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (350 - U_XOffset);
+	DrawAnimatedHUDStuff("EQRDY", "A", HudRXOffset + FixedDiv(PosX, Scale), HudYOffset + FixedDiv(PosY, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 3.0), Alpha, 9, 1);
+}
+
+Script "DrawReadyAnim" (Int PosX, Int PosY, Int Frames)
+{
+	for (int i = 0; i < Frames; i++)
+	{
+		DrawReadyEquipment(PosX, PosY, 1.0);
+		DrawReadyEquipment(PosX, PosY, 1.0);
+		Delay(1);
+	}
+}
+
+Function Void DrawReadyEquipment2(Int PosX, Int PosY, Int Alpha)
+{
+	Int U_XOffset = 210;
+	Int U_YOffset = 32;
+	Int Scale = 1.1 + 0.4;
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	Int HudLXOffset = (-370 + U_XOffset);
+	DrawAnimatedHUDStuff("EQRDY", "A", HudLXOffset + FixedDiv(PosX, Scale), HudYOffset + FixedDiv(PosY, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 3.0), Alpha, 9, 1);
+	DrawAnimatedHUDStuff("EQFLSH", "A", HudLXOffset + FixedDiv(PosX + 10, Scale), HudYOffset + FixedDiv(PosY + 25, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 2.7), Alpha - 0.7, 9, 1);
+}
+
+Script "DrawReadyAnimR" (Int PosX, Int PosY, Int Frames)
+{
+	for (int i = 0; i < Frames; i++)
+	{
+		DrawReadyEquipment2(PosX, PosY, 1.0);
+		Delay(1);
+	}
+}
+
+Function Void SDrawHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha, Int FrameNumber)
+{
+	Str SText = StrParam(s:Font, d:FrameNumber);
+	SetFont(SText);
+	Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+	Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+	X = FixedMul(X, Scale) * 1.0 + 0.1;
+	Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+	SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+	HudMessage(s:"A";HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Script "HUDStuffSwitch" (void)
+{
+	SetActivator(0, AAPTR_PLAYER1);
+	If (GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11 )
+	{
+		SetResultValue(0);
+	}
+	Else
+	{
+		If (GetActorProperty(0, APROP_HEALTH) <= 0)
+		{
+			SetResultValue(0);
+		}
+		Else { SetResultValue(1); }
+	}
+}
+
+Str Weapons[MaxWeapons] = {"EOA_Pistol", "EOA_CombatShotgun", "EOA_SuperShotgun", "EOA_HeavyAssaultRifle", "EOA_RocketLauncher", "EOA_PlasmaRifle", "EOA_GaussCannon", "EOA_Chaingun", "EOA_BFG", "EOA_Unmaykr", "EOA_Chainsaw", "DEHellBreaker"};
+Int WeaponAmmoTypes[MaxWeapons] = {1, 3, 3, 2, 4, 5, 5, 2, 6, 7, 9};
+Str AmmoTypes[9] = {"None", "EOA_EMGAmmo", "EOA_BulletAmmo", "EOA_ShellAmmo", "EOA_RocketAmmo", "EOA_CellAmmo", "EOA_BFGAmmo", "EOA_FuelAmmo", "CrucibleAmmo"};
+Int LowAmmoValues[8][2]={{-1, -1}, {-1, -1}, {30, 60}, {6, 12}, {5, 10}, {50, 100}, {-1, -1}, {1, 2}};
+
+Function Int GetWeaponInfo(Str Weapon, Int Info)
+{
+	Int WeapNum = -1;
+	Int AMTPNum = -1;
+	For (Int i = 0; i < MaxWeapons; i++)
+	{
+		If (StrICmp(Weapons[i], Weapon) == 0)
+		{
+			WeapNum = i;/*
+		Str AmmoInfo = StrParam(s:Weapon,s:"/",s:Weapons[i]);
+		DrawHUDStuff("BIGFONT",GetWeaponModInfo(i,0),500,192,CR_WHITE,0,0.5,1.0);
+		DrawHUDStuff("BIGFONT",GetWeaponModInfo(i,1),500,210,CR_WHITE,0,0.5,1.0);*/
+			Break;
+		}
+	}
+	If (Info == 0)
+	{
+		Return WeapNum;
+	}
+	Int AmmoNum = WeaponAmmoTypes[WeapNum];
+	Str AmmoType = AmmoTypes[AmmoNum];
+	//Int Upgrades = CheckInventory("PlayerAmmoUpgrade");
+	If (AmmoType == "None" || AmmoType == "EOA_EMGAmmo" || ScriptCall("EOA_Weapon", "CheckInfiniteAmmoFunction"))
+	{
+		Return -2;
+	}
+	If (Info == WeapInfo_Ammo)
+	{
+		Return CheckInventory(AmmoType);
+	}
+	Else If (Info == WeapInfo_AmmoType)
+	{
+		Return AmmoNum;
+	}
+	Else If (Info == WeapInfo_MaxAmmo)
+	{
+		Return GetAmmoCapacity(AmmoType);
+	}
+	/*Else If(Info == WeapInfo_MaxAmmo2)
+	{
+		Int MaxAmmoBase=AmmoUpgrades[0][AmmoNum];
+		Int MaxAmmo=MaxAmmoBase+(AmmoUpgrades[1][AmmoNum]*Upgrades);
+		Return MaxAmmo;
+	}*/
+	Else If (Info == WeapInfo_LowAmmo)
+	{
+		If (CheckInventory(AmmoType) <= LowAmmoValues[AmmoNum][0])
+		{
+			Return 1;
+		}
+		Else If (CheckInventory(AmmoType) <= LowAmmoValues[AmmoNum][1])
+		{
+			Return 2;
+		}
+		Else
+		{
+			Return 0;
+		}
+	}
+	Return WeapNum;
+}
+
+Str WeaponMods[MaxWeapons][2][2]={
+{ {"Health", "Health"}, {"PISMOD","PISMOD"} }, //EMG Pistol
+{ {"ChargedBurstSelected", "ExplosiveShotSelected"}, {"CSMOD1","CSMOD2"} },//Combat Shotgun
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} }, //Super Shotgun
+{ {"TacticalScopeSelected", "MicroMissilesSelected"}, {"HARMOD1","HARMOD2"} },//Heavy Assault Rifle
+{ {"RemoteDetonationSelected", "LockOnBurstSelected"}, {"RLMOD1","RLMOD2"} }, //Rocket Launcher
+{ {"StunBombSelected", "HeatBlastSelected"}, {"PLSMOD1","PLSMOD2"} }, //Plasma Rifle
+{ {"PrecisionBoltSelected", "SiegeModeSelected"}, {"GCMOD1","GCMOD2"} }, //Gauss Cannon
+{ {"GatlingRotatorSelected", "MobileTurretSelected"}, {"CHAMOD1","CHAMOD2"} }, //Chaingun
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} }, //BFG-9000
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} } //Chainsaw
+};
+
+Function Str GetWeaponModInfo (Int WeaponNumber, Int Info)
+{
+	Str ModName = "Health";
+	Str ModIcon = "TNT1A0";
+	Bool Thingy;
+	If (!CheckInventory(WeaponMods[WeaponNumber][0][0]))
+	{
+		Thingy = True;
+	}
+	If (CheckInventory(WeaponMods[WeaponNumber][0][Thingy]))
+	{
+		ModName = WeaponMods[WeaponNumber][0][Thingy];
+		ModIcon = WeaponMods[WeaponNumber][1][Thingy];
+	}
+	If (Info == 1)
+	{
+		Return ModIcon;
+	}
+	Return ModName;
+}
+
+Script "NOTARGET" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("NOTRGT");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+Script "NOFUEL" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("NOFUEL");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+Script "INVALIDTARGET" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("INVALID");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+
+Script "EOA HUD" Enter ClientSide
+{
+}

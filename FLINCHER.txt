@@ -1,0 +1,68 @@
+#include "zcommon.acs"
+
+script "Flincher" ENTER
+{
+  int currenthealth;
+  int pasthealth;
+
+  //int currenthealth = GetActorProperty(0, APROP_Health);
+  //int pasthealth = GetActorProperty(0, APROP_Health);
+  
+  delay(1);
+  pasthealth = GetActorProperty(0, APROP_Health);
+  delay(1);
+  currenthealth = GetActorProperty(0, APROP_Health);
+  
+  if(pasthealth>currenthealth && currenthealth>0)
+  {
+    switch(random(1,4))
+	{
+	case 1:
+	changeactorroll(0, 0.005, true);
+	delay(3);
+	changeactorroll(0, 0.004, true);
+	delay(3);
+	changeactorroll(0, 0.003, true);
+	delay(3);
+	changeactorroll(0, 0.002, true);
+	delay(3);
+	changeactorroll(0, 0.001, true);
+	delay(3);
+	changeactorroll(0, 0.0, true);
+	break;
+	
+	case 2:
+	changeactorroll(0, -0.005, true);
+	delay(3);
+	changeactorroll(0, -0.004, true);
+	delay(3);
+	changeactorroll(0, -0.003, true);
+	delay(3);
+	changeactorroll(0, -0.002, true);
+	delay(3);
+	changeactorroll(0, -0.001, true);
+	delay(3);
+	changeactorroll(0, 0.0, true);
+	break;
+	
+	case 3:
+	setactorpitch(0, getactorpitch(0) + 0.01);
+	delay(3);
+	setactorpitch(0, getactorpitch(0) - 0.002);
+	delay(3);
+	setactorpitch(0, getactorpitch(0) - 0.002);
+	break;
+	
+	case 4:
+	setactorpitch(0, getactorpitch(0) - 0.01);
+	delay(3);
+	setactorpitch(0, getactorpitch(0) + 0.002);
+	delay(3);
+	setactorpitch(0, getactorpitch(0) + 0.002);
+	break;
+	}
+  }
+  
+  delay(1);
+  restart;
+}

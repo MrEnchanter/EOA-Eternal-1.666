@@ -1,0 +1,212 @@
+//-------------------------------//
+//----Glory Kill Indicators------//
+//-------------------------------//
+
+//Imp
+hardwareshader sprite ROACX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ROACX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ROACX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ROACX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ROACX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite IMFCM0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Zombieman
+
+hardwareshader sprite RFTRX1       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX2       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX3       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX4       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX5       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX6       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX7       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite RFTRX8       { Shader "Shaders/GloryKill.shader" Speed 0.8 }
+hardwareshader sprite ZMFCL0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Shotguy
+hardwareshader sprite RPZMX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RPZMX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SHFCN0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//HellRazer (also ChaingunGuy)
+hardwareshader sprite HRZRX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRZRX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HRFCM0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Unwilling
+hardwareshader sprite ZFODX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ZFODX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ZFODX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ZFODX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ZFODX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite UWFCM0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+hardwareshader sprite UNWLX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite UNWLX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite UNWLX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite UNWLX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite UNWLX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//Summoner
+hardwareshader sprite DIAYX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite DIAYX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite DIAYX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite DIAYX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite DIAYX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SMFCE0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Revenant
+hardwareshader sprite SKELX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKELX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite RVFCQ0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Prowler
+hardwareshader sprite SHDWX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SHDWX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SHDWX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SHDWX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SHDWX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PRFCP0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+hardwareshader sprite PRFCV0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//PainElemental
+hardwareshader sprite PAINX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PAINX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PAINX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PAINX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PAINX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//NaziCC
+hardwareshader sprite SSWVX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SSWVX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//SpiderMastermind
+hardwareshader sprite SPIDX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPIDX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//Harvester
+hardwareshader sprite VULGX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite VULGX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite VULGX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite VULGX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite VULGX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HAFCN0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//CyberMancubus (also FatsoTech)
+hardwareshader sprite FATTX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FATTX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FATTX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FATTX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FATTX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+
+//Mancubus (also FatsoHell)
+hardwareshader sprite FAT2X1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FAT2X2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FAT2X3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FAT2X4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite FAT2X5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite MNFCQ0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Pinky (also Demon)
+hardwareshader sprite PKPNX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PKPNX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PKPNX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PKPNX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PKPNX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite PKFCF0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+hardwareshader sprite D4FCN0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Spectre
+hardwareshader sprite SKPNX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKPNX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKPNX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKPNX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SKPNX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite SPFCF0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+hardwareshader sprite S4FCN0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+
+//CyberDemon
+hardwareshader sprite CYBRX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CYBRX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//D1CyberDemon if addons pack is loaded
+hardwareshader sprite CDOLX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CDOLX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+
+//CacoDemon
+hardwareshader sprite CAC2X1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CAC2X2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CAC2X3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CAC2X4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CAC2X5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite CAFCL0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//BaronOfHell
+hardwareshader sprite BH_PX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite BH_PX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite BH_PX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite BH_PX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite BH_PX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite BHFCI0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//HellKnight
+hardwareshader sprite HK_PX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HK_PX2X8     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HK_PX3X7     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HK_PX4X6     { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HK_PX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite HKFCI0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }
+
+//Arachnotron
+hardwareshader sprite ARACX1       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX2       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX3       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX4       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX5       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX6       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX7       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARACX8       { shader "Shaders/GloryKill.shader" speed 0.8 }
+hardwareshader sprite ARFCP0       { Shader "Shaders/CorpseFade.shader" Speed 1.0 }

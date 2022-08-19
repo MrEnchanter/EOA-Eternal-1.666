@@ -1,0 +1,344 @@
+//[DoomKrakken]: Do not alter the tags.  They are important for the dynamic pickup messages I made.
+ACTOR ClimbHand : EOA_Token{}
+
+ACTOR EOA_BulletAmmo : EOA_Ammo 21000
+{
+	Scale 0.5
+	Inventory.Amount 20
+	Inventory.MaxAmount 60
+	Inventory.PickupSound "Item/Pickup"
+	//Inventory.PickupMessage "+20 Bullets"
+	Ammo.DropAmount 20
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 90
+	EOA_Ammo.WarnAmount 30
+	EOA_Ammo.LowAmount 15
+	Tag "Bullet"
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		BLLB A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		BLLB A -1 A_ChangeFlag("THRUACTORS", 0)
+		Stop
+	}
+}
+
+ACTOR EOA_BulletAmmo1 : EOA_BulletAmmo replaces Clip{}
+ACTOR EOA_BulletAmmo2 : EOA_BulletAmmo replaces ClipBox{}
+
+ACTOR EOA_ShellAmmo : EOA_Ammo 21001
+{
+	Inventory.Amount 8
+	Inventory.MaxAmount 16
+	Inventory.PickupSound "Item/Pickup"
+	//Inventory.PickupMessage "+8 Shells"
+	Ammo.DropAmount 8
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 20
+	EOA_Ammo.WarnAmount 6
+	EOA_Ammo.LowAmount 6
+	Tag "Shell"
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		SLLB A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		SLLB A -1 A_ChangeFlag("THRUACTORS", 0)
+		Stop
+	}
+}
+
+ACTOR EOA_ShellAmmo1 : EOA_ShellAmmo replaces Shell{}
+ACTOR EOA_ShellAmmo2 : EOA_ShellAmmo replaces ShellBox{}
+
+ACTOR EOA_RocketAmmo : EOA_Ammo 21002
+{
+	Scale 0.5
+	Inventory.Amount 5
+	Inventory.MaxAmount 9
+	Inventory.PickupSound "Item/Pickup"
+	//Inventory.PickupMessage "+5 Rockets"
+	Ammo.DropAmount 5
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 13
+	EOA_Ammo.WarnAmount 7
+	EOA_Ammo.LowAmount 2
+	Tag "Rocket"
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		RKTB A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		RKTB A -1 A_ChangeFlag("THRUACTORS", 0)
+		Stop
+	}
+}
+
+ACTOR EOA_RocketAmmo1 : EOA_RocketAmmo replaces RocketAmmo{}
+ACTOR EOA_RocketAmmo2 : EOA_RocketAmmo replaces RocketBox{}
+
+ACTOR EOA_CellAmmo : EOA_Ammo 21003
+{
+	Scale 0.7
+	Inventory.Amount 30
+	Inventory.MaxAmount 150
+	Inventory.PickupSound "Item/Pickup"
+	//Inventory.PickupMessage "+30 Cells"
+	Ammo.DropAmount 30
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 150
+	EOA_Ammo.WarnAmount 45
+	EOA_Ammo.LowAmount 30
+	Tag "Cell"
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		CLLB A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		CLLB A -1 A_ChangeFlag("THRUACTORS", 0)
+		Stop
+	}
+}
+
+ACTOR EOA_CellAmmo1 : EOA_CellAmmo replaces Cell{}
+ACTOR EOA_CellAmmo2 : EOA_CellAmmo replaces CellPack{}
+
+ACTOR EOA_FuelAmmo : EOA_Ammo 21004
+{
+	Scale 0.5
+	Inventory.Amount 3
+	Inventory.MaxAmount 3
+	Inventory.PickupSound "Item/Pickup"
+	//Inventory.PickupMessage "+3 Fuel"
+	Ammo.DropAmount 3
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 3
+	EOA_Ammo.WarnAmount 1
+	EOA_Ammo.LowAmount 1
+	Tag "Fuel"
+	+SINGULAR
+	+NODOUBLE
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		FUEL A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		FUEL A -1 A_ChangeFlag("THRUACTORS", 0)
+		Stop
+	}
+}
+
+ACTOR EOA_BFGAmmo : EOA_Ammo 21005
+{
+    Scale 0.5
+    Inventory.Amount 30
+    Inventory.MaxAmount 60
+    Inventory.PickupSound "BFGAmmo/Pickup"
+    //Inventory.PickupMessage "+1 BFG Cell"
+    Ammo.DropAmount 1
+    Ammo.BackpackAmount 0
+    Ammo.BackpackMaxAmount 3
+    EOA_Ammo.WarnAmount 1
+    EOA_Ammo.LowAmount 1
+    Tag "BFG Cell"
+    +NODOUBLE
+    +THRUACTORS
+    States
+    {
+    Spawn:
+        BFGA A 0 NoDelay A_Jump(150,"SpawnCrucibleAmmo")
+        BFGA A 24 Bright
+        {
+            A_ChangeFlag("THRUACTORS", 0);
+            /*If (CountInv("SoundCounter") >= 4)
+            {
+                A_TakeInventory("SoundCounter");
+            }*/
+            A_GiveInventory("SoundCounter");
+            A_PlaySound("BFGAmmo/Rotate", /*CountInv("SoundCounter")*/1 , 0.5);
+            A_PlaySound("BFGAmmo/Hum", 7, 1.0, 1);
+        }
+        Wait
+    SpawnCrucibleAmmo:
+        TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+        TNT1 A 1 A_SpawnItemEx("CrucibleAmmo",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+        TNT1 A 0 
+        Stop    
+    }
+}
+
+ACTOR CrucibleAmmo : EOA_Ammo
+{
+	Scale 0.4
+	Inventory.Amount 1
+	Inventory.MaxAmount 3
+	Inventory.PickupSound "Eternal/Crucible/AmmoPickup"
+	Ammo.DropAmount 1
+	Ammo.BackpackAmount 0
+	Ammo.BackpackMaxAmount 3
+	Tag "Crucbile Energy"
+	+NOGRAVITY
+    +FLOATBOB
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	FloatBobStrength 0.3
+	States
+	{
+	Spawn:
+		CRBL A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		CRBL A 0 A_PlaySound("Eternal/Crucible/AmmoLoop", 7, 1.0,True,2.0)
+	SpawnLooper:	
+		CRBL P 1050 Bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Stop
+	}
+}
+
+ACTOR EOA_BFGCell : EOA_BFGAmmo{}
+
+ACTOR EquipmentChargeCounter : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 2100
+}
+
+ACTOR EquipmentCharge : Ammo
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+}
+
+ACTOR EOA_FragGrenadePickup : CustomInventory 21010
+{
+	Inventory.MaxAmount 1
+	Inventory.PickupMessage "Frag Grenade"
+	Inventory.PickupSound "Item/Pickup"
+	Scale 0.75
+	+NOSCREENFLASH
+	States
+	{
+	Spawn:
+		FRGP A -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_JumpIf(!CountInv("EOA_FragGrenade"), 2)
+		TNT1 A 0 A_JumpIfInventory("EquipmentCharge", 0, "Failure")
+		TNT1 A 0
+		{
+			If (!(CountInv("FragGrenadeSelected") || CountInv("HologramSelected") || CountInv("SiphonGrenadeSelected")))
+			{
+				A_GiveInventory("FragGrenadeSelected");
+			}
+			A_PlaySound("Equipment/Recharge");
+			A_GiveInventory("EOA_FragGrenade");
+			A_GiveInventory("EquipmentCharge");
+			If (CountInv("AmmoBoostSelected") && !CountInv("AmmoBoostII"))
+			{
+				A_GiveInventory("AmmoBoostChallengeCounter");
+				A_GiveInventory("MasteryTicker");
+			}
+			A_GiveInventory("EquipmentSystem"); //Praetor Suit Menu prerequisite.
+			A_GiveInventory("EquipmentChargeFlash"); //For the HUD.
+		}
+		Stop
+	Failure:
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR EOA_HologramPickup : CustomInventory 21011
+{
+	Inventory.MaxAmount 0
+	Inventory.PickupMessage "Hologram"
+	Inventory.PickupSound "Item/Pickup"
+	Scale 0.8
+	+NOSCREENFLASH
+	States
+	{
+	Spawn:
+		HOLP A -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_JumpIf(!CountInv("EOA_Hologram"), 2)
+		TNT1 A 0 A_JumpIfInventory("EquipmentCharge", 0, "Failure")
+		TNT1 A 0
+		{
+			If (!(CountInv("FragGrenadeSelected") || CountInv("HologramSelected") || CountInv("SiphonGrenadeSelected")))
+			{
+				A_GiveInventory("HologramSelected");
+			}
+			A_PlaySound("Equipment/Recharge");
+			A_GiveInventory("EOA_Hologram");
+			A_GiveInventory("EquipmentCharge");
+			If (CountInv("AmmoBoostSelected") && !CountInv("AmmoBoostII"))
+			{
+				A_GiveInventory("AmmoBoostChallengeCounter");
+				A_GiveInventory("MasteryTicker");
+			}
+			A_GiveInventory("EquipmentSystem"); //Praetor Suit Menu prerequisite.
+			A_GiveInventory("EquipmentChargeFlash"); //For the HUD.
+		}
+		Stop
+	Failure:
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR EOA_SiphonGrenadePickup : CustomInventory 21012
+{
+	Inventory.MaxAmount 0
+	Inventory.PickupMessage "Siphon Grenade"
+	Inventory.PickupSound "Item/Pickup"
+	Scale 0.5
+	+NOSCREENFLASH
+	States
+	{
+	Spawn:
+		SPHP A -1
+		Stop
+	Pickup:
+		TNT1 A 0 A_JumpIf(!CountInv("EOA_SiphonGrenade"), 2)
+		TNT1 A 0 A_JumpIfInventory("EquipmentCharge", 0, "Failure")
+		TNT1 A 0
+		{
+			If (!(CountInv("FragGrenadeSelected") || CountInv("HologramSelected") || CountInv("SiphonGrenadeSelected")))
+			{
+				A_GiveInventory("SiphonGrenadeSelected");
+			}
+			A_PlaySound("Equipment/Recharge");
+			A_GiveInventory("EOA_SiphonGrenade");
+			A_GiveInventory("EquipmentCharge");
+			If (CountInv("AmmoBoostSelected") && !CountInv("AmmoBoostII"))
+			{
+				A_GiveInventory("AmmoBoostChallengeCounter");
+				A_GiveInventory("MasteryTicker");
+			}
+			A_GiveInventory("EquipmentSystem"); //Praetor Suit Menu prerequisite.
+			A_GiveInventory("EquipmentChargeFlash"); //For the HUD.
+		}
+		Stop
+	Failure:
+		TNT1 A 0
+		Fail
+	}
+}
+
+ACTOR EOA_EquipmentSpawner{}
+
+ACTOR EquipmentChargeFlash : Inventory
+{
+	Inventory.MaxAmount 1
+}
+
+ACTOR EquipmentSpawner : RandomSpawner
+{
+	DropItem "EOA_FragGrenadePickup"
+	DropItem "EOA_HologramPickup"
+	DropItem "EOA_SiphonGrenadePickup"
+}

@@ -1,0 +1,263 @@
+Class UMKSelected : EOA_Token{}
+
+Class TestActor : EOA_Projectile
+{
+	Double WeaveFactor[4];
+	Vector3 MMPosition;
+	actor shit;
+	Default
+	{
+		Radius 2;
+		Height 4;
+		Speed 0;
+		DamageFunction 2; 
+		Scale 1.0;
+		ReactionTime 15;
+		RenderStyle "Add";
+		+BRIGHT
+		+BLOODLESSIMPACT
+		+FORCERADIUSDMG
+		+SEEKERMISSILE
+	}
+	Override Void PostBeginPlay()
+	{
+		//A_SpawnItemEx("MicroMissileSmokeTrail", Flags: SXF_ORIGINATOR|SXF_SETTRACER);
+		A_TransferPointer(AAPTR_TARGET, AAPTR_DEFAULT, AAPTR_PLAYER_GETTARGET, AAPTR_TRACER);
+		A_StartSound("Rocket/Fly", 4, CHANF_LOOPING, 0.3);
+		/*WeaveFactor[0] = frandom(0.4, 0.8);
+		WeaveFactor[1] = WeaveFactor[0];
+		WeaveFactor[2] = frandom(-0.1, 0.1);
+		WeaveFactor[3] = WeaveFactor[2];-*/
+		Super.PostBeginPlay();
+	}
+	Action Void Tick()
+	{
+		If (GetAge() == 50)
+		{
+			//SetState(ResolveState("Explode"));
+		}
+		Super.Tick();
+	}
+	Override Int SpecialMissileHit(Actor Victim)
+	{
+		If (Victim && Victim != Target)
+		{
+			Tracer = Victim;
+			MMPosition = Tracer.Vec3To(Self);
+			MMPosition.X *= 0.75;
+			MMPosition.Y *= 0.75;
+			Return -1;
+		}
+		Return 1;
+	}
+	Action Void EOA_QueueBottomlessMissiles()
+	{
+		Let HAR = EOA_HeavyAssaultRifle(Target.FindInventory("EOA_HeavyAssaultRifle"));
+		If (HAR)
+		{
+			HAR.EOA_TransferMMPointer(Tracer);
+		}
+	}
+	Void EOA_MicroMissileStick()
+	{
+		If (Tracer)
+		{
+			Warp(Tracer, MMPosition.X, MMPosition.Y, MMPosition.Z, 0, WARPF_ABSOLUTEOFFSET|WARPF_USECALLERANGLE|WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE);
+		}
+	}
+	States
+	{
+	Spawn:
+		TRAC A 45 NoDelay
+		{
+		}
+	Scaleup:
+		TRAC A 1
+		{
+			//Scale.y = 10;
+			A_Face(Tracer);
+		}
+		Loop;
+	Death:
+		TNT1 A 0 
+		{
+			A_StartSound("MicroMissile/Stick", 4, 0, 0.5);
+			EOA_QueueBottomlessMissiles();
+		}
+		MMSL A 1 
+		{
+			EOA_MicroMissileStick();
+			ReactionTime--;
+			if (ReactionTime <= 0)
+			{
+				//Return ResolveState("Explode");
+			}
+			Return ResolveState(Null);
+		}
+		Wait;
+	Explode:
+		TNT1 A 10
+		{
+			A_SetScale(0.75);
+			A_SpawnItemEx("EOA_RocketExplosion", Flags: SXF_TRANSFERSCALE|SXF_NOCHECKPOSITION);
+			A_Stop();
+			A_StartSound("MicroMissile/Explode");
+			bEXTREMEDEATH = True;
+			EOA_Explode(40, 48, XF_HURTSOURCE, 1, 48, 0.375);
+		}
+		Stop;
+	}
+}
+
+Class EOA_Unmaykr : EOA_Weapon
+{
+	Default
+	{
+		Inventory.Icon "ICONBFG";
+		Weapon.AmmoType "EOA_BFGAmmo";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 45;
+		Weapon.SlotNumber 9;
+		Inventory.PickupMessage "The Unmaykr - Pure Maykr technology. Inspired by Sentinel weaponry and refined by their divine intellect. Its destructive potential... is staggering";
+		Tag "UNMAYKR";
+		+WEAPON.BFG
+		+WEAPON.NOAUTOFIRE
+		+EOA_WEAPON.POWERWEAPON
+		+EOA_WEAPON.SEMIAUTO
+	}
+	Override Void MarkPrecacheSounds()
+	{
+		MarkSound("BFG/Raise");
+		MarkSound("UNMK/fire");
+		Super.MarkPrecacheSounds();
+	}
+	States
+	{
+	Spawn:
+		UMKW A -1;
+		Stop;
+	Select:
+		TNT1 A 0
+		{
+			Invoker.SemiAutoOverride = True;
+			A_WeaponOffset(0, 32);
+			SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH);
+			A_GiveInventory("UMKSelected");
+			If (GetCVar("EOA_Reticles"))
+			{
+				ACS_NamedExecuteAlways("BFGReticle", 0);
+				A_SetCrosshair(99);
+			}
+			Else
+			{
+				A_SetCrosshair(0);
+			}
+			A_Overlay(-50, "EquipmentHandler", 1);
+			A_ZoomFactor();
+		}
+		UMKI A 1 A_Raise(60);
+		Wait;
+	Deselect:
+		TNT1 A 0 A_ZoomFactor();
+		UMKI A 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_WEAPSPEEDUPGRADE * CountInv("Adept"));
+		TNT1 A 0
+		{
+			A_TakeInventory("SwitchStyleDelay", 10);
+			A_TakeInventory("UMKSelected");
+			SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH);
+		}
+		TNT1 A 4 A_SetTics(4 * !CountInv("Adept") * !CountInv("PowerBerserk"));
+		UMKI A 1 A_Lower(36);
+		Wait;
+	Ready:
+		TNT1 A 1;
+		TNT1 A 0
+		{
+			EOA_SpawnNoiseMaker("Weapon/Switch");
+			EOA_SpawnNoiseMaker("BFG/Raise", 0, 0.5);
+		}
+		UMKI A 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"));
+		Goto ReadyLoop;
+	ReRaise:
+		UMKI A 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+	ReadyLoop:
+		UMKI A 1 
+		{
+			EOA_WeaponReady(WRF_NOFIRE * (GetPlayerInput(INPUT_OLDBUTTONS) & BT_ATTACK)|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT);
+			A_Overlay(-50, "EquipmentHandler", 1);
+		}
+		Loop;
+	Fire:
+		TNT1 A 0
+		{
+			A_AlertMonsters();	
+			EOA_SpawnNoiseMaker("UNMK/fire", 0, 1);
+			EOA_FireBullets(0, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ|FBF_USEAMMO, 32767, "EOA_Unmaykertracer", -11 + GetViewZ(), 5 + GetRelVelY() / 3);
+			EOA_FireBullets(-10, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ, 32767, "EOA_Unmaykertracer", -11 + GetViewZ(), 5 + GetRelVelY() / 3);
+			EOA_FireBullets(10, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ, 32767, "EOA_Unmaykertracer", -11 + GetViewZ(), 5 + GetRelVelY() / 3);
+			EOA_SetWeaponRecoilOffset(0, -0.7, 0, 0.1);
+			EOA_SpawnCustomDynamicLight("UNMKLight", DynamicLight.PulseLight, (255, 6, 3), 96, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 8, (0, 0, Height / 2), 0.5);
+			If (CountInv("PowerQDMG"))
+			{
+				EOA_SpawnNoiseMaker("QuadDamage/Shot");
+			}
+		}
+		UMKF AB 2 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+		UMKF CDE 1 A_ReFire;
+		Goto ReadyLoop;
+	Zoom:
+		UMKI A 0;
+		Goto Super::Melee;
+	UseEquipment:
+		UMKI A 0;
+		Goto Super::UseEquipment;
+	}
+}
+
+Class EOA_Unmaykertracer : EOA_Projectile
+{
+	default{
+	Scale 2;
+	Radius 9;
+	Height 6;
+	Speed 50;
+	DamageFunction 130;
+	RenderStyle "Add";
+	Decal "UnmakyrScorch";
+	+BLOODLESSIMPACT
+	+EXTREMEDEATH
+	+FORCERADIUSDMG
+	+SKYEXPLODE
+	}
+	States
+	{
+	Spawn:
+		TRAC A 0 NoDelay
+		{
+			If (CountInv("PowerQDMG", AAPTR_TARGET))
+			{
+				A_SpawnItemEx("QuadDamageFX", Flags: SXF_ORIGINATOR|SXF_TRANSFERPOINTERS|SXF_TRANSFERSCALE|SXF_SETTRACER|SXF_NOCHECKPOSITION);
+			}
+		}
+		TRAC A 1 bright
+		{
+			EOA_SpawnCustomDynamicLight("UMKLight", DynamicLight.PointLight, (255, 6, 3), 64, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		}
+		Wait;
+	Crash:
+		TNT1 A 1
+		{
+			A_PlaySound("Projectile/HitWall");
+			EOA_SpawnCustomDynamicLight("UMKLight", DynamicLight.PointLight, (255, 6, 3), 94, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		}
+		Stop;
+	Death:
+	XDeath:
+		TNT1 A 1
+		{
+			A_PlaySound("Projectile/HitFlesh");
+			EOA_SpawnCustomDynamicLight("UMKLight", DynamicLight.PointLight, (255, 6, 3), 94, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		}
+		Stop;
+	}
+}

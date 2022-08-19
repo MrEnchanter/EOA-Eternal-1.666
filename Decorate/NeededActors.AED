@@ -1,0 +1,344 @@
+
+Actor RedPuffExplo
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Scale 0.07
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,"Type1","Type2")
+		Goto Type1
+	Type1:
+		DB53 ABCDEFGHIJKLM 1 Bright
+		Stop
+	Type2:
+		DB53 NOPQRSTUVWXYZ 1 Bright
+		Stop
+	}
+}
+Actor RedPuffExploBig1 : RedPuffExplo
+{	Scale 0.09	}
+Actor RedPuffExploBig2 : RedPuffExplo
+{	Scale 0.11	}
+Actor RedPuffExploBig3
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Scale 0.2
+	States
+	{
+	Spawn:
+		DB54 ABCDEFGHIJKLMNOPQR 1 Bright
+		Stop
+	}
+}
+
+
+Actor BluePuffExplo
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Scale 0.07
+	Translation "0:255=%[0,0,0]:[0.5,0.65,1.5]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(256,"Type1","Type2")
+		Goto Type1
+	Type1:
+		DB53 ABCDEFGHIJKLM 1 Bright
+		Stop
+	Type2:
+		DB53 NOPQRSTUVWXYZ 1 Bright
+		Stop
+	}
+}
+
+Actor BluePuffExploBig1 : RedPuffExploBig1
+{	Translation "0:255=%[0,0,0]:[0.5,0.65,1.5]"	}
+Actor BluePuffExploBig2 : RedPuffExploBig2
+{	Translation "0:255=%[0,0,0]:[0.5,0.65,1.5]"	}
+Actor BluePuffExploBig3 : RedPuffExploBig3
+{	Translation "0:255=%[0,0,0]:[0.5,0.65,1.5]"	}
+
+
+Actor D4PistolPuffNormal
+{
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+PUFFONACTORS
+	+PUFFGETSOWNER
+	+MTHRUSPECIES
+	Scale 0.15
+	RenderStyle Add
+	Alpha 0.99
+	Translation "0:255=%[0,0,0]:[0.6,1.0,1.8]"
+	Decal "D4Pistol"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_SpawnItemEx("BluePuffExplo", 0,0,0, 0,0,0, 0, SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_Jump(255,"Type1","Type2","Type3","Type4","Type5","Type6","Type7","Type8")
+	Type1:
+		DB21 ABCDEFGHI 1 Bright 
+		Stop
+	Type2:
+		DB21 JKLMNOPQR 1 Bright 
+		Stop
+	Type3:
+		DB22 ABCDEFGHI 1 Bright 
+		Stop
+	Type4:
+		DB22 JKLMNOPQR 1 Bright
+		Stop
+	Type5:
+		DB23 ABCDEFGHI 1 Bright
+		Stop
+	Type6:
+		DB23 JKLMNOPQR 1 Bright
+		Stop
+	Type7:
+		DB24 ABCDEFGHI 1 Bright
+		Stop
+	Type8:
+		DB24 JKLMNOPQR 1 Bright
+		Stop
+	}
+}
+
+Actor MGMiniMissileExplo
+{
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	Scale 0.5
+	RenderStyle Add
+	States
+	{
+	Spawn:
+		X002 A 0 NODELAY A_SetScale(frandom(0.4,0.7))
+		TNT1 A 0 A_Jump(256,"Type1")
+	Type1:
+		X002 A 0
+		Goto PlayOff
+	PlayOff: 
+		"####" ABC 1 Bright Light("YellowSmallFlicker2")
+		"####" EFG 1 Bright Light("YellowSmallFlicker1")
+		"####" HIJ 1 Bright Light("YellowMediumFlicker3")
+		"####" KLM 1 Bright Light("YellowMediumFlicker2")
+		"####" NOP 1 Bright Light("YellowMediumFlicker3")
+		"####" QRS 1 Bright Light("YellowSmallFlicker1")
+		"####" TU 1 Bright Light("YellowSmallFlicker2")
+		Stop
+	}
+}
+
+
+Actor RocketBoomNormal
+{	+NOINTERACTION
+	RenderStyle Add
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Doom4/Weapon/RocketLauncher/Explosion",CHAN_AUTO,1.0,false,0.8)
+		TNT1 A 0 A_SpawnItemEx("RocketExploLowQuality",-2,0,0,frandom(-0.1,-1),frandom(-1,1),frandom(-1,1),0,SXF_NOCHECKPOSITION|SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("RocketExploLowQuality",-2,0,0,frandom(-0.1,-1),frandom(-1,1),frandom(-1,1),0,SXF_NOCHECKPOSITION|SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("RocketExploLowQuality", 0,0,0,frandom( 0.1, 1),frandom(-1,1),frandom(-1,1),0,SXF_NOCHECKPOSITION|SXF_CLIENTSIDE)
+		TNT1 A 0 A_SpawnItemEx("RocketLQSmoke",-1,0,0,frandom(-0.2,0.2),frandom(-0.2,0.2),frandom(-0.15,0.15),0,SXF_NOCHECKPOSITION|SXF_CLIENTSIDE)
+		//Show Some light
+		TNT1 A 2 Light("OrangeMediumPoint3")
+		TNT1 A 2 Light("OrangeMediumPoint2")
+		TNT1 AA 2 Light("OrangeMediumPoint1")
+		TNT1 A 2 Light("OrangeMediumPoint2")
+		TNT1 A 2 Light("OrangeMediumPoint3")
+		TNT1 A 2 Light("OrangeSmallPoint1")
+		TNT1 A 2 Light("OrangeSmallPoint2")
+		TNT1 A 2 Light("OrangeSmallPoint3")
+		Stop
+	}
+}
+
+Actor RocketExploLowQuality
+{
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	SCale 1.15
+	States
+	{
+	Spawn:
+		DB07 ABCDEFGHIJKLMN  1 Bright
+		DB07 OPQRSTUVWXY 2 Bright
+		Stop
+	}
+}
+
+Actor RocketLQSmoke
+{
+	+CLIENTSIDEONLY
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	Radius 2
+	Height 2
+	RenderStyle Translucent
+	Alpha 0.85
+	Scale 1.5
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(255,"One","Two","Three","Four")
+	One:
+		X037 A 2 A_FadeOut(0.04)
+		Wait		
+	Two:
+		X037 B 2 A_FadeOut(0.04)
+		Wait		
+	Three:
+		X037 C 2 A_FadeOut(0.04)
+		Wait		
+	Four:
+		X037 D 2 A_FadeOut(0.04)
+		Wait		
+	}
+}
+
+Actor FakePuff
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	States
+	{
+	Spawn:
+		TNT1 A 3
+		Stop
+	}
+}
+
+Actor LGAltPuff
+{
+	+NOINTERACTION
+	+PUFFGETSOWNER
+	+PUFFONACTORS
+	+ALWAYSPUFF
+	+FORCEXYBILLBOARD
+	+MTHRUSPECIES
+	RenderStyle Add
+	Alpha 0.99
+	Translation "0:255=%[0,0,0]:[0.9,0.74,1.5]" 
+	Scale 0.4
+	DamageType "LGChain"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Explode(20,92,0)
+		TNT1 A 0 A_Jump(256,"Type1a","Type1b","Type2a","Type2b","Type3a","Type3b","Type4a","Type4b","Type5a","Type5b")
+	Type1a:
+		DLI1 A 0
+		Goto Perform1
+	Type1b:
+		DLI1 L 0
+		Goto Perform2
+	Type2a:
+		DLI2 A 0
+		Goto Perform1
+	Type2b:
+		DLI2 L 0
+		Goto Perform2
+	Type3a:
+		DLI3 A 0
+		Goto Perform1
+	Type3b:
+		DLI3 L 0
+		Goto Perform2
+	Type4a:
+		DLI4 A 0
+		Goto Perform1
+	Type4b:
+		DLI4 L 0
+		Goto Perform2
+	Type5a:
+		DLI5 A 0
+		Goto Perform1
+	Type5b:
+		DLI5 L 0
+		Goto Perform2
+		
+	Perform1:
+		"####" BDHI 1 Bright
+		Stop
+	Perform2:
+		"####" MOST 1 Bright
+		Stop
+	}
+}
+
+Actor TeslaRays : LGAltPuff
+{ 
+	Translation "0:255=%[0.0,0.0,0.0]:[5.0,0,0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		TNT1 A 0 A_Jump(256,"Type1a","Type1b","Type2a","Type2b","Type3a","Type3b","Type4a","Type4b","Type5a","Type5b")
+		Goto Type1a
+	}
+}
+
+/*
+Actor ArgentGas
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY +NONETID
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Alpha 0.0
+	Scale 0.2
+	Translation "0:255=%[0,0,0]:[1.0,0.0,0]"
+	States
+	{
+	Spawn:
+		X110 A 0 NODELAY A_Jump(128,"Flip")
+		Goto Spawnn
+	Flip:
+		X110 A 0 A_SetScale(scalex*-1,scaley)
+		Goto Spawnn
+	Spawnn:
+		X110 ABCDEFGHIJK 1 Bright A_FadeIn(0.09)
+		X110 LMNOPQRSTUVWXY 1 Bright
+	Looper:
+		X110 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright A_FadeOut(0.03)
+		Loop
+	}
+}
+
+Actor ArgentCache
+{
+	+FORCEXYBILLBOARD
+	+BRIGHT
+	+FLOORCLIP
+	Radius 4
+	Height 4
+	Scale 0.7
+		
+	States
+	{
+	Spawn:
+				
+		Looper:
+			ARGT ABCDCB 5 A_SpawnItemEx("ArgentGas",random(3,-3),random(5,-5),25,frandom(0.3,-0.3),frandom(0.3,-0.3),frandom(0.01,0.3),0,SXF_NOCHECKPOSITION,180)
+			Loop
+		
+	
+	}
+}
+*/

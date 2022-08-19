@@ -1,0 +1,140 @@
+Credits:
+
+ Teleport Fog: edited from http://opengameart.org/content/animated-particle-effects-2 (OpenGameArt, para)
+ Glory Killing player sprite: fist marine by Mark Quinn
+ Hud message on actor: Caligari 97, AlienOverlord
+ HasRoom(class, x,y,z) function: from AcsUtils by Korshun, DjSkaarj, Monsterovich, TechnoDoomed1
+ Vulgar (made into Harvester): Sprites by Eriance
+ Repeater Zombie (made into shotgunner): Sprite edit Eriance, Xim, Ghastly_dragon, Tormentor667, Captain Toenail
+ Zombie Fodder (made into Unwilling): Horror Movie Guy, minimum recolor by DBT
+ Acid Pool (made into rocket targeting): from ZBlood+ by Michaelis based on ZBlood by Psyren, Doorhenge, retextured by Michaelis
+ Hit Beep: Michaelis
+ 
+Additional Credits:
+DBT and team for the D4T Mod: Dbthanatos, Michaelis, Franco Tieppo, Captain J, Phobos867, Neccronixis
+D4T: Crucible devs: Blackmore1014, Iddqd_Idkfa_Idclip, VG Library (Doomer101), Doomgabr
+Doom 2016 Cyberdemon sprites and decorate file by Simploo
+Doom 2016 Cybermancubus sprites from Xtor's Skin Pack and LeonardoETC
+Glory Kill shader from D4D by DBThanatos and team.
+Bolognes Gore mod v2.0 by Sgt. Mark IV
+Spider Mastermind sprites by The Abysswalker.
+New Pinky and Summoner sprites by Simploo
+Hell Knight and Baron of Hell sprites by Zanieon
+Mancubus sprites from Smooth Doom by Gifty
+Possessed Soldier sprite by DimosHunter
+Revenant sprites from Project Brutality
+Extra Unwilling sprites from Xtor's Skin Pack.
+Corpse sprite for keys are from D4DHF (recolored by Strongbelly) and theirs heads are from Project Brutality
+Skull Key pillar from D4DHF (frankensprited by Strongbelly)
+Teleport fog effect from Zion
+
+//From scratch
+
+-Doomguy5th for the:
+	+ D4T Rocket (Small) ammo voxel
+	+ Grenade Launcher (edited by "i'm a fucking corn" / El Jefe)
+	+ Reaper (edited by "i'm a fucking corn" / El Jefe)
+	+ D4T Clip Ammo
+	+ other grenade shit that's not the syphon, frag, or hologram
+	+ Pinata drops
+	+ Megahealth
+	+ upgrade boxes
+	+ Michaelis Bay-rrel
+	+ infrared
+
+-I'm a Fucking Corn / Corn / El Jefe / KarnTheSlayer
+	+ Automap
+	+ Backpack
+	
+-Monolyth-42
+	+ Skull Keys (well done job btw)
+	+ Field Drone (recolored by Doomguy5th)
+//From D4D
+-Roxas
+-DBThantos
+// From hellspawn + voxelbro
+
+Ghostpilot:
+
+Soulsphere
+Health Potion
+Rocket Projectile
+Bulk Cell
+Box of Shells
+Red Key Card
+Yellow Key Card
+Blue Key Card
+_________________
+
+DooMAD:
+
+Medkit
+Stimpack
+Red Skull Key
+Ammo Box
+Small Cells
+BFG
+Plasma Rifle
+Rocket Launcher
+Box of Rockets
+Berzerk Kit
+Barrel
+Candle
+Rocket
+Green Armour
+Blue Armour
+Backpack (started by Ghostpilot)
+Radiation Suit
+_________________
+
+Monfriez:
+
+Lamp
+_________________
+
+DooMGoaT:
+
+Shotgun
+Super Shotgun 
+_________________
+
+Exl:
+
+Compiling ZDoom fork
+Offset correction utility
+_________________
+
+Scott_AW:
+
+Strip2Voxel utility
+_________________
+
+ReaperMan:
+
+Chainsaw
+Computer Area Map
+_________________
+
+4mer:
+Fixed Candle
+Rocket Projectile
+Short Green Marble Column
+Tall Green Marble Column
+Short Red Marble Column
+Tall Red Marble Column
+Short Gas Lamp
+Tall Gas Lamp
+_________________
+
+phi108:
+Electric Column
+Health Vial
+Light Amp Goggles
+_________________
+
+Conrad RDW:
+Chaingun
+Red Torch
+Green Torch
+Blue Torch
+Candelabra

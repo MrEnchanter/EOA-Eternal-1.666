@@ -1,0 +1,289 @@
+//================================================================================================================
+//================================================================================================================
+//
+//
+//================================================================================================================
+//================================================================================================================
+
+ACTOR DEWhiplash : D4AbstractMonster
+{
+	//$Category "DE base monsters"
+	//$Color 12
+	Health 750
+	Radius 20
+	Height 74
+	Mass 5000
+	Speed 15
+	PainChance 128
+	Monster
+	Scale 1.2
+	MeleeRange 72
+	//MaxDropOffHeight 120
+	+NEVERRESPAWN
+	+FLOORCLIP
+	+NoTarget
+	+NoInFighting
+	SeeSound 	"Whiplash/See"
+	PainSound 	"Whiplash/Pain"
+	DeathSound 	"Whiplash/Death"
+	ActiveSound "Whiplash/See"
+	HitObituary "$OB_IMPHIT"
+	Obituary "%o was whipped"
+	Tag "Whiplash"
+	Species "Heavy"
+	DropItem "ZombieTimer", 192
+	+DONTHARMSPECIES
+	DropItem "HeavyMediumDrop"
+	States
+	{
+	Spawn:
+		WHIP A 0 NODELAY 
+		Goto Idle
+	Idle:
+		WHIP A 10 A_Look
+		Loop
+	See:
+		WHIP AABBCCDD 2 A_Chase
+		Goto See2
+	See2:
+		TNT1 A 0 A_ChangeFlag(NOPAIN,True)
+		TNT1 A 0 A_JumpIfCloser(560,"See2End")
+		WHIP A 0 A_PlaySound ("Whiplash/Flank",6,1.0,False,ATTN_NORM,0)
+		WHIP UUUUUUUU 1 A_Chase("","")
+		Loop
+	See2End:
+		TNT1 A 0 A_ChangeFlag(NOPAIN,false)
+		WHIP A 0 A_PlaySound ("None",6,1.0,False,ATTN_NORM,0)
+		Goto See
+	Melee:
+		TNT1 G 0 A_PlaySound("Doom4/Other/MeleeSwing",CHAN_BODY,0.7,false,1.2)
+		WHIP E 3 A_Recoil(-4)
+		TNT1 G 0 A_FaceTarget
+		WHIP E 3 A_Recoil(-3)
+		TNT1 G 0 A_FaceTarget
+		WHIP E 3 A_Recoil(-2)
+		TNT1 H 0 A_FaceTarget
+		WHIP F 3 A_Recoil(-2)
+		TNT1 H 0 A_FaceTarget
+		WHIP G 6 A_CustomMeleeAttack(2*random(8,10),"Whiplash/dodge")
+		Goto See
+	Missile:
+		TNT1 A 0 A_Jumpifcloser(460,"Slide")
+		Goto See2
+	Slide:
+		TNT1 A 0 A_PlaySound("Whiplash/Dodge",6,1.0,False,ATTN_NORM)
+		TNT1 A 0 A_Jump(160,"Whip")
+		TNT1 A 0 A_ChangeFlag(NOPAIN, True)
+		TNT1 A 0 A_Jump(128,"Slide2")
+		TNT1 E 0 A_FaceTarget
+		TNT1 E 0 ThrustThing (angle*256/360+192, 30,0,0)
+		TNT1 E 0 A_FaceTarget 
+		Goto SlideAfter
+	Slide2:
+		TNT1 E 0 A_FaceTarget
+		TNT1 E 0 ThrustThing (angle*256/360+64, 30,0,0)
+		TNT1 E 0 A_FaceTarget 
+		Goto SlideAfter
+	SlideAfter:
+		WHIP UUUU 2 A_FaceTarget
+		WHIP U 0 A_Stop
+		TNT1 A 0 A_ChangeFlag(NOPAIN, False)
+		TNT1 A 0 A_Jumpifcloser(460,"Whip")
+		Goto See
+	Whip:
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 Light("ImpPrepareAttackLight") A_FaceTarget
+			TNT1 A 0  A_PlaySound("Whiplash/Attack",5,1.0,false,1.1)
+			WHIP G 6 Bright A_CustomMissile("WhipTracer",20,5,ACS_NamedExecuteWithResult("PredictAim", 1, Random(15,20), 32) * 360 / 65536)
+			WHIP G 4 
+			TNT1 A 0 A_jump (128,"see")
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 Light("ImpPrepareAttackLight") A_FaceTarget
+			TNT1 A 0  A_PlaySound("Whiplash/Attack",5,1.0,false,1.1)
+			WHIP G 6 Bright A_CustomMissile("WhipTracer",20,5,ACS_NamedExecuteWithResult("PredictAim", 1, Random(15,20), 32) * 360 / 65536)
+			WHIP G 4 
+			TNT1 A 0 A_jump (32,"see")
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP E 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 A_FaceTarget
+			TNT1 A 0 A_SpawnItemEx("WhipFlamelet",8,19,6,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+			WHIP F 4 Light("ImpPrepareAttackLight") A_FaceTarget
+			TNT1 A 0  A_PlaySound("Whiplash/Attack",5,1.0,false,1.1)
+			WHIP G 6 Bright A_CustomMissile("WhipTracer",20,5,ACS_NamedExecuteWithResult("PredictAim", 1, Random(15,20), 32) * 360 / 65536)
+			WHIP G 4 
+			Goto See
+			
+	Pain:
+		WHIP H 2 A_Pain
+		TNT1 A 0 
+		Goto See
+
+	Death:
+		"####" "#" 0  A_SpawnItemEx("SituationalPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		WHIP I 6 A_Scream
+		WHIP J 6 A_NoBlocking
+		WHIP K 6 
+		WHIP L 6 
+		WHIP L 0
+		WHIP L -1
+		Wait
+	
+	Death.Massacre:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Minimal",CHAN_AUTO,1.0,false,2.0)
+		TNT1 A 35 A_BossDeath
+		Stop
+	
+	XDeath:
+		TNT1 A 0 A_XScream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_JumpIf(GetCVAR("enhanced_gibs") == false,"XDeathMinimal")
+		TNT1 A 0 A_Jump(128,"BologneseXDeath")
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropperBig",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 0 A_Jump(256,3)
+	XDeathMinimal:
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropperBigMinimal",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 35 A_BossDeath
+		Stop	
+		
+	}
+}
+
+Actor WhipFlamelet
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Alpha 0.8
+	Xscale 0.2
+	Yscale 0.0
+	Translation "0:255=%[0,0,0]:[1.8,0.0,0.1]"
+	States
+	{
+	Spawn:
+		PROJ D 0 NODELAY A_Jump(220,5,6,7,8,9)
+		DB58 ABC 1 A_SetScale(0.15,0.0)
+		DB58 DEF 1 A_SetScale(0.15,0.1)
+		DB58 GHI 1 A_SetScale(0.15,0.15)
+		DB58 JKL 1 A_SetScale(0.15,0.3)
+		DB58 MNO 1 A_SetScale(0.15,0.4)
+		DB58 PAB 1 A_SetScale(0.15,0.6)
+		DB58 CDEFG 1 Bright
+		Stop
+	}
+}
+
+ACTOR WhipTracer
+{
+   Radius 8
+   Height 16
+   Speed 28
+   Damage 8
+   XScale 0.4
+   Yscale 1.2
+   ExplosionDamage 8
+   ExplosionRadius 8
+   RenderStyle ADD
+   DamageType fire
+   Alpha 0.95
+   PROJECTILE
+   Reactiontime 16
+   +FLOORHUGGER
+   +THRUGHOST
+   -NOGRAVITY
+   +DONTSPLASH
+   +SEEKERMISSILE
+   Translation "0:255=%[0,0,0]:[2.0,0.0,0.0]"
+   SeeSound "Carcass/GroundLoop"
+	DeathSound "Carcass/Ground"
+   States
+   {
+   Spawn:  
+		DB58 AB 1 Bright A_SpawnItem("WhipPuff",0,Random(6,10),0,0)
+		TNT1 C 0 Bright A_CountDown
+		DB58 CD 1 Bright A_SpawnItemEX("WhipPuff",Random(2,-2),Random(2,-2),0,0,0,0,0,0,0,0)
+		TNT1 C 0 Bright A_CountDown
+      Goto Chase
+	Chase:
+		DB58 AB 1 Bright A_SpawnItem("WhipPuff",0,Random(6,10),0,0)
+		TNT1 A 0  A_SeekerMissile (12,12)
+		TNT1 C 0 Bright A_CountDown
+		DB58 CD 1 Bright A_SpawnItemEX("WhipPuff",Random(2,-2),Random(2,-2),0,0,0,0,0,0,0,0)
+		TNT1 A 0  A_SeekerMissile (12,12)
+		TNT1 C 0 Bright A_CountDown
+		DB58 EF 1 Bright A_SpawnItemEX("WhipPuff",0,Random(6,10),0,0)
+		TNT1 A 0  A_SeekerMissile (12,12)
+		TNT1 C 0 Bright A_CountDown
+		DB58 GH 1 Bright A_SpawnItemEX("WhipPuff",Random(2,-2),Random(2,-2),0,0,0,0,0,0,0,0)
+		TNT1 A 0  A_SeekerMissile (12,12)
+		TNT1 C 0 Bright A_CountDown
+		Loop
+   Death:
+		//HIBI A 0 A_RadiusThrust(2500,24)
+		DB59 AB 1 BRIGHT Light("RedSmallFlicker1")	//had to separate
+		DB59 CD 1 BRIGHT Light("RedMediumFlicker3")
+		DB59 EF 1 BRIGHT Light("RedMediumFlicker3")
+		DB59 GH 1 BRIGHT Light("RedSmallFlicker1")
+		DB59 IJ 1 BRIGHT Light("RedSmallFlicker1")
+		DB59 KL 1 BRIGHT Light("RedSmallFlicker2")
+		DB59 MN 1 BRIGHT Light("RedSmallFlicker2")
+		DB59 OP 1 BRIGHT Light("RedSmallFlicker3")
+		DB59 QR 1 BRIGHT Light("RedSmallFlicker3")
+		DB59 ST 1 BRIGHT Light("RedSmallFlicker3")
+		Stop
+   }
+}
+Actor WhipPuff
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Alpha 0.9
+	YScale 0.6
+	XScale 0.3
+	States
+	{
+	Spawn:
+		PROJ D 0 NODELAY //A_Jump(220,1,2,3,4,5)
+		XA01 AAAAAAAAAAA 1 Bright A_FadeOut
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor DESpectreWhiplash : DEWhiplash 1026
+{
+
+	+SHADOW
+	RenderStyle OptFuzzy
+	Alpha 0.9
+	Obituary "%o was whipped"
+	Height 56
+	Health 350
+	PainChance 256
+	Tag "Spectre Whiplash"
+}
+
+Actor DEwhiplashGN : DEwhiplash
+{
+	+LOOKALLAROUND
+	-COUNTKILL
+}

@@ -1,0 +1,183 @@
+Actor BelchFire //CREDITS TO D4T FOR THE CODE
+{
+    var int user_x;
+	var int user_y;
+	var int user_z;
+	//var int user_dmg;
+	var int user_counter;
+	+NOINTERACTION
+	+BRIGHT
+	Alpha 0.8
+	Scale 0.6
+	RenderStyle Add
+		
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_MASTER,AAPTR_DEFAULT,AAPTR_DEFAULT,PTROP_NOSAFEGUARDS)
+		//TNT1 A 0 A_SetUservar("user_dmg", 1)
+		TNT1 A 0 A_SetUserVar(user_x, random(-5,5))
+		TNT1 A 0 A_SetUserVar(user_y, random(-5,5))
+		TNT1 A 0 A_SetUserVar(user_z, random(8,10))
+		TNT1 A 0 A_SetUserVar(user_counter, 5)
+		Goto Burn
+		
+	Burn:
+		TNT1 A 0 A_GiveToTarget("BurningToken",1)
+	Looper:
+		//TNT1 A 0 A_Explode(user_dmg,15,XF_NOTMISSILE|XF_NOSPLASH,0,15)
+		FLME ABCDEF 1 A_Warp(AAPTR_MASTER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME GHIJKLMN 1 A_Warp(AAPTR_MASTER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME ABCDEF 1  A_Warp(AAPTR_MASTER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME GHIJKLMN 1 A_Warp(AAPTR_MASTER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		TNT1 A 0 A_SetUserVar(user_counter, user_counter - 1)
+		TNT1 A 0 A_JumpIf(user_counter == 0,"End")
+		Loop
+	End:
+		FLME A 0 A_TakeFromTarget("BurningToken",1)
+		FLME ABCDE 1 A_FadeOut
+		//FLME EFGHIJKLMN 1 A_FadeOut
+		Stop
+	Cancel:
+		TNT1 A 1
+		Stop
+	}
+} 
+
+Actor BelchArmor : TempArmor
+{
+	Armor.SaveAmount 2
+}
+	
+
+/*
+Actor FTFire
+{
+  //+LowGravity
+  +SEEKERMISSILE
+  +LOOKALLAROUND
+  -BLOODSPLATTER
+  +BRIGHT
+  +MTHRUSPECIES
+  +SCREENSEEKER
+  +THRUGHOST
+  Radius 2
+  Height 4
+  Speed 18
+  Damage 0
+  Damagetype "Flamethrower"
+  Projectile
+  RenderStyle Add
+  Alpha 0.4
+  Scale 0.67
+  SeeSound "Flamethrower/Fire"
+  DeathSound "Flamethrower/Hit"
+  Species "FTFlame"
+  MaxTargetRange 3
+  Translation "0:255=%[0,0,0]:[0.8,0.2,0.0]"
+  States
+  {
+  Spawn:
+    TNT1 A 2
+    FRFX ABCD 2 
+    FRFX EFG 2 
+    FRFX HIJ 2 
+    FRFX KLM 2 
+    FRFX NO 2 
+    Stop
+  
+  Death:
+	TNT1 A 2
+	Stop
+  
+  XDeath:
+    TNT1 A 0 A_RearrangePointers(AAPTR_DEFAULT,AAPTR_TARGET,AAPTR_DEFAULT,PTROP_NOSAFEGUARDS)
+	FRFX H 2 A_SeekerMissile(0,0,SMF_LOOK,256,2)
+	TNT1 A 0 A_SpawnItemEx("DropFire", 0,0,0, 0,0,0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+	FRFX IJ 2 
+	FRFX KLM 2 
+    FRFX NO 2 
+	Stop
+  }
+}
+
+Actor DropFire //CREDITS TO D4T FOR THE CODE
+{
+    var int user_x;
+	var int user_y;
+	var int user_z;
+	var int user_dmg;
+	var int user_counter;
+	+NOINTERACTION
+	Alpha 0.8
+	Scale 0.6
+	RenderStyle Add
+	Damagetype "Flamethrower"
+	
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_TRACER,AAPTR_DEFAULT,AAPTR_DEFAULT,PTROP_NOSAFEGUARDS)
+		TNT1 A 0 A_JumpIfinTargetInventory("BurningToken",1,"Cancel")
+		TNT1 A 0 A_SetUservar("user_dmg", 1)
+		TNT1 A 0 A_SetUserVar(user_x, random(-5,5))
+		TNT1 A 0 A_SetUserVar(user_y, random(-5,5))
+		TNT1 A 0 A_SetUserVar(user_z, random(8,10))
+		TNT1 A 0 A_SetUserVar(user_counter, 6)
+		Goto Burn
+		
+	Burn:
+		TNT1 A 0 A_GiveToTarget("BurningToken",1)
+	Looper:
+		TNT1 A 0 A_Explode(user_dmg,15,XF_NOTMISSILE|XF_NOSPLASH,0,15)
+		FLME ABCDEF 1 Light("YellowSmallFlicker2") A_Warp(AAPTR_TRACER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME GHIJKLMN 1 Light("YellowSmallFlicker2") A_Warp(AAPTR_TRACER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME ABCDEF 1 Light("YellowSmallFlicker2") A_Warp(AAPTR_TRACER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		FLME GHIJKLM 1 Light("YellowSmallFlicker2") A_Warp(AAPTR_TRACER, user_x,user_y,user_z, 0,WARPF_NOCHECKPOSITION|WARPF_COPYINTERPOLATION)
+		TNT1 A 0 A_SetUserVar(user_counter, user_counter - 1)
+		FLME N 1 Light("RedMediumFlicker2") A_JumpIf(user_counter == 0,"End")
+		Loop
+	End:
+		FLME A 0 A_TakeFromTarget("BurningToken",1)
+		FLME ABCD 1 Light("RedMediumFlicker2") 
+		FLME EFGHIJKLMN 1 Light("RedSmallFlicker2") A_FadeOut
+		Stop
+	Cancel:
+		TNT1 A 1
+		Stop
+	}
+} 
+
+Actor FTFlameBall :grenade
+{
+	damage (100)
+	damagetype "fire"
+	ExplosionDamage 250
+	ExplosionRadius 120
+   	Radius 2
+	Height 2
+    Speed 30
+	Scale 1.5
+	DeathSound "Flamethrower/Hit"
+	+MTHRUSPECIES
+	+NOTELEPORT
+	-BOUNCEONWALLS
+	-BOUNCEONFLOORS
+	-BOUNCEONCEILINGS
+	+FORCERADIUSDMG
+	Gravity 0.5
+	Mass 400
+	DamageType Fire
+	
+	States
+	{
+	Spawn:
+		FRFX AB 1 Bright 
+		Loop
+	Death:
+		FRFX C 8 Bright A_Explode
+		TNT1 AAAAAA 0 A_CustomMissile("DropFire", Random(-5,5), Random(-5,5), 0, 4)
+		FRFX DOP 4 Bright 
+		Stop
+	}
+} */

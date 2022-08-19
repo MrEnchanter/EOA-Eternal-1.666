@@ -1,0 +1,111 @@
+//activate these hands and you're gonna have to catch em
+Class EOA_SwimmingArms : EOA_Weapon
+{
+
+	Default
+	{
+		Inventory.Icon "ICONHAR";
+		Weapon.AmmoType "EOA_BulletAmmo";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 60;
+		Weapon.SlotNumber 4;
+		Inventory.PickupMessage "Heavy Assault Rifle";
+		Tag "Heavy Assault Rifle";
+	}
+	Override Void MarkPrecacheSounds()
+	{
+		MarkSound("HAR/Fire");
+		MarkSound("HAR/Add");
+		MarkSound("HAR/Bass");
+		MarkSound("HAR/DeployFast");
+		MarkSound("HAR/Deploy");
+		MarkSound("HAR/Missile");
+		MarkSound("HAR/Launch");
+		MarkSound("HAR/Close");
+		MarkSound("HAR/ZoomIn");
+		MarkSound("HAR/ZoomOut");
+		MarkSound("HAR/Fire/Uranium");
+		MarkSound("MicroMissiles/Click");
+		MarkSound("MicroMissiles/Attach");
+		MarkSound("TacticalScope/Click");
+		MarkSound("TacticalScope/Attach");
+		MarkSound("BoltEFire");
+		MarkSound("BoltReady");
+		MarkSound("BottomlessFire");
+		MarkSound("MicroOpenEndless");
+		MarkSound("MicroClose1");
+		MarkSound("MicroClose2");
+		Super.MarkPrecacheSounds();
+	}
+	
+	Override Void Tick()
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		If(Player.Mo.Waterlevel <= 2)
+		{A_TakeInventory("EOA_SwimmingArms");}
+		If ((Owner.GetPlayerInput(INPUT_BUTTONS) & BT_FORWARD))
+		{Player.FindPSprite(PSP_WEAPON).SetState(ResolveState("Forward"));}
+		Else
+		{
+			Player.FindPSprite(PSP_WEAPON).SetState(ResolveState("ReadyLoop")); 
+		}
+		Super.Tick();
+	}
+	States
+	{
+	Spawn:
+		HARW A -1;
+		Stop;
+	Select:
+		TNT1 A 1 A_Raise(60);
+		Wait;
+	Deselect:
+		TNT1 A 0
+		{
+		}
+		HMNR A 0;
+		"####" HFDB 1;
+		TNT1 A 0 
+		{
+			SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH);
+		}
+		TNT1 A 4 A_SetTics(4 * !CountInv("Adept") * !CountInv("PowerBerserk"));
+		TNT1 A 1 A_Lower(36);
+		Wait;
+	Ready:
+		TNT1 A 1;
+		TNT1 A 0
+		{
+			If (!(CountInv("MicroMissilesSwitch") || CountInv("TacticalScopeSwitch")))
+			{
+				EOA_SpawnNoiseMaker("Weapon/Switch");
+			}
+		}
+		HMNR A 0;
+		"####" ACEG 1 
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOBOB|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+		}
+		Goto ReadyLoop;
+	ReRaise:
+	ReadyLoop:
+		SSGF A 1;
+		Loop;
+	Forward:
+		SSGF ABCDEF 1;
+		Loop;
+	Back:
+		SWMB ABDCEFGH 6
+		{
+			let ply=self.player;
+			If(Ply.Mo.Vel.Y = 0)
+			{Return ResolveState("ReadyLoop");}
+			Return ResolveState(NULL);
+		}
+		Loop;
+	Fire:
+		Goto Readyloop;
+	AltFire:
+		Goto Readyloop;
+	}
+} 

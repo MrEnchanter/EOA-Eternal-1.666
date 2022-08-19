@@ -1,0 +1,150 @@
+//Pinata
+
+// Pinata pickups WITH border
+TSHDA = "Voxels/Pinata/PINAA.kvx" { scale=0.4} //armor
+TSTMA = "Voxels/Pinata/PINAB.kvx" { scale=0.4} //health
+OSHDA = "Voxels/Pinata/PINAA.kvx" { scale=0.4} //armor
+OSTMA = "Voxels/Pinata/PINAB.kvx" { scale=0.4} //health
+TMPAA = "Voxels/Pinata/PINAC.kvx" { scale=0.4} //Bullets
+TMPAB = "Voxels/Pinata/PINAE.kvx" { scale=0.4} //Shells
+TMPAD = "Voxels/Pinata/PINAF.kvx" { scale=0.4} //Cells
+TMPAC = "Voxels/Pinata/PINAG.kvx" { scale=0.4} //Rockets
+PINAJ = "Voxels/Pinata/PINAJ.kvx" { scale=0.4}
+PINAK = "Voxels/Pinata/PINAK.kvx" { scale=0.4}
+PINAL = "Voxels/Pinata/PINAL.kvx" { scale=0.4}
+PINAM = "Voxels/Pinata/PINAM.kvx" { scale=0.4}
+PINAN = "Voxels/Pinata/PINAN.kvx" { scale=0.4}
+PINAO = "Voxels/Pinata/PINAO.kvx" { scale=0.4}
+
+//Health pickups
+HPCKA = "Voxels/Armor health/D4HLA.kvx" {scale=1.6 }  // stimpack
+HPCKB = "Voxels/Armor health/D4HLA.kvx" {scale=1.6 }  // stimpack 
+HPCKC = "Voxels/Armor health/D4HLA.kvx" {scale=1.6 }  // stimpack
+HPCKD = "Voxels/Armor health/D4HLA.kvx" {scale=1.6 }  // stimpack 
+HPCKE = "Voxels/Armor health/D4HLA.kvx" {scale=1.6 }  // stimpack 
+
+HKITA = "Voxels/Armor health/D4HLB.kvx" {scale=2.0 } // medikit
+HKITB = "Voxels/Armor health/D4HLB.kvx" {scale=2.0 } // medikit
+HKITC = "Voxels/Armor health/D4HLB.kvx" {scale=2.0 } // medikit
+HKITD = "Voxels/Armor health/D4HLB.kvx" {scale=2.0 } // medikit
+HKITE = "Voxels/Armor health/D4HLB.kvx" {scale=2.0 } // medikit
+
+HSTMA = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+HSTMB = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+HSTMC = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+HSTMD = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+HSTME = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+HSTMO = "Voxels/Armor health/D4HLC.kvx" {scale=0.7 } // Health bonus
+
+HMGAA = "Voxels/Armor health/meshuggahealth.kvx" {spin=32 } // Mega Health
+HMGAB = "Voxels/Armor health/meshuggahealth.kvx" {spin=32 }   // Mega Health
+HMGAC = "Voxels/Armor health/meshuggahealth.kvx" {spin=32 }   // Mega Health
+HMGAD = "Voxels/Armor health/meshuggahealth.kvx" {spin=32 }   // Mega Health
+HMGAE = "Voxels/Armor health/meshuggahealth.kvx" {spin=32 }   // Mega Health
+
+//Armor Pickups
+SHLDA = "Voxels/Armor health/D4ARC.kvx" {scale=1.25}  // Green Armor
+SHLDB = "Voxels/Armor health/D4ARC.kvx" {scale=1.25}  // Green Armor
+SHLDC = "Voxels/Armor health/D4ARC.kvx" {scale=1.25}  // Green Armor
+SHLDD = "Voxels/Armor health/D4ARC.kvx" {scale=1.25}  // Green Armor
+SHLDE = "Voxels/Armor health/D4ARC.kvx" {scale=1.25}  // Green Armor
+
+BPLTA = "Voxels/Armor health/D4ARA.kvx" {scale=2.25 }   // Blue Armor
+BPLTB = "Voxels/Armor health/D4ARA.kvx" {scale=2.25 }   // Blue Armor
+BPLTC = "Voxels/Armor health/D4ARA.kvx" {scale=2.25 }   // Blue Armor
+BPLTD = "Voxels/Armor health/D4ARA.kvx" {scale=2.25 }   // Blue Armor
+BPLTE = "Voxels/Armor health/D4ARA.kvx" {scale=2.25 }   // Blue Armor
+
+ASHDA = "Voxels/Armor health/D4ARB.kvx" {spin=1 }// shard
+ASHDB = "Voxels/Armor health/D4ARB.kvx" {spin=1 }/// shard
+ASHDC = "Voxels/Armor health/D4ARB.kvx" {spin=1 }/// shard
+ASHDD = "Voxels/Armor health/D4ARB.kvx" {spin=1 }/// shard
+ASHDE = "Voxels/Armor health/D4ARB.kvx" {spin=1 }/// shard
+ASHDO = "Voxels/Armor health/D4ARB.kvx" {spin=1 }/// shard
+
+//Ammo Pickups
+
+BLLBA = "Voxels/Ammo/AMBLA.kvx" {Scale=0.4}//bullets too big
+BLLSA = "Voxels/Ammo/AMBLC.kvx" {Scale=1.5}//bullets small
+
+SLLSA = "Voxels/Ammo/AMSHC.kvx" {Scale=0.8}//shells
+SLLBA = "Voxels/Ammo/AMSHB.kvx" {Scale=0.5}//shells small
+
+RKTBA = "Voxels/Ammo/AMRKA.kvx" {Scale=2.5}//rockets big
+RKTSA = "Voxels/Ammo/AMRKc.kvx" //rockets small
+
+FUELA = "Voxels/Ammo/AMGSA.kvx" //gas can
+
+CLLBA = "Voxels/Ammo/AMPLA.kvx" //plasma
+CLLSA = "Voxels/Ammo/AMPLB.kvx" //plasma small
+
+SLGBA = "Voxels/Ammo/AMSLB.kvx" //Slugs Big 1
+SLGBB = "Voxels/Ammo/AMSLD.kvx" //Slugs Big 1
+SLGSA = "Voxels/Ammo/AMSLA.kvx" //Slugs small 1
+SLGSB = "Voxels/Ammo/AMSLC.kvx" //Slugs Small 2
+
+BFGAO = "Voxels/Ammo/AMBFA.kvx"   //BFG ammo
+
+//Key Cards
+
+//Blue
+KCRBA = "Voxels/iTEMS/Blue_Card_Voxel.kvx" {Scale=0.4 }
+KCRBB = "Voxels/iTEMS/Blue_Card_Voxel.kvx" {Scale=0.4 }
+KCRBC = "Voxels/iTEMS/Blue_Card_Voxel.kvx" {Scale=0.4 }
+KCRBD = "Voxels/iTEMS/Blue_Card_Voxel.kvx" {Scale=0.4 }
+
+//Yellow
+KCRYA = "Voxels/iTEMS/Yellow_Card_Voxel.kvx" {Scale=0.4 }
+KCRYB = "Voxels/iTEMS/Yellow_Card_Voxel.kvx" {Scale=0.4 }
+KCRYC = "Voxels/iTEMS/Yellow_Card_Voxel.kvx" {Scale=0.4 }
+KCRYD = "Voxels/iTEMS/Yellow_Card_Voxel.kvx" {Scale=0.4 }
+
+//Red
+KCRRA = "Voxels/iTEMS/Red_Card_Voxel.kvx" {Scale=0.4 }
+KCRRB = "Voxels/iTEMS/Red_Card_Voxel.kvx" {Scale=0.4 }
+KCRRC = "Voxels/iTEMS/Red_Card_Voxel.kvx" {Scale=0.4 }
+KCRRD = "Voxels/iTEMS/Red_Card_Voxel.kvx" {Scale=0.4 }
+
+//Skull Keys
+
+//Blue
+KSKBA = "Voxels/iTEMS/SkullKey_Blue.kvx" {Scale=0.8 }
+KSKBB = "Voxels/iTEMS/SkullKey_Blue.kvx" {Scale=0.8 }
+KSKBC = "Voxels/iTEMS/SkullKey_Blue.kvx" {Scale=0.8 }
+KSKBD = "Voxels/iTEMS/SkullKey_Blue.kvx" {Scale=0.8 }
+
+//Yellow
+KSKYA = "Voxels/iTEMS/SkullKey_Yellow.kvx" {Scale=0.8 }
+KSKYB = "Voxels/iTEMS/SkullKey_Yellow.kvx" {Scale=0.8 }
+KSKYC = "Voxels/iTEMS/SkullKey_Yellow.kvx" {Scale=0.8 }
+KSKYD = "Voxels/iTEMS/SkullKey_Yellow.kvx" {Scale=0.8 }
+
+//Red
+KSKRA = "Voxels/iTEMS/SkullKey_Red.kvx" {Scale=0.8 }
+KSKRB = "Voxels/iTEMS/SkullKey_Red.kvx" {Scale=0.8 }
+KSKRC = "Voxels/iTEMS/SkullKey_Red.kvx" {Scale=0.8 }
+KSKRD = "Voxels/iTEMS/SkullKey_Red.kvx" {Scale=0.8 }
+
+//Grenades
+FNAD = "Voxels/Grenades/Frag.kvx"	{Scale=0.5 }//frag
+NADL = "Voxels/Grenades/Frag.kvx"	{Scale=0.5 }//frag
+
+IBMB = "Voxels/Grenades/TeslaRocket.kvx"	 //Tesla Rocket
+DTEQQ = "Voxels/Grenades/ShieldWall.kvx"	 //Shield Wall
+
+EXPBA = "Voxels/Obstacles/D4BRA.kvx" {Scale=1.5}// Michaelis Bayrrel
+EXPBB = "Voxels/Obstacles/D4BRA.kvx" {Scale=1.2}// Michaelis Bayrrel
+EXPBC = "Voxels/Obstacles/D4BRA.kvx" {Scale=1.8}// Michaelis Bayrrel
+
+//Items
+
+BPAKO = "Voxels/iTEMS/BPAKB0.kvx"  //Backpack
+
+0MAPA = "Voxels/iTEMS/DMAPA0.kvx"  // Map
+OMAPB = "Voxels/iTEMS/DMAPB0.kvx"  // Map
+OMAPC = "Voxels/iTEMS/DMAPC0.kvx"  // Map
+OMAPD = "Voxels/iTEMS/DMAPD0.kvx"  // Map
+
+FDRNA = "Voxels/iTEMS/D4FDA0.kvx" {scale=0.64} //Field Drone with Upgrade
+FDRNB = "Voxels/iTEMS/D4FDB0.kvx" {spin=1 scale=0.64} //Field Drone without upgrade
+FDRNC = "Voxels/iTEMS/D4FDC0.kvx" {scale=0.64} //Field Drone about to blow

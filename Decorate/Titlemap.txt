@@ -1,0 +1,65 @@
+actor intro_CH_PLAYER 22224 //Replaces intro_CH_LOGO 22224
+{
+	//$sprite ALLYB0
+	//$Category INTROS
+	Scale 0.42
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	RenderStyle "Translucent"
+
+	States
+	{
+	Spawn:
+		Spawn:
+		MNDS ABC 5
+		MNDS C 20
+		MNDS CBA 5
+		MNDS A 20
+		loop
+	Inactive:
+		TNT1 A 1
+		Loop
+	Active:
+		ALLY B 1 Bright A_FadeIn(0.01, FTF_CLAMP)
+		Loop
+	}
+}
+
+actor Torch1 22225
+{
+	//$sprite ALLYB0
+	//$Category INTROS
+	Scale 1
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	RenderStyle "Translucent"
+
+	States
+	{
+	Spawn:
+		Spawn:
+		TRCH ABCD 3
+		loop
+	}
+}
+
+actor Torch2 22226
+{
+	//$sprite ALLYB0
+	//$Category INTROS
+	Scale 1
+	+NOINTERACTION
+	+NOGRAVITY
+	+FORCEXYBILLBOARD
+	RenderStyle "Translucent"
+
+	States
+	{
+	Spawn:
+		Spawn:
+		TRCH EFGH 3
+		loop
+	}
+}

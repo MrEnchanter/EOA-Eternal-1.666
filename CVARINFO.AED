@@ -1,0 +1,13 @@
+
+user int bd_bloodamount	= 2;
+user int bd_lowgraphicsmode = 0;
+
+server int zdoombrutalblood	= 2;
+server int zdoombrutaljanitor = 0;
+
+server int bd_mingibhealth = -20;//bolognes
+server int isrunningzandronum = 0;//bolognes
+server bool enhanced_gibs = true; //switch for gibs
+
+//server bool doom4set = False;
+

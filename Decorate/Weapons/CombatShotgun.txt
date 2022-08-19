@@ -1,0 +1,1193 @@
+ACTOR CombatShotgunSelected : EOA_Token{}
+ACTOR EOA_PumpActionCounter : EOA_Token{}
+
+//Charged Burst - Charges a three-round burst.
+ACTOR ChargedBurst : EOA_Token{} //The mod itself.
+ACTOR ChargedBurstSelected : EOA_Token{} //Equipment Counter.
+ACTOR TriSpeedyRecovery : EOA_Token{} //Faster Cooldown Rate.
+ACTOR RapidFire : EOA_Token{} //Faster Fire Rate.
+ACTOR QuickLoad : EOA_Token{} //Faster Charge Rate.
+
+ACTOR MC_PowerShot : EOA_Token{} //Kill 5 Mancubi with the Charged Burst.
+
+ACTOR PowerShot : EOA_Token{} //Mastery Upgrade - Hitting all three shots on the same enemy will make the next three shots more powerful (does not stack).
+
+ACTOR ChargedBurstReady : EOA_Token{}
+ACTOR ChargedBurstChargeCounter : EOA_Token{Inventory.MaxAmount 5}
+ACTOR Fullautocounter : EOA_Token{Inventory.MaxAmount 4}
+ACTOR ChargedBurstCooldownCounter : EOA_Token{Inventory.MaxAmount 105}
+/*
+ACTOR PowerShotCounterGiver1 : EOA_TempToken{Powerup.Type "ShotCounter1"}
+ACTOR PowerShotCounterGiver2 : EOA_TempToken{Powerup.Type "ShotCounter2"}
+ACTOR PowerShotCounterGiver3 : EOA_TempToken{Powerup.Type "ShotCounter3"}
+*/
+ACTOR PowerShotCounter1 : PowerEOA_TempToken{}
+ACTOR PowerShotCounter2 : PowerEOA_TempToken{}
+ACTOR PowerShotCounter3 : PowerEOA_TempToken{}
+ACTOR PowerShotToken : EOA_Token{}
+ACTOR PowerShotFiring : EOA_Token{}
+ACTOR PowerShotMasteryCounter : EOA_Token{Inventory.MaxAmount 5}
+
+//Explosive Shot - Launches a small grenade.
+ACTOR ExplosiveShot : EOA_Token{} //The mod itself.
+ACTOR ExplosiveShotSelected : EOA_Token{} //Equipment Counter.
+ACTOR ExpSpeedyRecovery : EOA_Token{} //Faster Cooldown Rate.
+ACTOR BiggerBoom : EOA_Token{} //Larger Explosion Radius.
+ACTOR InstantLoad : EOA_Token{} //Nullifies Loading Time.
+
+ACTOR MC_ClusterStrike : EOA_Token{} //Get 20 direct hits on Imps with the Explosive Shot.
+
+ACTOR ClusterStrike : EOA_Token{} //Mastery Upgrade - Direct hits release cluster bombs that deal additional damage.
+
+ACTOR ExplosiveShotChargeCounter : EOA_Token{Inventory.MaxAmount 9}
+ACTOR ExplosiveShets : EOA_Token {Inventory.MaxAmount 3}
+ACTOR ExtraExplosiveShets : EOA_Token {Inventory.MaxAmount 2}
+ACTOR ExplosiveShotCooldownCounter : EOA_Token{Inventory.MaxAmount 200}
+ACTOR ClusterStrikeMasteryCounter : EOA_Token{Inventory.MaxAmount 20}
+
+ACTOR CSGMods : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			A_GiveInventory("ChargedBurst");
+			A_GiveInventory("TriSpeedyRecovery");
+			A_GiveInventory("RapidFire");
+			A_GiveInventory("QuickLoad");
+			A_GiveInventory("ExplosiveShot");
+			A_GiveInventory("ExpSpeedyRecovery");
+			A_GiveInventory("BiggerBoom");
+			A_GiveInventory("InstantLoad");
+		}
+		Stop
+	}
+}
+
+ACTOR EOA_CombatShotgun : EOA_Weapon 20002
+{
+	Inventory.Icon "ICONCSG"
+	Weapon.AmmoType "EOA_ShellAmmo"
+	Weapon.AmmoUse 1
+	Weapon.AmmoGive 15
+	EOA_BaseWeapon.MeleeTics 22
+	Inventory.PickupMessage "Combat Shotgun"
+	Tag "Combat Shotgun"
+	States
+	{
+	Spawn:
+		CBSG A -1 EOA_SpawnCustomDynamicLight("PointLight", 0.5, 0.5, 0, 16, 0, 1, 1, DYN_ADDITIVE, False)
+		stop
+	Select:
+		TNT1 A 0 
+		{
+			SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH);
+			A_GiveInventory("CombatShotgunSelected");
+			ACS_NamedExecuteAlways("CSGReticle", 0);
+			A_SetCrosshair(99);
+		}
+		//TNT1 A 1 A_Raise(60)
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" A 1 A_Raise(60)
+		Wait
+	Deselect:
+		TNT1 A 0
+		{
+			If (CountInv("ChargedBurstReady") || CountInv("ExplosiveShotChargeCounter"))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 
+		{
+			A_TakeInventory("CombatShotgunSelected");
+			SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH);
+		}
+		TNT1 A 4 A_SetTics(4 * !CountInv("Adept") * !CountInv("PowerBerserk"))
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" A 3 A_Lower(60)
+		//TNT1 A 1 A_Lower(36)
+		Wait
+	Ready:
+		TNT1 A 0
+		{
+			A_Giveinventory("Explosiveshets", 3);
+			A_Giveinventory("ExtraExplosiveshets", 2);
+			If (!(CountInv("ChargedBurstSwitch") || CountInv("ExplosiveShotSwitch")))
+			{
+				A_SpawnNoiseMaker("Weapon/Switch");
+			}
+		}
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" A 1 //ABCDEFGH 1 
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOBOB, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+			If (CountInv("ChargedBurstSwitch"))
+			{
+				A_TakeInventory("ChargedBurstSwitch");
+				Return State ("ChargedBurstMod");
+			}
+			Else If (CountInv("ExplosiveShotSwitch"))
+			{
+				A_TakeInventory("ExplosiveShotSwitch");
+				Return State ("ExplosiveShotMod");
+			}
+			Return State ("");
+		}
+		Goto ReadyLoop
+	ReRaise:
+		TNT1 A 0 A_WeaponOffset(-144, 32)
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" ABDEGH 1 //ABCDEFGH 1 
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOBOB, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+			A_WeaponOffset(24, 0, WOF_KEEPY|WOF_ADD);
+		}
+		//"####" "#" 0 A_WeaponReady(WRF_NOBOB|WRF_NOSWITCH|WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM) * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM))
+	ReadyLoop:
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" "#" 1 
+		{
+			//ACS_NamedExecuteAlways("stickybombsreloader", 0);
+			EOA_WeaponReady(WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT|EOA_DISABLEHASTE);
+			If (CountInv("EOA_PumpActionCounter"))
+			{
+				A_TakeInventory("EOA_PumpActionCounter");
+				Return State ("Pump");
+			}
+			Else If (CountInv("ChargedBurstSwitch"))
+			{
+				A_TakeInventory("ChargedBurstSwitch");
+				Return State ("SwitchToChargedBurst");
+			}
+			Else If (CountInv("ExplosiveShotSwitch"))
+			{
+				A_TakeInventory("ExplosiveShotSwitch");
+				Return State ("SwitchToExplosiveShot");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 A_jumpifinventory("explosiveshotcooldowncounter", 100, "explosiveshotsgiver")
+		Loop
+		
+	explosiveshotsgiver:
+	TNT1 A 0 
+	{
+		A_GiveInventory("explosiveshets", 3);
+		A_GiveInventory("ExtraExplosiveshets", 2);
+	}
+	goto readyloop
+	
+	Fire:
+		CSBF A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEF A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNF A 0
+		"####" "#" 0 A_SpawnNoiseMaker("CSG/Fire", 1)
+		"####" "#" 0
+		{
+			If (CountInv("PowerQDMG"))
+			{
+				A_SpawnNoiseMaker("QuadDamage/Shot", 4, 1.0, 0, ATTN_NORM, 0, 18);
+			}
+		}
+		"####" "#" 0
+		{
+			EOA_FireBullets(7.5, 3, 10, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ|FBF_USEAMMO, 32767, "CombatShotgunTracer", -3 + GetViewZ, 8 + GetRelVelY / 2);
+			EOA_SetWeaponRecoilOffset(frandompick(-1, -0.5, 0.5, 1), -5, 0, 0.25);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ATTENUATE);
+			A_AlertMonsters;
+		}
+		"####" ABCDEFGHIJ 1 EOA_WeaponReady(WRF_NOFIRE, EOA_ALLOWMANTLE)
+	Pump:
+		CSBP A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEP A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNP A 0
+		"####" ABC 1 EOA_WeaponReady(WRF_NOFIRE, EOA_ALLOWMANTLE)
+		"####" "#" 0 A_SpawnNoiseMaker("CSG/PumpIn", 5, 0.5)
+		//[DoomKrakken]: Mod switching/activation happens when you either have both mods for the weapon or if you have either of the weapon mods with neither mod selected.
+		//DEFGH 1
+		"####" DFGH 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_FireCustomMissile("EOA_EmptyShotShell", -60 - abs(Pitch) / 2, 0, 3, 0, 0, 5 + Pitch / 2)
+		//IJKLM 1
+		"####" JKL 1 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_SpawnNoiseMaker("CSG/PumpOut", 6, 0.5)
+		"####" NOPQRSTU 1 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" AAAA 1 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Goto ReadyLoop
+	AltFire:
+		TNT1 A 0 A_JumpIf(CountInv("ChargedBurstSelected") && (CountInv("EOA_ShellAmmo") || CheckInfiniteAmmo) && !CountInv("ChargedBurstCooldownCounter"), "BurstPrime")
+		TNT1 A 0 A_JumpIf(CountInv("ExplosiveShotSelected") && (countinv("explosiveshets") /*|| countinv("extraexplosiveshets")*/ && (CountInv("EOA_ShellAmmo") || CheckInfiniteAmmo) && !CountInv("ExplosiveShotCooldownCounter")), "ExplosivePrime")
+		Goto ReadyLoop
+	BurstPrime:	
+		TNT1 A 0 
+		{
+			A_ZoomFactor(1.25, ZOOM_NOSCALETURNING);
+			A_PlaySound("BurstWind", 2, 1);
+		}
+		CSBC ABCDEFG 2
+		TNT1 A 0
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_WEAPSPEEDUPGRADE * CountInv("QuickLoad"));
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ChargedBurstSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Else If (CountInv("ChargedBurstChargeCounter") >= 0)
+			{
+				A_GiveInventory("ChargedBurstReady");
+				Return State ("BurstReady");
+			}
+			Return State ("");
+		}
+	BurstPrimeLoop:
+		CSBC ABCDEFG 2
+		TNT1 A 0
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_WEAPSPEEDUPGRADE * CountInv("QuickLoad"));
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ChargedBurstSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Else If (CountInv("ChargedBurstChargeCounter") >= 3)
+			{
+				A_GiveInventory("ChargedBurstReady");
+				Return State ("BurstReady");
+			}
+			Return State ("");
+		}
+		Loop
+	BurstReady:
+		CSBC G 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_DISABLEHASTE);
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ChargedBurstSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("reset");
+			}
+			Else If (GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK)
+			{
+				Return State ("BurstFire");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 
+		{
+			If (GetPlayerInput(INPUT_BUTTONS) & BT_RELOAD)
+			{
+				Return State ("RELOAD");
+			}
+			Return State ("");
+		}
+		Loop
+	BurstFire:
+		TNT1 A 0 
+		{
+			If (Countinv("eoa_shellammo"))
+			{
+				Return State ("");
+			}
+			Return State ("Deselect");
+		}
+		TNT1 A 0
+		{
+			A_TakeInventory("ChargedBurstChargeCounter", 5);
+			A_GiveInventory("ChargedBurstChargeCounter", 1);
+			If (CountInv("PowerShotToken"))
+			{
+				A_TakeInventory("PowerShotToken");
+				A_GiveInventory("PowerShotFiring");
+			}
+			If (CountInv("PowerQDMG"))
+			{
+				A_SpawnNoiseMaker("QuadDamage/Shot", 4, 1.0, 0, ATTN_NORM, 0, 18);
+			}
+			If (CountInv("PowerShotFiring"))
+			{
+				A_SpawnNoiseMaker("CSG/PowerShot", 0);
+			}
+			Else
+			{
+				A_SpawnNoiseMaker("CSG/BurstFire", 0);
+			}
+		}
+		TNT1 A 0
+		{
+			EOA_FireBullets(2, 2, 10, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ, 32767, "ChargedBurstTracer1", -1 + GetViewZ, 8 + GetRelVelY / 2);
+			EOA_SetWeaponRecoilOffset(frandompick(-1, -0.5, 0.5, 1), -3, 0, 0.125);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ATTENUATE);
+			A_TakeInventory("EOA_ShellAmmo", 1, TIF_NOTAKEINFINITE);
+			A_FireCustomMissile("EOA_EmptyShotShell", -45 - abs(Pitch) / 2, 0, 3, 0, 0, 5 + Pitch / 2);
+			A_AlertMonsters;
+		}
+		CSBC HI 1
+		CSBC JKLM 1
+		TNT1 A 0 A_JumpIf(CountInv("EOA_ShellAmmo") || CheckInfiniteAmmo, 2)
+		TNT1 A 0 
+		{
+			A_TakeInventory("PowerShotFiring");
+		}
+		TNT1 A 0 
+		{
+			If (GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK)
+			{
+				Return State ("BurstReady");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 
+		{
+			If (GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK)
+			{
+				Return State ("BurstReady");
+			}
+			Return State ("");
+		}
+	goto burstready
+	
+	ExplosivePrime:
+		TNT1 A 0 
+		{
+			A_ZoomFactor(1.25, ZOOM_NOSCALETURNING);
+		}
+		CSEC ABCD 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			A_GiveInventory("ExplosiveShotChargeCounter", 1 + CountInv("PowerHaste") + 9 * CountInv("InstantLoad"));
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		CSEC D 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			A_GiveInventory("ExplosiveShotChargeCounter", 1 + 9 * CountInv("InstantLoad"));
+			A_SpawnNoiseMaker("Weapon/Loaded", 0);
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Else If (CountInv("ExplosiveShotChargeCounter") >= 9)
+			{
+				Return State ("ExplosiveReady");
+			}
+			Return State ("");
+		}
+		Wait
+	ExplosiveReady:
+		CSEC D 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) || CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Else If (GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK)
+			{
+				Return State ("ExplosiveCheckcounter");
+			}
+			Return State ("");
+		}
+	TNT1 A 0 
+		{
+			If (GetPlayerInput(INPUT_BUTTONS) & BT_RELOAD)
+			{
+				Return State ("RELOAD");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 
+		{
+			If (GetPlayerInput(INPUT_BUTTONS) & BT_RELOAD)
+			{
+				Return State ("RELOAD");
+			}
+			Return State ("");
+		}
+		Loop
+	ExplosiveCheckcounter:
+	TNT1 A 0 A_jumpifinventory("explosiveshets", 2, "ExplosiveCFire")
+	TNT1 A 0 A_jumpifinventory("explosiveshets", 1, "NoCFire")
+	goto readyloop
+	
+	NoCFire:
+	TNT1 A 0 A_Giveinventory ("explosiveshotcooldowncounter", 200)
+			TNT1 A 0 {
+		A_SpawnNoiseMaker("CSG/ExplosiveFire", 1);
+			If (CountInv("PowerQDMG"))
+			{
+				A_SpawnNoiseMaker("QuadDamage/Shot", 4, 1.0, 0, ATTN_NORM, 0, 18);
+			}
+			A_FireCustomMissile("ExplosiveShotGrenade", 0, 0, 3, 5);
+			EOA_SetWeaponRecoilOffset(frandompick(-1, -0.5, 0.5, 1), -5, 0, 0.25);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ATTENUATE);
+			A_AlertMonsters;
+			A_TakeInventory("EOA_ShellAmmo", 1, TIF_NOTAKEINFINITE);
+			if(!countinv("clusterstrike"))
+			{
+				A_TakeInventory("explosiveshets", 1, TIF_NOTAKEINFINITE);
+			}
+			else if(countinv("clusterstrike"))
+			{
+				if(!countinv("extraexplosiveshets"))
+				{
+					A_TakeInventory("explosiveshets", 1, TIF_NOTAKEINFINITE);
+				}
+				else if (countinv("extraexplosiveshets"))
+				{
+					A_takeInventory("extraexplosiveshets", 1, tif_notakeinfinite);
+				}
+			}
+		}
+		CSEC EF 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			If (CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 A_SpawnNoiseMaker("CSG/ExplosiveAdd", 0, 0.5)
+		CSEC GH 2
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			If (CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		"####" "#" 0 
+		{
+			A_TakeInventory("ExplosiveShotChargeCounter");
+			A_SpawnNoiseMaker("CSG/ZoomOut", 0);
+			A_SpawnNoiseMaker("CSG/PumpIn", 5, 0.5);
+			A_ZoomFactor(1);
+		}
+		"####" A 0 A_JumpIf(CountInv("EOA_ShellAmmo") || CheckInfiniteAmmo, 2)
+		"####" A 0 A_SelectWeapon("EOA_Weapon", SWF_SELECTPRIORITY)
+		CSEC I 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_FireCustomMissile("EOA_EmptyShotShell", -60 - abs(Pitch) / 2, 0, 3, 0, 0, 5 + Pitch / 2)
+		CSEC J 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_SpawnNoiseMaker("CSG/PumpOut", 6, 0.5)
+		CSEC D 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Goto Reset
+	
+	ExplosiveCFire:
+		TNT1 A 0 {
+		A_SpawnNoiseMaker("CSG/ExplosiveFire", 1);
+			If (CountInv("PowerQDMG"))
+			{
+				A_SpawnNoiseMaker("QuadDamage/Shot", 4, 1.0, 0, ATTN_NORM, 0, 18);
+			}
+			A_FireCustomMissile("ExplosiveShotGrenade", 0, 0, 3, 5);
+			EOA_SetWeaponRecoilOffset(frandompick(-1, -0.5, 0.5, 1), -5, 0, 0.25);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 4, 1, DYN_ATTENUATE);
+			A_AlertMonsters;
+			A_TakeInventory("EOA_ShellAmmo", 1, TIF_NOTAKEINFINITE);
+			if(!countinv("clusterstrike"))
+			{
+				A_TakeInventory("explosiveshets", 1, TIF_NOTAKEINFINITE);
+			}
+			else if(countinv("clusterstrike"))
+			{
+				if(!countinv("extraexplosiveshets"))
+				{
+					A_TakeInventory("explosiveshets", 1, TIF_NOTAKEINFINITE);
+				}
+				else if (countinv("extraexplosiveshets"))
+				{
+					A_takeInventory("extraexplosiveshets", 1, tif_notakeinfinite);
+				}
+			}
+		}
+		CSEC EF 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			If (CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		TNT1 A 0 A_SpawnNoiseMaker("CSG/ExplosiveAdd", 0, 0.5)
+		CSEC GH 2
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH);
+			If (CountInv("Grabbing_A_Ledge") || !CountInv("ExplosiveShotSelected") || (CountInv("EquipmentTrigger") && CountInv("EquipmentCharge")))
+			{
+				Return State ("Reset");
+			}
+			Return State ("");
+		}
+		"####" "#" 0 
+		{
+			A_TakeInventory("ExplosiveShotChargeCounter");
+			A_SpawnNoiseMaker("CSG/ZoomOut", 0);
+			A_SpawnNoiseMaker("CSG/PumpIn", 5, 0.5);
+			A_ZoomFactor(1);
+		}
+		"####" A 0 A_JumpIf(CountInv("EOA_ShellAmmo") || CheckInfiniteAmmo, 2)
+		"####" A 0 A_SelectWeapon("EOA_Weapon", SWF_SELECTPRIORITY)
+		CSEC I 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_FireCustomMissile("EOA_EmptyShotShell", -60 - abs(Pitch) / 2, 0, 3, 0, 0, 5 + Pitch / 2)
+		CSEC J 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		"####" "#" 0 A_SpawnNoiseMaker("CSG/PumpOut", 6, 0.5)
+		CSEC D 2 EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !((CountInv("ChargedBurstSelected") && !CountInv("ChargedBurstCooldownCounter")) || (CountInv("ExplosiveShotSelected") && !CountInv("ExplosiveShotCooldownCounter")))|WRF_ALLOWRELOAD * ((CountInv("ChargedBurst") && CountInv("ExplosiveShot")) || ((CountInv("ChargedBurst") || CountInv("ExplosiveShot")) && (!CountInv("ChargedBurstSelected") && !CountInv("ExplosiveShotSelected"))))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Goto Reset
+		
+	
+	Reset:
+		TNT1 A 0
+		{
+			A_TakeInventory("ChargedBurstReady");
+			A_TakeInventory("ChargedBurstChargeCounter");
+			A_TakeInventory("ExplosiveShotChargeCounter");
+			If (CountInv("ExplosiveShotSelected"))
+			{
+				A_SpawnNoiseMaker("CSG/ZoomOut");
+			}
+			else If (CountInv("ChargedBurstSelected"))
+			{
+				A_SpawnNoiseMaker("BurstExit");
+			}
+			A_ZoomFactor(1, ZOOM_INSTANT * !(CountInv("ChargedBurstSelected") || CountInv("ExplosiveShotSelected")));
+		}
+		CSBC A 0 A_JumpIfInventory("ChargedBurstSelected", 1, "Burstexit")
+		CSEC A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		TNT1 A 0 A_Jump(256, "ReadyLoop")
+		"####" DCBA 1 EOA_WeaponReady(WRF_NOFIRE, EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		//[DoomKrakken]: This part here will make it so that one does not abuse the AltFire.  Tapping AltFire will allow the user to skip a significant amount of tics in the pumping animation, enabling him to fire faster if he times it right.  Adding these additional tics will prevent that.
+		TNT1 A 0 A_JumpIf(CountInv("ChargedBurstSelected") && CountInv("ChargedBurstCooldownCounter"), "ReadyLoop") //No need to add tics in this case, since we just fired a burst, if we're cooling down here.
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" AAAAAAAAA 1 EOA_WeaponReady(WRF_NOPRIMARY|WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Goto ReadyLoop
+		
+		burstexit:
+		"####" GFEDCBA 2 EOA_WeaponReady(WRF_NOFIRE, EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		//[DoomKrakken]: This part here will make it so that one does not abuse the AltFire.  Tapping AltFire will allow the user to skip a significant amount of tics in the pumping animation, enabling him to fire faster if he times it right.  Adding these additional tics will prevent that.
+		TNT1 A 0 A_JumpIf(CountInv("ChargedBurstSelected") && CountInv("ChargedBurstCooldownCounter"), "ReadyLoop") //No need to add tics in this case, since we just fired a burst, if we're cooling down here.
+		CSBI A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSEI A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNI A 0
+		"####" AAAAAAA 1 EOA_WeaponReady(WRF_NOPRIMARY|WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Goto ReadyLoop
+		
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("ChargedBurst") && !CountInv("ChargedBurstSelected"), "SwitchToChargedBurst")
+		TNT1 A 0 A_JumpIf(CountInv("ExplosiveShot") && !CountInv("ExplosiveShotSelected"), "SwitchToExplosiveShot")
+		Goto ReadyLoop
+	SwitchToChargedBurst:
+		CSER A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNR A 0
+		"####" HGFEDCBA 1
+	ChargedBurstMod:
+		TNT1 A 0 
+		{
+			A_GiveInventory("ChargedBurstSelected");
+			A_TakeInventory("ExplosiveShotSelected");
+		}
+		TNT1 A 0 A_SpawnNoiseMaker("FullAutoSwitch", 5, 3)
+		CSBM ABCDEFGH 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))		
+		CSBM IJKLMNOPQ 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSBM QQQQQQQQQQ 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ExplosiveShot"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSBM RST 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ExplosiveShot"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		CSBM TTTTTTTTTT 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ExplosiveShot"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSBM UVW 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ExplosiveShot"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		Goto ReadyLoop
+	SwitchToExplosiveShot:
+		CSBR A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 2)
+		CSNR A 0
+		"####" HGFEDCBA 1
+	ExplosiveShotMod:
+		TNT1 A 0 
+		{
+			A_GiveInventory("ExplosiveShotSelected");
+			A_TakeInventory("ChargedBurstSelected");
+			A_SpawnNoiseMaker("StickyBombSwitch", 5, 3);
+		}
+		CSEM ABCDEFGHIJK 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSEM LLLL 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ChargedBurst"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSEM MN 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ChargedBurst"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		CSEM OO 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ChargedBurst"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		CSEM O 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("ChargedBurst"), EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		Goto ReadyLoop
+	Zoom:
+		CSBT A 0 A_JumpIfInventory("ChargedBurstSelected", 1, 3)
+		CSET A 0 A_JumpIfInventory("ExplosiveShotSelected", 1, 2)
+		CSNT A 0
+		"####" "#" 0
+		Goto Super::Melee
+	UseEquipment:
+		"####" "#" 0
+		Goto Super::UseEquipment	
+	}
+}
+
+ACTOR CombatShotgunTracer : EOA_FastProjectile
+{
+	Radius 0.13408
+	Height 0.26816
+	//Speed 200
+	Damage (12)
+	Decal "BulletChip"
+	Scale 0.25
+	RenderStyle Add
+	EOA_Projectile.PointBlankDamage 12
+	EOA_Projectile.PBDamageFalloffDistStart 48
+	EOA_Projectile.PBDamageFalloffDistEnd 70
+	EOA_Projectile.MaxDamage 12
+	EOA_Projectile.DamageFalloffDistStart 180
+	EOA_Projectile.DamageFalloffDistEnd 384
+	//EOA_Projectile.PuffType "CombatShotgunPuff"
+	+DONTBLAST
+	+DONTREFLECT
+	+HITTRACER
+	States
+	{
+	Spawn:
+		TRAC B 0 NoDelay A_JumpIfInTargetInventory("PowerQDMG", 1, 2)
+		TRAC A 0
+		TRAC "#" 1 Bright	
+		Wait
+	Death:
+	Crash:
+		TNT1 A 1
+		{
+			A_PlaySound("Projectile/HitWall", 4, 1.0 /* (1 + CountProximity("CombatShotgunTracer", 192, CPXF_ANCESTOR|CPXF_CHECKSIGHT))*/); //[DoomKrakken]: This is freakin' retarded.  I have to lower the volume here so that the overwhelming amount of sounds don't mute everything else.  OpenAL SUX... but at least it's free... :|
+			If (!CheckClass("SuperShotgunTracer"))
+			{
+				A_SpawnItemEx("CombatShotgunPuff");
+			}
+		}
+		Stop
+	XDeath:
+		TNT1 A 1
+		/*{
+			A_PlaySound("Projectile/HitFlesh", 4, 1.0 / (1 + CountProximity("CombatShotgunTracer", 192, CPXF_ANCESTOR|CPXF_CHECKSIGHT)));
+			A_SpawnItemEx("Blood", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
+		}*/
+		Stop
+	}
+}
+
+ACTOR ChargedBurstTracer1 : CombatShotgunTracer
+{
+	EOA_Projectile.PointBlankDamage 13
+	EOA_Projectile.PBDamageFalloffDistStart 160
+	EOA_Projectile.PBDamageFalloffDistEnd 240
+	EOA_Projectile.DamageFalloffDistStart 240
+	States
+	{
+	Spawn:
+		TRAC B 0 NoDelay A_JumpIfInTargetInventory("PowerQDMG", 1, 2)
+		TRAC A 0
+		TRAC "#" -1 Bright 
+		Wait
+	XDeath:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter1", 1, AAPTR_TARGET);
+				}
+			}
+		}
+		Goto Super::XDeath
+	Death:
+	Crash:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter1", 1, AAPTR_TARGET);
+				}
+			}
+		}
+		Goto Super::Death
+	}
+}
+
+ACTOR ChargedBurstTracer2 : CombatShotgunTracer
+{
+	EOA_Projectile.PointBlankDamage 13
+	EOA_Projectile.PBDamageFalloffDistStart 160
+	EOA_Projectile.PBDamageFalloffDistEnd 240
+	EOA_Projectile.DamageFalloffDistStart 240
+	States
+	{
+	Spawn:
+		TRAC B 0 NoDelay A_JumpIfInTargetInventory("PowerQDMG", 1, 2)
+		TRAC A 0
+		TRAC "#" -1 Bright 
+		Wait
+	XDeath:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter2", 1, AAPTR_TARGET);
+				}
+			}
+		}
+		Goto Super::XDeath
+	Death:
+	Crash:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter2", 1, AAPTR_TARGET);
+				}
+			}
+		}
+		Goto Super::Death
+	}
+}
+
+ACTOR ChargedBurstTracer3 : CombatShotgunTracer
+{
+	EOA_Projectile.PointBlankDamage 13
+	EOA_Projectile.PBDamageFalloffDistStart 160
+	EOA_Projectile.PBDamageFalloffDistEnd 240
+	EOA_Projectile.DamageFalloffDistStart 240
+	States
+	{
+	Spawn:
+		TRAC B 0 NoDelay A_JumpIfInTargetInventory("PowerQDMG", 1, 2)
+		TRAC A 0
+		TRAC "#" -1 Bright 
+		Wait
+	XDeath:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter3", 1, AAPTR_TARGET);
+					If (CountInv("PowerShotCounter1", AAPTR_TARGET) && CountInv("PowerShotCounter2", AAPTR_TARGET) && CountInv("PowerShotCounter3", AAPTR_TARGET))
+					{
+						A_TakeInventory("PowerShotCounter1", 0, 0, AAPTR_TARGET);
+						A_TakeInventory("PowerShotCounter2", 0, 0, AAPTR_TARGET);
+						A_TakeInventory("PowerShotCounter3", 0, 0, AAPTR_TARGET);
+						If (!CountInv("PowerShotToken", AAPTR_TARGET))
+						{
+							A_GiveToTarget("ShotgunMasteryAlert");
+						}
+						A_GiveToTarget("PowerShotToken");
+					}
+				}
+			}
+		}
+		Goto Super::XDeath
+	Death:
+	Crash:
+		TNT1 A 0
+		{
+			If (CountInv("PowerShot", AAPTR_TARGET))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && !CheckClass("EOA_HologramProjection", AAPTR_TRACER, 1))
+				{
+					A_GiveInventory("PowerShotCounter3", 1, AAPTR_TARGET);
+					If (CountInv("PowerShotCounter1", AAPTR_TARGET) && CountInv("PowerShotCounter2", AAPTR_TARGET) && CountInv("PowerShotCounter3", AAPTR_TARGET))
+					{
+						A_TakeInventory("PowerShotCounter1", 0, 0, AAPTR_TARGET);
+						A_TakeInventory("PowerShotCounter2", 0, 0, AAPTR_TARGET);
+						A_TakeInventory("PowerShotCounter3", 0, 0, AAPTR_TARGET);
+						A_GiveToTarget("AlreadyHit");
+						If (!CountInv("PowerShotToken", AAPTR_TARGET))
+						{
+							A_GiveToTarget("ShotgunMasteryAlert");
+						}
+						A_GiveToTarget("PowerShotToken");
+					}
+				}
+			}
+		}
+		Goto Super::Death
+	}
+}
+
+ACTOR CombatShotgunPuff
+{
+	Radius 0
+	Height 0
+	Renderstyle "Add"
+	+BRIGHT
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+ROLLSPRITE
+	+ROLLCENTER
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SetRoll(random(0, 359));
+			A_SetScale(0.25);
+			A_SpawnItemEx("CombatShotgunPuffFX", 0 , 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERSCALE);
+			A_SpawnItemEx("CombatShotgunPuffFX", 0 , 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION|SXF_TRANSFERSCALE);
+			A_SetTranslation("Normal");
+			A_SetScale(0.075);
+		}
+		TNT1 A 0 A_Jump(256, random(1, 4))
+		SSPK ABCD 0 A_Jump(256, "FX")
+	FX:
+		"####" "#####" 1 A_SetScale(ScaleX * 0.9)
+		Stop
+	}
+}
+
+ACTOR EXSEnemyTypeChecker : EOA_NullPuff2
+{
+	+HITTRACER
+	+ALLOWTHRUFLAGS
+	+THRUGHOST
+	States
+	{
+	Spawn:
+	Crash:
+	Death:
+	XDeath:
+		TNT1 A 0 NoDelay
+		{
+			If (A_CheckFlag("ISMONSTER", "Null", AAPTR_TRACER) && CheckClass("Cacodemon", AAPTR_TRACER))
+			{
+					A_TransferPointer(AAPTR_TRACER, AAPTR_TARGET, AAPTR_DEFAULT, AAPTR_TRACER);
+					A_GiveInventory("Staggered", 1, AAPTR_TRACER);
+			}
+		}
+		Stop
+	}
+}
+
+ACTOR ExplosiveShotGrenade : EOA_Projectile
+{
+	Radius 3
+	Height 3
+	Speed 45
+	Damage (20) //[DoomKrakken]: This is supposed to deal 4 damage.  However, it's dealing 8 damage to actors upon impact for whatever reason, so I set it to 2 so that it'll deal 4 damage to actors upon impact in-game.
+	Scale 0.5
+	Gravity 0.3
+	Var Int User_ReactionTime;
+	+FRIENDLY
+	+BLOODLESSIMPACT
+	+EXTREMEDEATH
+	+FORCERADIUSDMG
+	+FORCEXYBILLBOARD
+	+HITTRACER
+	-NOGRAVITY
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SpawnItemEx("GrenaeSmoke", 0, 0, 0, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER)
+		SGRN A 1 Bright
+		{
+			A_SetUserVar("User_ReactionTime", 36);
+			A_SpawnItemEx("HarSmoke", 0, 0, 0, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			A_SetUserVar("User_ReactionTime", User_ReactionTime - 1);
+			If (User_ReactionTime <= 0)
+			{
+				Return State ("Explode");
+			}
+			EOA_SpawnCustomDynamicLight("PointLight", 1, 0.6, 0.3, 16, 0, 1, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PointLight", 1, 0.6, 0.3, 16, 0, 1, 1, DYN_ATTENUATE);
+			Return State ("");
+		}
+		Wait
+	XDeath:
+		TNT1 A 0 
+		{
+			//A_FireCustomMissile(0, 0, CPF_NOTURN, "EXSEnemyTypeChecker", 192);
+			A_Stop;
+			A_PlaySound("CSG/ChargeBeep	", 4, 2);
+			A_PlaySound("CSG/ChargeBeep	", 5, 2);
+			A_PlaySound("CSG/ChargeBeep	", 6, 2);
+			If (User_ReactionTime <= 0) //[DoomKrakken]: In case it didn't get initialized properly.
+			{
+				A_SetUserVar("User_ReactionTime", 36);
+			}
+		}
+		SGRN A 1 
+		{
+			A_SpawnProjectile("EXSEnemyTypeChecker");
+			A_SetUserVar("User_ReactionTime", User_ReactionTime - 1);
+			If (User_ReactionTime <= 0)
+			{
+				Return State ("Explode");
+			}
+			A_MicroMissileStick;
+			Return State ("");
+		}
+		Wait
+	Death:
+		SGRN A 0
+		{
+			A_ChangeFlag("NOGRAVITY", 1);
+			A_ChangeFlag("DONTBLAST", 1);
+			A_Stop;
+			A_PlaySound("CSG/ChargeBeep	", 4, 2);
+			A_PlaySound("CSG/ChargeBeep	", 4, 2);
+			A_PlaySound("CSG/ChargeBeep	", 4, 2);
+			If (User_ReactionTime <= 0) //[DoomKrakken]: In case it didn't get initialized properly.
+			{
+				A_SetUserVar("User_ReactionTime", 36);
+			}
+		}
+		SGRN A 1
+		{
+			A_SpawnProjectile("EXSEnemyTypeChecker");
+			A_SetUserVar("User_ReactionTime", User_ReactionTime - 1);
+			If (User_ReactionTime <= 0)
+			{
+				Return State ("Explode");
+			}
+			Return State ("");
+		}
+		Wait
+	Explode:
+		TNT1 A 0 A_SetScale(0.8 + 0.4 * CountInv("BiggerBoom", AAPTR_TARGET))
+		TNT1 AAAAA 0 A_SpawnItemEx("EOA_GenericExplosionFX", 0, 0, 0, frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), random(1, 360), SXF_TRANSFERSCALE)
+		TNT1 A 3
+		{
+			A_Stop;
+			A_ChangeFlag("NOGRAVITY", 1);
+			A_ChangeFlag("DONTBLAST", 1);
+			A_PlaySound("Frag/Explode");
+			EOA_Explode(128, 115 + 56 * CountInv("BiggerBoom", AAPTR_TARGET), XF_HURTSOURCE, 1, 48, 0.375);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 115 + 56 * CountInv("BiggerBoom", AAPTR_TARGET), 0, 10, 1, DYN_ADDITIVE, False);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 115 + 56 * CountInv("BiggerBoom", AAPTR_TARGET), 0, 10, 1, DYN_ATTENUATE, False);
+		}
+		TNT1 A 0 A_SpawnItemEx("EOA_RocketExplosion", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERSCALE|SXF_NOCHECKPOSITION)
+		Stop
+	}
+}
+
+
+ACTOR ClusterStriker
+{
+	Projectile
+	Radius 0
+	Height 0
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 AAAAAA 0 NoDelay A_CustomMissile("ClusterBomb", 0, 0, 22.5 * random(0, 15), CMF_AIMDIRECTION|CMF_TRACKOWNER, 22.5 * random(0, 15))
+		Stop
+	}
+}
+
+ACTOR ClusterBomb : EOA_Projectile
+{
+	Renderstyle "Add"
+	Projectile
+	Radius 1
+	Height 1
+	Speed 4
+	+BRIGHT
+	+EXTREMEDEATH
+	//+THRUACTORS
+	+FORCEXYBILLBOARD
+	+FORCERADIUSDMG
+	+DONTBLAST
+	//+NODAMAGETHRUST
+	+ROLLSPRITE
+	+ROLLCENTER
+	States
+	{
+	Spawn:
+		TNT1 A random(7, 8)
+	Death:
+		TNT1 A 1
+		{
+			A_SpawnItemEx("ClusterBombSparks");
+			A_SpawnItemEx("ClusterBombFX");
+			//A_SpawnItemEx("ClusterBombFX");
+			A_Stop;
+			A_PlaySound("ClusterBomb/Explode");
+			EOA_Explode(40, 70, 0, 1, 16);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 10, 1, DYN_ADDITIVE, False);
+			EOA_SpawnCustomDynamicLight("PulseLight", 1, 0.6, 0.3, 32, 0, 10, 1, DYN_ATTENUATE, False);
+		}
+		Stop
+	}
+}
+
+ACTOR ClusterBombSparks
+{
+	Scale 1.25
+	RenderStyle "Add"
+	+BRIGHT
+	+FORCEXYBILLBOARD
+	+NOINTERACTION
+	+DONTBLAST
+	+ROLLSPRITE
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(frandom(-15, 15))
+		TNT1 A 0 A_Jump(256, random(1, 3))
+		DFX1 A 0 A_Jump(256, "FX1", "FX2")
+		DFX2 A 0 A_Jump(256, "FX1", "FX2")
+		DFX3 A 0 A_Jump(256, "FX1", "FX2")
+	FX1:
+		"####" ACEGIKMNOPQRSTUVWXYZ 1
+		Stop
+	FX2:
+		"####" BDFHJLMNOPQRSTUVWXYZ 1
+		Stop
+	}
+}
+
+ACTOR ClusterBombFX : ClusterBombSparks
+{
+	Scale 0.25
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(frandom(0, 359))
+		TNT1 A 0 A_Jump(256, random(1, 12))
+		DEXP ABCDEFGHIJKL 0 A_Jump(256, "Anim")
+	Anim:
+		"####" "#####" 1 A_SetScale(ScaleX + 0.05)
+		"####" "#" 1
+		{
+			A_FadeOut(0.15);
+			A_SetScale(ScaleX + 0.05);
+		}
+		Wait
+	}
+}
+
+ACTOR CombatShotgunPuffFX : ClusterBombSparks
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(frandom(-15, 15))
+		TNT1 A 0 A_Jump(256, random(1, 3))
+		DFX1 A 0 A_Jump(256, "FX1", "FX2", "FX3", "FX4")
+		DFX2 A 0 A_Jump(256, "FX1", "FX2", "FX3", "FX4")
+		DFX3 A 0 A_Jump(256, "FX1", "FX2", "FX3", "FX4")
+	FX1:
+		"####" AEIMOQSUWY 1
+		Stop
+	FX2:
+		"####" BFJMOQSUWY 1
+		Stop
+	FX3:
+		"####" CGKNPRTVXZ 1
+		Stop
+	FX4:
+		"####" DHLNPRTVXZ 1
+		Stop
+	}
+}
+
+ACTOR ShotgunMasteryAlert : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_PlaySound("CSG/MasteryAlert", 0, 0.3)
+		Stop
+	}
+}
+
+//Casing Effects from Project MSX... by MagSigmaX.
+//Slight edits by yours truly. ;)
+
+ACTOR EOA_EmptyShotShell
+{
+	Projectile
+	Radius 2
+	Height 2
+	Speed 12
+	Mass 4
+	BounceFactor 0.4
+	Scale 0.1
+	BounceType Doom
+	BounceSound "Casing/Shell"
+	+BOUNCEONACTORS
+	+FLOORCLIP
+	+FORCEXYBILLBOARD
+	+ROLLSPRITE
+	+ROLLCENTER
+	-NOGRAVITY
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_ChangeVelocity(0, frandom(0.0, 2.0), frandom(0.0, 2.0), CVF_RELATIVE)
+	SpawnLoop:
+		SGCS ABCDEFG 1 A_SetRoll(Roll - 30)
+		Loop
+	Death:
+		TNT1 A 0 A_SetRoll(0)
+		TNT1 A 0 A_Jump(256, random(1, 3))
+		SGCS CDG 0 A_Jump(256, "SetSprite")
+	SetSprite:
+		"####" "#" 400
+		"####" "##########" 1 A_FadeOut(0.1)
+		Stop
+	}
+}
+
+ACTOR GrenaeSmokeTrail : FastProjectileTrail 
+{
+	MissileType "GrenaeSmoke"
+}
+
+ACTOR GrenaeSmoke
+{
+	//Scale 0.1
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		HSMK A 1
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX + 0.01);
+		}
+		Wait
+	}
+}

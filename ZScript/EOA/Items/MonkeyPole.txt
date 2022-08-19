@@ -1,0 +1,198 @@
+Class EOA_ClimbableWall : Actor
+{
+	Actor MoPlayer;
+	Bool PlayerOnWall;
+	Int PoleCooldown;
+	Default
+	{
+		//$sprite MONBA0
+		//$Category POLES
+		Radius 64;
+		Height 64;
+		Scale 1.0;
+		+NOGRAVITY
+		+DONTBLAST
+		+DONTGIB
+		+DONTTHRUST
+		//+FLOORCLIP
+		+NOBLOOD
+		+NODAMAGE
+	}
+	
+	Override Void Tick()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor Mo;
+		While (Mo = Actor(it.Next()))
+		{
+			If (Mo == Self || PlayerOnWall || Mo.bIsMonster || Distance3D(Mo) > Radius + 25)
+            {
+                Continue;
+            }
+			If(Mo Is "DoomPlayer" && Mo.CountInv("powerdash"))
+			{
+				DoomSlayer MoPlayer = DoomSlayer(Mo);
+				MoPlayer.LastWall = Self;
+				//MoPlayer.A_Face(Self, Flags: FAF_MIDDLE);
+				MoPlayer.Vel = (Self.Pos - MoPlayer.Pos);
+				MoPlayer.A_GiveInventory("StartClimb");
+			}
+		}
+		Super.Tick();
+	}
+	Override Bool Used(Actor User)
+	{
+		A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+		PlayerInfo Player = Players[ConsolePlayer];
+		If (Player && Player.Mo && Player.Mo == User && Distance3D(User) <= (Player.Mo.UseRange + 100))
+		{
+			DoomSlayer MoPlayer = DoomSlayer(User);
+			MoPlayer.LastWall = Self;
+			//MoPlayer.A_Face(Self, Flags: FAF_MIDDLE);
+			MoPlayer.Vel = (Self.Pos - MoPlayer.Pos);
+			MoPlayer.A_GiveInventory("StartClimb");
+			Return True;
+		}
+		Return False;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1;
+		Loop;
+	}
+}
+
+Class EOA_PlatformMantler : EOA_ClimbableWall
+{
+	Default
+	{
+		//$sprite MONBA0
+		//$Category POLES
+		Radius 64;
+		Height 64;
+		Scale 1.0;
+		+NOGRAVITY
+		+DONTBLAST
+		+DONTGIB
+		+DONTTHRUST
+		//+FLOORCLIP
+		+NOBLOOD
+		+NODAMAGE
+	}
+		override bool CanCollideWith(Actor other, bool passive)
+		{
+			A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+			PlayerInfo Player = Players[ConsolePlayer];		
+			if (!passive)
+			{
+				if (!other)    return false;
+				return (Distance2DSquared(other) <= (other.radius ** 2));
+				}
+				//MoPlayer.A_Face(Self, Flags: FAF_MIDDLE);
+				MoPlayer.Vel.Z = 12;
+				MoPlayer.Vel = (Self.Pos - MoPlayer.Pos);
+				MoPlayer.A_GiveInventory("StartClimb");	
+				return true;
+			}
+		}
+
+Class EOA_MonkeyPoleA : Actor
+{
+	Actor MoPlayer;
+	Bool ThrowingPlayer;
+	Int PoleCooldown;
+	Default
+	{
+		//$sprite MONBA0
+		//$Category POLES
+		Radius 64;
+		Height 16;
+		Scale 1.0;
+		+NOGRAVITY
+		+DONTBLAST
+		+DONTGIB
+		+DONTTHRUST
+		+FLOORCLIP
+		+NOBLOOD
+		+NODAMAGE
+	}
+	
+	Override Void Tick()
+	{
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor Mo;
+		While (Mo = Actor(it.Next()))
+		{
+			If (Mo == Self || ThrowingPlayer || Mo.bIsMonster || Distance3D(Mo) > Radius)
+            {
+                Continue;
+            }
+			If(Mo Is "DoomPlayer" && !Mo.CountInv("HammerSmashing"))
+			{
+				PoleCoolDown = 25;
+				ThrowingPlayer = True;
+				DoomSlayer MoPlayer = DoomSlayer(Mo);
+				MoPlayer.monkeypole = self;
+				MoPlayer.A_StartSound("Player/Pole", 10, CHANF_OVERLAP);
+				MoPlayer.A_GiveInventory("ClimbHand");
+				MoPlayer.Vel.Z = 12;
+				MoPlayer.Vel.XY = RotateVector((0, 16), MoPlayer.Angle - 90);
+				Continue;
+			}
+		}
+		If(PoleCoolDown > 0)
+		PoleCoolDown--;
+		if(PoleCoolDown == 0)
+		ThrowingPlayer = False;
+		Super.Tick();
+	}
+	States
+	{
+	Spawn:
+		MONB A 1;
+		Loop;
+	}
+}
+
+Class EOA_MonkeyPoleB : EOA_MonkeyPoleA
+{
+	default{
+		//$sprite MONBB0
+		//$Category POLES
+	}
+	States
+	{
+	Spawn:
+		MONB B 1;
+		Loop;
+	}
+}
+
+Class EOA_MonkeyPoleC : EOA_MonkeyPoleA
+{
+	default{
+		//$sprite MONBC0
+		//$Category POLES
+	}
+	States
+	{
+	Spawn:
+		MONB C 1;
+		Loop;
+	}
+}
+
+Class EOA_MonkeyPoleD : EOA_MonkeyPoleA
+{
+	default{
+		//$sprite MONBD0
+		//$Category POLES
+	}
+	States
+	{
+	Spawn:
+		MONB D 1;
+		Loop;
+	}
+}

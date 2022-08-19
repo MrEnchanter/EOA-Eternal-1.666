@@ -1,0 +1,73 @@
+/*-----------------------\
+   Hitmarkers by Tekish
+\-----------------------*/
+
+#library "hitmarkers"
+#include "zcommon.acs"
+
+#define HM_ANIM_DEFAULT		9
+#define HM_ANIM_IMPACT		15
+#define HM_BASECOLOR		CR_UNTRANSLATED
+#define HM_FLAGS			HUDMSG_FADEOUT | HUDMSG_ALPHA | HUDMSG_NOTWITHFULLMAP | HUDMSG_NOTWITHOVERLAYMAP
+#define HM_ID				160400
+#define HM_REFRESH			1
+#define HM_SOUNDLIMIT		4
+#define HM_TICRATE			35
+#define HM_TIME				(HM_REFRESH << 16) / HM_TICRATE + 1
+
+int animhitspeed, animhitstyle, animkillspeed, animkillstyle, sounddelay;
+int animhitstate = -1, animkillstate = -1;
+str animdefault[HM_ANIM_DEFAULT] = { "A", "B", "C", "D", "E", "F", "G", "H", "I" };
+str animimpact[HM_ANIM_IMPACT] = { "A", "B", "C", "D", "E", "E", "E", "E", "E", "E", "E", "F", "G", "H", "I" };
+
+/*------------\
+   Functions
+\------------*/
+
+function void renderhit(int hitmarker, bool force)
+{
+	int statusbar, style, x, y;
+	int height = getscreenheight();
+	int width = getscreenwidth();
+	str font = "", type = "A";
+
+	if (getcvar("screenblocks") < 11)
+		statusbar = height - scriptcall("hitmarkerstatusbar", "gettop");
+
+	x = (fixeddiv(width << 16, 2.0) >> 16) << 16;
+	y = (fixeddiv(height - statusbar << 16, 2.0) >> 16) << 16;
+
+	int fade = 0.75;
+
+	if (fade < 0.1 || fade > 1.5)
+		fade = 0.75;
+	setfont("hitmark");
+	sethudsize(width, height, true);
+	hudmessage(s:type; HM_FLAGS, 0, HM_BASECOLOR, x, y, HM_TIME, fade, 1.0);
+}
+
+function void hitmarkers(void)
+{
+	int hitmarker = getcvar("hm_bridge_hitmarker");
+	If(hitmarker)
+	renderhit(hitmarker, false);
+	setcvar("hm_bridge_hitmarker", 0);
+}
+
+script "hitmarkers" (void)
+{
+	hitmarkers();
+	delay(1);
+	restart;
+}
+
+script "hitmarkersenter" ENTER
+{
+	if (playernumber() != scriptcall("hitmarkerstatusbar", "getconsoleplayer"))
+		terminate;
+
+	if (!strcmp("TITLEMAP", strparam(n:PRINTNAME_LEVEL)))
+		terminate;
+
+	acs_namedexecute("hitmarkers", 0);
+}

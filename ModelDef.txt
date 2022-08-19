@@ -1,0 +1,296 @@
+#Include "ModelDef.Monkey.txt"
+
+Model ChaingunSlug
+{ 
+	Path "Models"
+	Skin 0 "tracerpistol.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+	Skin 0 "tracerquad.png"
+	FrameIndex TRAC B 0 0
+}
+
+Model "EOA_Unmaykertracer"
+{ 
+	Path "Models"
+	Skin 0 "tracerveryred.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model "EOA_Rocket"
+{ 
+	Path "Models"
+	Model 0 "Rocket.md3"
+	SurfaceSkin 0 1 "Rocket.png"
+	SurfaceSkin 0 0 "Rocket-Effect.png"
+	Scale 1.0 1.0 1.0
+	DONTCULLBACKFACES
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model chainn
+{
+	Path "Models"
+	Model 0 "chainn.md3"
+	Skin 0 "chainn.png"
+	Scale 1 1 1
+	INHERITACTORPITCH
+
+	FrameIndex NULL A 0 0
+}
+
+Model HARMicroMissile
+{ 
+	Path "Models"
+	Skin 0 "tracer.png"
+	Model 0 "tracer.md3"
+	Scale 0.5 0.5 0.5
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model AngledRCrucibleBladeWave
+{ 
+	Path "Models"
+	Skin 0 "CRUCWAVE.png"
+	Model 0 "FlatPlane.md3"
+	Scale 110.0 110.0 110.0
+	AngleOffset -90
+	PitchOffset 65
+
+	FrameIndex CWAV F 0 0
+}
+
+Model AngledLCrucibleBladeWave
+{ 
+	Path "Models"
+	Skin 0 "CRUCWAVE.png"
+	Model 0 "FlatPlane.md3"
+	Scale 110.0 110.0 110.0
+	AngleOffset -90
+	PitchOffset -65
+
+	FrameIndex CWAV F 0 0
+}
+
+
+Model HCChargedMicroMissile
+{ 
+	Path "Models"
+	Skin 0 "tracerveryred.png"
+	Model 0 "tracer.md3"
+	Scale 0.5 0.5 0.5
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model SSGFireBeam
+{
+   Path "Models"
+   MODEL 0 "lightning.md3"
+   Scale 1 1 1.2
+   INHERITACTORPITCH
+
+   SKIN 0 "ssgbeam.png"		FrameIndex NULL A 0 0 //0
+ }
+
+Model PrecisionBoltProjectile
+{ 
+	Path "Models"
+	Skin 0 "tracerincendiary.png"
+	Model 0 "Tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM
+
+	FrameIndex TRAC A 0 0
+}
+
+//Blade parts
+
+Model DestroyerBladeProjectile
+{ 
+	Path "Models"
+	Skin 0 "Blade.png"
+	Model 0 "FullBlade.md3"
+	Scale 1.0 1.0 0.4
+	PITCHFROMMOMENTUM 
+
+	FrameIndex TRAC A 0 0
+}
+
+Model LightningBeamTrailBase1
+{
+   Path "Models"
+   MODEL 0 "lightning.md3"
+   Scale 1 1 1.2
+   INHERITACTORPITCH
+
+   SKIN 0 "lgtning1.png"		FrameIndex NULL A 0 0 //0
+   SKIN 0 "laserbeam1.png"		FrameIndex NULL B 0 0 //1
+   SKIN 0 "smoke1.png"			FrameIndex NULL C 0 0 //2
+   SKIN 0 "ebeam0.png"			FrameIndex NULL D 0 0 //3
+   SKIN 0 "tongue.png" 			FrameIndex NULL E 0 0 //4
+   SKIN 0 "laserbeam2.png" 		FrameIndex NULL F 0 0 //5
+   SKIN 0 "ebeam0.png"			FrameIndex NULL G 0 0 //6
+   SKIN 0 "ebeam0.png" 			FrameIndex NULL H 0 0 //7
+   SKIN 0 "ebeam0.png" 			FrameIndex NULL I 0 0 //8
+   SKIN 0 "ebeam0.png" 			FrameIndex NULL J 0 0 //9
+   SKIN 0 "ebeam0.png" 			FrameIndex NULL K 0 0 //10
+   SKIN 0 "BoltTrail.png"		FrameIndex NULL L 0 0 //11
+   SKIN 0 "ssgbeam.png"			FrameIndex NULL M 0 0 //12
+   SKIN 0 "MRKLIN.png"			FrameIndex NULL N 0 0 //13
+   
+}
+
+Model DestroyerBladeProjectile1
+{ 
+	Path "Models"
+	Skin 0 "Blade.png"
+	Model 0 "FullBlade.md3"
+	Scale 1.0 0.45 0.4
+	PITCHFROMMOMENTUM 
+
+	FrameIndex TRAC A 0 0
+}
+
+Model DestroyerBladeProjectile2
+{ 
+	Path "Models"
+	Skin 0 "Blade.png"
+	Model 0 "FullBlade.md3"
+	Scale 1.0 0.7 0.4
+	PITCHFROMMOMENTUM 
+
+	FrameIndex TRAC A 0 0
+}
+
+Model DestroyerbladeLeft
+{ 
+	Path "Models"
+	Skin 0 "Blade.png"
+	Model 0 "Left.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+
+	FrameIndex TRAC A 0 0
+}
+
+Model DestroyerbladeRight
+{ 
+	Path "Models"
+	Skin 0 "Blade.png"
+	Model 0 "Right.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+
+	FrameIndex TRAC A 0 0
+}
+
+/*
+Model GaussCannonProjectile
+{ 
+	Path "Models"
+	Skin 0 "tracerBallista.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model PrecisionBoltProjectile
+{ 
+	Path "Models"
+	Skin 0 "tracerBallista.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model SiegeModeProjectile
+{ 
+	Path "Models"
+	Skin 0 "tracerBallista.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 2.0 2.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+}
+
+Model GaussCannonImpactSpark
+{
+	Path "Models"
+	Model 0 "tracer.md3"
+	Skin 0 "Spark.png"
+	PITCHFROMMOMENTUM
+	Scale 0.25 2 2
+	FrameIndex NULL A 0 0
+}
+
+Model BoltTrail
+{ 
+	Path "Models"
+	Skin 0 "BoltTrail.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 0.5 0.5
+	/*PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex BLTL A 0 0
+}
+
+Model ChaingunSlug
+{ 
+	Path "Models"
+	Skin 0 "tracerpistol.png"
+	Model 0 "tracer.md3"
+	Scale 1.0 1.0 1.0
+	PITCHFROMMOMENTUM 
+	ROTATING
+	Rotation-Speed 25
+	Rotation-Vector 1 0 0
+
+	FrameIndex TRAC A 0 0
+	Skin 0 "tracerquad.png"
+	FrameIndex TRAC B 0 0
+}*/

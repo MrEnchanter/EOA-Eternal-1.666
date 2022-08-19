@@ -1,0 +1,2054 @@
+Class PlasmaRifleSelected : EOA_Token {}
+
+//Heat Blast - Collects extra heat from plasma projectiles that can be released as a powerful shockwave.  WARNING: Plasma gun won't fire while cooling off from a Heat Blast.
+Class HeatBlast : EOA_Token {}
+Class HeatBlastSelected : EOA_Token {}
+Class SuperHeatedRounds : EOA_Token {} //Rounds build heat much faster.
+Class ImprovedVenting : EOA_Token {} //Faster Cooldown.
+Class ExpandedThreshold : EOA_Token {} //More heat capacity, which results in higher damage potential.
+Class PowerSurgeCounter : EOA_Token{default {Inventory.MaxAmount 150;}}
+Class PLRHeatblastStrengthcounter : EOA_Token{default {Inventory.MaxAmount 3;}}
+
+
+Class MC_HeatedCore : EOA_MasteryChallengeToken //Kill multiple enemies with a single Heat Blast 20 times.
+{
+	Default
+	{
+		EOA_MasteryChallengeToken.MasteryItem "HeatedCore";
+		EOA_MasteryChallengeToken.ChallengeCounter "HeatedCoreMasteryCounter";
+		Tag "Heated Core";
+	}
+}
+
+Class HeatedCore : EOA_Token {} //Mastery Upgrade - Heat builds automatically and passively, without needing to use ammo.
+
+Class HeatBlastCharged : EOA_Token {}
+Class HeatBlastReady : EOA_Token {}
+Class HeatBlastChargeCounter : EOA_Token {Default {Inventory.MaxAmount 30;} }
+Class HeatBlastCooldownCounter : EOA_Token {Default {Inventory.MaxAmount 30;} }
+Class HeatBlastSubChargeCounter : EOA_Token {Default {Inventory.MaxAmount 7;} } //For Heated Core.
+Class HeatedCoreKillCounter : EOA_Token {Default {Inventory.MaxAmount 2;} }
+Class HeatedCoreMasteryCounter : EOA_Token {Default {Inventory.MaxAmount 20;} }
+
+
+//Stun Bomb - Stuns enemies in a large radius.
+Class StunBomb : EOA_Token {}
+Class StunBombSelected : EOA_Token {}
+Class QuickRecharge : EOA_Token {} //Faster Cooldown.
+Class BigShock : EOA_Token {} //Larger Blast Radius
+Class LongerStun : EOA_Token {} //Longer Stun Duration.
+Class BeamReady : EOA_Token {}
+Class BeamTarget : EOA_Token {}
+Class BeamLockedOn : EOA_Token {}
+Class MicroWaveBeamStun : StunMeDaddy { Default { Powerup.Duration 52; } }
+Class MWBeamConsumeCounter : EOA_Token {Default {Inventory.MaxAmount 5;} }
+
+
+
+Class MC_ChainStun : EOA_MasteryChallengeToken //Kill 30 stunned enemies.
+{
+	Default
+	{
+		EOA_MasteryChallengeToken.MasteryItem "ChainStun";
+		EOA_MasteryChallengeToken.ChallengeCounter "ChainStunMasteryCounter";
+		Tag "Chain Stun";
+	}
+}
+
+Class ChainStun : EOA_Token {} //Mastery Upgrade - Enemies killed while stunned will stun enemies around them.
+
+Class StunBombCharged : EOA_Token {}
+Class StunBombReady : EOA_Token {}
+Class StunBombCooldownCounter : EOA_Token {Default {Inventory.MaxAmount 350;} }
+Class ChainStunMasteryCounter : EOA_Token {Default {Inventory.MaxAmount 30;} }
+
+Class PLRMods : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			A_GiveInventory("HeatBlast");
+			A_GiveInventory("StunBomb");
+		}
+		Stop;
+	}
+}
+
+Class PLRUpgrades : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			A_GiveInventory("SuperHeatedRounds");
+			A_GiveInventory("ImprovedVenting");
+			A_GiveInventory("ExpandedThreshold");
+			A_GiveInventory("QuickRecharge");
+			A_GiveInventory("BigShock");
+			A_GiveInventory("LongerStun");
+		}
+		Stop;
+	}
+}
+
+Class EOA_PlasmaRifle : EOA_Weapon
+{
+	Actor Ptr;
+	Double BeamDamageCounter;
+	Default
+	{
+		Inventory.Icon "ICONPLR";
+		Weapon.AmmoType "EOA_CellAmmo";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 120;
+		Weapon.SlotNumber 6;
+		Inventory.PickupMessage "Plasma Rifle";
+		Tag "Plasma Rifle";
+	}
+	Override Void MarkPrecacheSounds()
+	{
+		MarkSound("PLR/Fire1");
+		MarkSound("PLR/Fire2");
+		MarkSound("PLR/Fire3");
+		MarkSound("PLR/Fire4");
+		MarkSound("PLR/Base");
+		MarkSound("PLR/Spin");
+		MarkSound("PLR/HeatAdd");
+		MarkSound("HeatBlast/Charged");
+		MarkSound("HeatBlast/Equip");
+		MarkSound("StunBomb/Charged");
+		MarkSound("StunBomb/Equip");
+		Super.MarkPrecacheSounds();
+	}
+	Override Void DoEffect()
+	{
+		Let Player = Owner.Player;
+		If (!Player)
+		{
+			Super.DoEffect();
+			Return;
+		}
+
+		//Mod not equipped...
+		If ((Owner.GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) && !(Owner.GetPlayerInput(INPUT_OLDBUTTONS) & BT_ALTATTACK) && Player.ReadyWeapon == Self && !(Owner.CountInv("HeatBlastSelected") || Owner.CountInv("StunBombSelected")))
+		{
+			EOA_SpawnNoiseMaker("Weapon/DryFire");
+		}
+
+		//Cooldown
+		EOA_Token.SetMaxInventory(Owner, "HeatBlastChargeCounter", 140 + 100 * Owner.CountInv("ExpandedThreshold"));
+		Owner.A_TakeInventory("HeatBlastCooldownCounter", (1 + 2 * Owner.CountInv("ImprovedVenting")) * (1 + Owner.CountInv("PowerHaste")));
+		Owner.A_TakeInventory("PowerSurgeCounter", 1);
+		If (Owner.CountInv("StunBombSelected"))
+		{
+			Owner.A_TakeInventory("StunBombCooldownCounter", (1 + Owner.CountInv("QuickRecharge")) * (1 + Owner.CountInv("PowerHaste")));
+		}
+		Inventory HBCounter = Inventory(Owner.FindInventory("HeatBlastChargeCounter"));
+		If (HBCounter && Owner.CountInv("HeatBlastChargeCounter") >= HBCounter.MaxAmount)
+		{
+			If (!Owner.CountInv("HeatBlastReady"))
+			{
+				Owner.A_GiveInventory("HeatBlastCharged");
+			}
+		}
+		Else
+		{
+			Owner.A_TakeInventory("HeatBlastReady");
+			Owner.A_TakeInventory("HeatBlastCharged");
+		}
+		If (!Owner.CountInv("StunBombCooldownCounter") && !Owner.CountInv("StunBombReady"))
+		{
+			Owner.A_GiveInventory("StunBombCharged");
+		}
+		If (!Owner.CountInv("HeatBlastSelected"))
+		{
+			Owner.A_TakeInventory("HeatBlastSubChargeCounter");
+			Owner.A_TakeInventory("HeatBlastChargeCounter");
+		}
+		
+		//Mastery - Heated Core (Heat Blast)
+		If (!Owner.CountInv("HeatedCore") && Owner.CountInv("SuperHeatedRounds") && Owner.CountInv("ImprovedVenting") && Owner.CountInv("ExpandedThreshold"))
+		{
+			Owner.A_GiveInventory("MC_HeatedCore");
+			If (Owner.CountInv("HeatedCoreMasteryCounter") >= 20)
+			{
+				Owner.A_GiveInventory("HeatedCore");
+				Owner.A_TakeInventory("HeatedCoreMasteryCounter");
+			}
+		}
+		Else
+		{
+			Owner.A_TakeInventory("MC_HeatedCore");
+		}
+		
+		//Mastery - Chain Stun (Stun Bomb)
+		If (!Owner.CountInv("ChainStun") && Owner.CountInv("QuickRecharge") && Owner.CountInv("BigShock") && Owner.CountInv("LongerStun"))
+		{
+			Owner.A_GiveInventory("MC_ChainStun");
+			If (Owner.CountInv("ChainStunMasteryCounter") >= 30)
+			{
+				Owner.A_GiveInventory("ChainStun");
+				Owner.A_TakeInventory("ChainStunMasteryCounter");
+			}
+		}
+		Else
+		{
+			Owner.A_TakeInventory("MC_ChainStun");
+		}
+		Super.DoEffect();
+	}
+	Action Void EOA_HeatBlast(Int DistThresh, Double AngThresh) //[DoomKrakken]: Derived from A_Blast.  Modified to only work within a certain angle. :D
+	{
+		Bool BlastCheck;
+		Actor BlastWave;
+		[BlastCheck, BlastWave] = A_SpawnItemEx("HeatBlastWave", 0, 0, Height / 2, Flags: SXF_TRANSFERPITCH);//Spawn("HeatBlastWave", (Pos.X, Pos.Y, Pos.Z + Height / 2), NO_REPLACE);
+		If (BlastWave)
+		{
+			//BlastWave.Pitch = Pitch;
+			//BlastWave.Angle = Angle;
+			//[DoomKrakken]: Spawn four more in the same fashion, for better brightness. :D
+			//[Fat Tony] : no.
+			A_SpawnItemEx("HeatBlastWave", 0, 0, Height / 2, Flags: SXF_TRANSFERPITCH);
+			/*A_SpawnItemEx("HeatBlastWave", 0, 0, Height / 2, Flags: SXF_TRANSFERPITCH);
+			A_SpawnItemEx("HeatBlastWave", 0, 0, Height / 2, Flags: SXF_TRANSFERPITCH);
+			A_SpawnItemEx("HeatBlastWave", 0, 0, Height / 2, Flags: SXF_TRANSFERPITCH);*/
+			If(CountInv("PLRHeatblastStrengthcounter") == 3)
+			{
+				A_SpawnItemEx("HeatBlastWaveFX3", 60, 5, height / 1.4, Flags: SXF_TRANSFERPITCH);
+			}
+			Else If (CountInv("PLRHeatblastStrengthcounter") == 2)
+			{
+				A_SpawnItemEx("HeatBlastWaveFX2", 60, 5, height / 1.4, Flags: SXF_TRANSFERPITCH);
+			}
+			Else
+			{
+				A_SpawnItemEx("HeatBlastWaveFX", 60, 5, height / 1.4, Flags: SXF_TRANSFERPITCH);
+			}
+		}
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor Mo;
+		While (Mo = Actor(it.Next()))
+		{
+			//Check for the Heat Blast Wave
+			If (!BlastWave || Mo == Self || !Mo.bSHOOTABLE || Distance3D(Mo) > DistThresh)
+            {
+                Continue;
+            }			
+			//Gotta be somewhat in front of you.  Remember, this heat blast isn't a fart... (thank you, Kodi, Xangi, and Gutawer!)
+			Vector3 posDif = self.Vec3To(Mo); //Difference in position between inflictor and victim.
+			Double relAngle = DeltaAngle(Self.Angle, atan2(posDif.Y, posDif.X)); //Difference in angle between inflictor and victim.
+            If (abs(relAngle) >= AngThresh)
+            {
+                Continue;
+            }
+			If (Mo.CurSector.PortalGroup != CurSector.PortalGroup || !CheckSight(Mo) || Mo.bKILLED)
+			{
+				Continue;
+			}
+			Mo.Target = Self;
+			Mo.DamageMobj(BlastWave, Self, (CountInv("HeatBlastChargeCounter") + (125 * CountInv("PLRHeatblastStrengthcounter"))), "Normal", Flags: DMG_EXPLOSION);
+			EOA_Weapon.FalterDemon(Mo);
+			Mo.A_FaceTarget();
+			If (Mo.bKILLED && Mo.bISMONSTER)
+			{
+				A_GiveInventory("HeatedCoreKillCounter");
+			}
+		}
+		If (CountInv("MC_HeatedCore") && CountInv("HeatedCoreKillCounter") >= 2)
+		{
+			A_GiveInventory("HeatedCoreMasteryCounter");
+			A_GiveInventory("MasteryTicker");
+		}
+		A_TakeInventory("HeatedCoreKillCounter");
+	}
+	Static Const Int LockConeAngle[] = {-1, -1, 0, 1, 1, 1, 0, -1};
+	Static Const Int LockConePitch[] = {0, 1, 1, 1, 0, -1, -1, -1};
+		
+	Action Void EOA_BeamLockon()
+    {
+		invoker.tracer=null;
+		FTranslatedLineTarget LTarget;
+		For (Int i = 0; i <= 15; i++)
+		{
+			For (Int j = 0; j <= 7; j++)
+			{
+				Let Puff = LineAttack(Angle + i * Invoker.LockConeAngle[j]/3, 5000, Pitch*3 + i * Invoker.LockConePitch[j], 0, "None", "EOA_NullPuff2", LAF_NORANDOMPUFFZ|LAF_NOIMPACTDECAL, LTarget);
+				If (Puff)
+				{
+					Puff.Destroy();
+				}
+				if(LTarget.linetarget && !invoker.tracer && LTarget.linetarget.bIsMonster)
+				{
+					Player.Mo.A_GiveInventory("BeamReady");
+					Player.Mo.A_GiveInventory("BeamTarget");
+					A_GiveInventory("BeamLockedOn");
+					invoker.tracer=LTarget.linetarget;
+					Invoker.Ptr = invoker.tracer;
+				}
+			}
+		}
+	}
+	
+	void DrawBezier(Double vel, Vector3 Sp, Vector3 Ep, Vector3 p0, Vector3 Prev=(0,0,0))
+	{
+		actor p;
+		for(double i=0;i<1;i+=vel)
+		{
+			Vector3 Ip0=Sp-(Sp-P0)*i;
+			Vector3 Ip1=P0-(P0-Ep)*i;
+			Vector3 Ip2=Ip0-(Ip0-Ip1)*i;
+			Vector2 Dir=EOA_Weapon.FaceVector(Ip1,Ip2);
+			PlayerInfo Player = Players[ConsolePlayer];
+			
+			//Vector3 Offs=(0,Cos(i*360-level.time*5)*10,Cos(i*360*2-level.time*20)*10);
+			Vector3 Offs=(0,Cos(i*360*4-level.time*17)*2,Sin(i*360*1.5-level.time*30)*8);
+			Offs=EOA_Weapon.RotatedVec(Offs,Dir.X,Dir.Y);
+			Offs*=Sin(180*i);
+			actor n=Spawn("LightningBeamTrailBase1",Ip2+Offs);
+			if(p)
+			{
+				Actor Spark2=Spawn("PlasmaSpark2",Ip2+Offs,ALLOW_REPLACE);
+				Dir=EOA_Weapon.FaceVector(n.pos,p.pos);
+				Double Dist=n.Distance3D(p);
+				p.angle=dir.x+180;
+				p.pitch=dir.y+90;
+				p.scale.y=Dist/64;
+				p.scale.x=14;
+				p.frame=1;
+				p.A_SetRenderStyle(1.0,STYLE_ADDSHADED);
+				Int R, G, B;
+				R = (Player.Mo.CountInv("PowerSurgeCounter")/10);
+				G = 2;
+				B = (15 - ((Player.Mo.CountInv("PowerSurgeCounter"))/10));; //(100 - Player.Mo.CountInv("PowerSurgeCounter"));
+				String Shade;
+				Shade = String.Format("%i0, %x0, %x0", R, G, B);
+				p.SetShade(Shade);
+				p.bDontInterpolate=False;
+				actor m=Spawn("LightningBeamTrailBase1",Ip2+Offs);
+				if(m)
+				{
+					Dir=EOA_Weapon.FaceVector(p.pos,m.pos);
+					Double Dist=m.Distance3D(p);
+					m.angle=dir.x+180;
+					m.pitch=dir.y+90;
+					m.scale.y=Dist/64;
+					m.scale.x=7;
+					m.frame=1;
+					m.A_SetRenderStyle(1.0,STYLE_ADDSHADED);
+					m.SetShade("FFFFFF");
+					m.bDontInterpolate=False;
+				}
+			}
+			n.bBright=True;
+			n.prev-=Prev;
+			p=n;
+		}
+		if(p) p.destroy();
+    }
+	States
+	{
+	Spawn:
+		PLSR A -1;
+		Stop;
+	Select:
+		TNT1 A 0
+		{
+			Invoker.SemiAutoOverride = True;
+			A_WeaponOffset();
+			A_GiveInventory("PlasmaRifleSelected");
+			If (GetCVar("EOA_Reticles"))
+			{
+				ACS_NamedExecuteAlways("PLRReticle", 0);
+				A_SetCrosshair(99);
+			}
+			Else
+			{
+				A_SetCrosshair(0);
+			}
+			A_Overlay(-50, "EquipmentHandler", 1);
+		}
+		TNT1 A 0 A_Raise();
+		Wait;
+	Deselect:
+		PRHR A 0 A_JumpIfInventory("HeatBlastSelected", 1, 3);
+		PRSR A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNR A 0;
+		"####" "#" 0 EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "", 7);
+		"####" HFDB 1;
+		TNT1 A 4
+		{
+			A_TakeInventory("SwitchStyleDelay", 10);
+			EOA_DestroyPersistentNoiseMaker(Invoker.SlotNumber);
+			A_SetTics(4 * !CountInv("Adept") * !CountInv("PowerBerserk"));
+		}
+		TNT1 A 0 
+		{
+			A_TakeInventory("PlasmaRifleSelected");
+			A_Lower(36);
+		}
+		Wait;
+	Ready:
+		TNT1 A 0
+		{
+			If (Level.Time && !(CountInv("HeatBlastSwitch") || CountInv("StunBombSwitch")))
+			{
+				EOA_SpawnNoiseMaker("Weapon/Switch");
+			}
+		}
+		PRHR A 0 A_JumpIfInventory("HeatBlastSelected", 1, 3);
+		PRSR A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNR A 0;
+		"####" ACEG 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOBOB|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+			If (CountInv("HeatBlastSwitch"))
+			{
+				A_TakeInventory("HeatBlastSwitch");
+				Return ResolveState("HeatBlastMod");
+			}
+			Else If (CountInv("StunBombSwitch"))
+			{
+				A_TakeInventory("StunBombSwitch");
+				Return ResolveState("StunBombMod");
+			}
+			Return ResolveState(Null);
+		}
+		Goto ReadyLoop;
+	ReRaise:
+		TNT1 A 0 A_WeaponOffset(-144, 32);
+		PRHR A 0 A_JumpIfInventory("HeatBlastSelected", 1, 3);
+		PRSR A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNR A 0;
+		"####" ABDEGH 1
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_NOBOB|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE);
+			A_WeaponOffset(24, 0, WOF_KEEPY|WOF_ADD);
+		}
+	ReadyLoop:
+		TNT1 A 0
+		{
+			A_TakeInventory("MWBeamConsumeCounter", 5);
+			A_StopSound(CHAN_WEAPON);
+			A_StopSound(CHAN_5);
+			If (CountInv("HeatBlastCharged") && CountInv("HeatBlastSelected"))
+			{
+				EOA_SpawnNoiseMaker("HeatBlast/Charged");
+				A_GiveInventory("HeatBlastReady");
+				A_TakeInventory("HeatBlastCharged");
+			}
+			If (CountInv("StunBombCharged") && CountInv("StunBombSelected"))
+			{
+				EOA_SpawnNoiseMaker("StunBomb/Charged");
+				A_GiveInventory("StunBombReady");
+				A_TakeInventory("StunBombCharged");
+			}
+		}
+		PRSI A 0 A_JumpIfInventory("StunBombSelected", 1, 7);
+		RH3I A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 3, 6);
+		RH2I A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 2, 5);
+		RH1I A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 1, 4);
+		RHSI A 0 A_JumpIfInventory("PowerSurgeCounter", 1, 3);
+		PRHI A 0 A_JumpIfInventory("HeatBlastSelected", 1, 2);
+		PRNI A 0;
+		"####" "#" 1 
+		{
+			EOA_WeaponReady(WRF_NOSWITCH * Invoker.SemiAutoOverride|WRF_NOPRIMARY * (CountInv("HeatBlastSelected") && CountInv("HeatBlastCooldownCounter"))|WRF_NOSECONDARY * (CountInv("StunBombSelected") && CountInv("StunBombCooldownCounter"))|WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT);
+			A_Overlay(-50, "EquipmentHandler", 1);
+			Invoker.SemiAutoOverride = False;
+			If (CountInv("HeatBlastSwitch"))
+			{
+				A_TakeInventory("HeatBlastSwitch");
+				Return ResolveState("SwitchToHeatBlast");
+			}
+			Else If (CountInv("StunBombSwitch"))
+			{
+				A_TakeInventory("StunBombSwitch");
+				Return ResolveState("SwitchToStunBomb");
+			}
+			Return ResolveState(Null);
+		}
+		Loop;
+	Fire:
+		PRSF A 0 A_JumpIfInventory("StunBombSelected", 1, 7);
+		RH3F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 3, 6);
+		RH2F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 2, 5);
+		RH1F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 1, 4);
+		RHSF A 0 A_JumpIfInventory("PowerSurgeCounter", 1, 3);
+		PRHF A 0 A_JumpIfInventory("HeatBlastSelected", 1, 2);
+		PRNF A 0;
+		"####" "#" 0 
+		{
+			EOA_SetWeaponRecoilOffset(frandompick(-0.5, 0.5), frandompick(-0.5, 0.5), 0, 0.25);
+			EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (25, 204, 255), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "PLR/Fire1", 1, 0, 0.5);
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "PLR/Fire2", 2, 0, 0.25);
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "PLR/Fire3", 3, 0, 0.25);
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "PLR/Fire4", 4);
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "PLR/Base", 5);
+			If (!CountInv("PowerSurgeCounter"))
+			{
+				If(CountInv("PLRHeatblastStrengthcounter") <= 1)
+				{
+					EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (25, 204, 255), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+				}
+				else If (CountInv("PLRHeatblastStrengthcounter") == 2)
+				{
+					EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (165, 0, 167), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+				}
+				else If (CountInv("PLRHeatblastStrengthcounter") == 3)
+				{
+					EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (255, 74, 25), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+				}
+				EOA_FireBullets(0, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ|FBF_USEAMMO, 32767, "EOA_PlasmaBall", random(-6, -4) + GetViewZ(), random(7, 10) + GetRelVelY() / 4);
+			}
+			else If (CountInv("PowerSurgeCounter"))
+			{
+				EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (255, 74, 25), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+				EOA_FireBullets(0, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ|FBF_USEAMMO, 32767, "EOA_SurgePlasmaBall", random(-6, -4) + GetViewZ(), random(7, 10) + GetRelVelY() / 4);
+				EOA_SpawnPersistentNoiseMaker(6, "PowerSurgeFire", 6);
+			}
+			
+			If (CountInv("HeatBlastSelected"))
+			{
+				If (CountInv("HeatBlastChargeCounter") >= 30 && CountInv("PLRHeatblastStrengthcounter") <= 1)
+				{
+					A_GiveInventory("PLRHeatblastStrengthcounter", 1);
+					A_TakeInventory("HeatBlastChargeCounter", 29);
+					EOA_SpawnPersistentNoiseMaker(1, "HeatBlastCharge1", 6, 1);
+				}
+				else If (CountInv("HeatBlastChargeCounter") >= 30 && CountInv("PLRHeatblastStrengthcounter") == 2)
+				{
+					A_GiveInventory("PLRHeatblastStrengthcounter", 1);
+					A_TakeInventory("HeatBlastChargeCounter", 29);
+					EOA_SpawnPersistentNoiseMaker(1, "HeatBlastCharge2", 6, 1);
+				}
+				If(!CountInv("PowerSurgeCounter"))
+				{
+					A_GiveInventory("HeatBlastChargeCounter", (1 + CountInv("SuperHeatedRounds")) - (CountInv("PowerSurgeCounter")/150));
+				}
+			}
+			If (CountInv("PowerQDMG"))
+			{
+				EOA_SpawnNoiseMaker("QuadDamage/Shot");
+			}
+			A_AlertMonsters();
+		}
+		"####" ABC 1
+		{
+			EOA_WeaponReady(WRF_NOPRIMARY|WRF_NOSECONDARY * !(((CountInv("HeatBlastSelected") && !CountInv("HeatBlastCooldownCounter") && CountInv("HeatBlastChargeCounter") >= 12 * (1 + CountInv("ExpandedThreshold"))) || (CountInv("StunBombSelected") && !CountInv("StunBombCooldownCounter"))) && (GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) && !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ALTATTACK))|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT);
+			If (CountInv("HeatBlastCharged") && CountInv("HeatBlastSelected"))
+			{
+				EOA_SpawnNoiseMaker("HeatBlast/Charged");
+				A_GiveInventory("HeatBlastReady");
+				A_TakeInventory("HeatBlastCharged");
+			}
+			If (CountInv("StunBombCharged") && CountInv("StunBombSelected"))
+			{
+				EOA_SpawnNoiseMaker("StunBomb/Charged");
+				A_GiveInventory("StunBombReady");
+				A_TakeInventory("StunBombCharged");
+			}
+			Return ResolveState(Null);
+		}
+		"####" B 1 A_ReFire();
+		"####" D 1;
+		Goto ReadyLoop;
+	AltFire:
+		TNT1 A 0 A_JumpIf((GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK) && !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ALTATTACK), 1);
+		Goto ReadyLoop;
+		TNT1 A 0 A_JumpIf(CountInv("HeatBlastSelected") && !CountInv("PowerSurgeCounter") && CountInv("PLRHeatblastStrengthcounter") >= 1 && !CountInv("HeatBlastCooldownCounter"), "HeatBlastLaunch");
+		TNT1 A 0 A_JumpIf(CountInv("StunBombSelected") && (CountInv("EOA_CellAmmo") || CheckInfiniteAmmo()), "BeamLockOn");
+		Goto ReadyLoop;
+	HeatBlastLaunch:
+		TNT1 A 0
+		{
+			EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "", 7);
+			EOA_HeatBlast(300, 40);
+			A_AlertMonsters();
+			If(CountInv("HeatedCore") && CountInv("PLRHeatblastStrengthcounter"))
+			{
+				A_GiveInventory("PowerSurgeCounter", 25 + (45 * CountInv("PLRHeatblastStrengthcounter")));
+			}
+			A_TakeInventory("PLRHeatblastStrengthcounter", 3);
+			A_SpawnItemEx("HeatBlastSFX", Flags: SXF_TRANSFERPOINTERS|SXF_SETTARGET|SXF_NOCHECKPOSITION);
+			A_TakeInventory("HeatBlastReady");
+			A_TakeInventory("HeatBlastChargeCounter");
+			A_GiveInventory("HeatBlastCooldownCounter", 60);
+			EOA_SetWeaponRecoilOffset(frandompick(-1, -0.5, 0.5, 1), -5, 0, 0.25);
+			EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PulseLight, (25, 204, 255), 48, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 0.1);
+			If (CountInv("PowerQDMG"))
+			{
+				EOA_SpawnNoiseMaker("QuadDamage/Shot");
+				EOA_SpawnNoiseMaker("QuadDamage/Shot");
+				EOA_SpawnNoiseMaker("QuadDamage/Shot");
+			}
+		}
+		RH3F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 3, 5);
+		RH2F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 2, 4);
+		RH1F A 0 A_JumpIfInventory("PLRHeatblastStrengthcounter", 1, 3);
+		RHSF A 0 A_JumpIfInventory("PowerSurgeCounter", 1, 2);
+		PRHF A 0;
+		"####" AB 2 
+		{
+			EOA_WeaponReady(WRF_NOFIRE, EOA_ALLOWMANTLE);
+			If (!CountInv("HeatBlastSelected"))
+			{
+				Return ResolveState("ReadyLoop");
+			}
+			Return ResolveState(Null);
+		}
+		"####" CD 4 
+		{
+			EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD|WRF_ALLOWZOOM, EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT);
+			If (!CountInv("HeatBlastSelected"))
+			{
+				Return ResolveState("ReadyLoop");
+			}
+			Return ResolveState(Null);
+		}
+		Goto ReadyLoop;
+	BeamLockOn:
+		TNT1 A 0
+		{
+			If ((GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK))
+			{
+				EOA_BeamLockOn(); 
+			}
+			If (CountInv("BeamReady"))
+			{	
+				A_StartSound("Microwave/IdleStart",CHAN_WEAPON,CHANF_OVERLAP,0.5);
+				A_StartSound("Microwave/LockOn",CHAN_WEAPON,CHANF_OVERLAP,0.5);
+				A_StartSound("Microwave/Idle",CHAN_WEAPON,CHANF_LOOPING|CHANF_OVERLAP,0.5);
+				A_StartSound("Microwave/WheelSpin",CHAN_WEAPON,CHANF_LOOPING|CHANF_OVERLAP,0.15);
+				Return ResolveState("BeamReadyStart");
+			}
+			A_TakeInventory("BeamLockedOn",1,0,AAPTR_TRACER);
+			A_StartSound("Microwave/FailLockOn",4,CHANF_OVERLAP,1.0);
+			Return ResolveState(NULL);
+		}
+		Goto ReadyLoop;
+	LockClose:
+		TNT1 A 0
+		{
+			A_StopSound(CHAN_WEAPON);
+			A_StopSound(CHAN_5);
+			A_TakeInventory("MWBeamConsumeCounter", 5);
+			A_TakeInventory("BeamReady");
+			A_TakeInventory("BeamLockedOn",1,0,AAPTR_TRACER);
+		}
+		Goto ReadyLoop;
+	BeamReadyStart:
+		PRSS ABCDE 1;
+	BeamReady:
+		PRSL ABCD 1
+		{
+			A_StopSound(CHAN_5);
+			A_TakeInventory("MWBeamConsumeCounter", 5);
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ALTATTACK))
+			{
+				Return ResolveState("LockClose");
+			}
+			Else If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				Return ResolveState("BeamFireStart");
+			}
+			Else If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK) && !CountInv("BeamTarget"))
+			{
+				EOA_BeamLockOn();
+			}
+			Return ResolveState(NULL);
+		}
+		Loop;
+	BeamFireStart:
+		RSSF A 1
+		{
+			A_StartSound("Microwave/FireLoop",CHAN_5,CHANF_LOOPING|CHANF_OVERLAP,0.5);
+			A_StartSound("Microwave/FireAdd",CHAN_5,CHANF_LOOPING|CHANF_OVERLAP,0.5);
+			A_Overlay(28,"BeamOverlay");
+		}
+	BeamFire:
+		TNT1 A 0 A_TakeInventory("EOA_CellAmmo", 2);
+		RSSF ABCD 1
+		{
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				A_Overlay(28, "NULL");
+				Return ResolveState("BeamReady");
+			}
+			Else If (CountInv("EOA_CellAmmo") < 2)
+			{
+				A_Overlay(28, "NULL");
+				A_StopSound(CHAN_WEAPON);
+				A_StopSound(CHAN_5);
+				A_TakeInventory("MWBeamConsumeCounter", 5);
+				A_TakeInventory("BeamReady");
+				A_TakeInventory("BeamLockedOn",1,0,AAPTR_TRACER);
+				A_SelectWeapon("EOA_Weapon", SWF_SELECTPRIORITY);
+			}
+			Return ResolveState(Null);
+		}
+		//TNT1 A 0 A_GiveInventory("MWBeamConsumeCounter", 1);
+		Loop;
+	BeamOverlay:
+		TNT1 A 1
+		{
+			If(!Invoker.Tracer || CountInv("EOA_CellAmmo") < 2) Return ResolveState("Null");
+			
+			If(CVar.GetCVar("EOA_ViewZ", Player).GetBool())
+			{
+				Player.ViewZ = Player.Mo.Pos.Z + Player.ViewHeight;
+			}
+			double vz=player.viewz-pos.z;
+			vector3 sp=pos+(Vel.XY,vz)+EOA_Weapon.RotatedVec((28,-10,-6.5),Angle,Pitch);
+			If(GetCVar("EOAE_CenteredWeapons"))
+			{
+				sp=pos+(Vel.XY,vz)+EOA_Weapon.RotatedVec((28,0,-6.5),Angle,Pitch);
+			}
+			Vector3 Offs=EOA_Weapon.RotatedVec((128,0,0),angle,pitch,0);
+			Vector2 An=EOA_Weapon.FaceVector(Self.Pos,Invoker.Tracer.Pos);
+			vector3 ep=invoker.tracer.pos+(RotateVector((Invoker.Tracer.Radius,0),An.X),invoker.tracer.height/2);
+			Double amt=abs((sp-ep).length());
+			amt=0.1;
+			amt=max(amt,0.01);
+			Invoker.DrawBezier(amt,sp,ep,sp+Offs,vel);
+			//spawn("BulletPuff",ep);
+			//spawn("BulletPuff",sp+offs);
+			Actor Puff=Spawn("EOA_PlasmaPuff",Ep,ALLOW_REPLACE);
+			Actor Spark=Spawn("PlasmaImpactLightning",Ep,ALLOW_REPLACE);
+			If(Spark)
+			Spark.Scale.X = 0.09;
+			/*If(P)
+			p.Vel3DFromAngle(5,FRandom(1,360),FRandom(-90,45));*/
+			If(invoker.weaponspecial%3==0)
+			{
+				Actor Puff=Spawn("BlankPuff",Pos);
+				Puff.bEXTREMEDEATH = True;
+				//Invoker.DepleteAmmo(0);
+				Invoker.BeamDamageCounter += 1;
+				Bool SurgeBoost;
+				If(FindInventory("PowerSurgeCounter"))
+				{SurgeBoost = True;}
+				Else
+				{SurgeBoost = False;}
+				invoker.tracer.DamageMobj(Puff,Self, 7 + (5 * SurgeBoost) + (Invoker.Tracer.default.Health/100) + (Invoker.BeamDamageCounter/5),"Electric",0,1);
+				If(Invoker.Tracer.Health>0)
+				{
+					Invoker.TriggerPainChance("Electric",true);
+					If(!Random(0,1)) Invoker.Tracer.A_Pain();
+					State Pain=Invoker.Tracer.FindState("Pain");
+					If(Pain) Invoker.Tracer.SetState(Pain);	
+					Invoker.Tracer.A_TakeInventory("MicrowaveBeamStun");
+					Invoker.Tracer.A_GiveInventory("MicrowaveBeamStun");
+				}
+				Else
+				{
+					//Invoker.Tracer.A_Startsound("Misc/Explosion",54,CHANF_OVERLAP,1.0,0.25);
+					Invoker.Tracer.A_Startsound("Weapons/ShockRifleDischarge",54,CHANF_OVERLAP,1.0,0.25,1,0.25);
+					
+					For(int i=0;i<20;i++)
+					Invoker.Tracer.A_SpawnItemEx("GaussFunnyAndBouncyBall",0,0,FRandom(0,64),FRandom(0,5),0,FRandom(0,10),FRandom(1,360));
+					If(CountInv("ChainStun"))
+					{
+						Invoker.Tracer.A_QuakeEx(2,2,2,20,0,1024,"",QF_SCALEDOWN,0,0,0,0,512);
+						//spawn 2 times so its bright enough because idfk why its not bright fuck you what are you even doing here
+						Actor Exp=Spawn("RemoteDetonateWave",Invoker.Tracer.Pos+(0,0,Invoker.Tracer.Default.Height/2),ALLOW_REPLACE);
+						If(Exp)
+						{
+							A_Startsound("Microwave/Explosion/Weapon",54,CHANF_OVERLAP,1.0,0.25,0.8);
+							A_Startsound("Microwave/ExplosionAdd",54,CHANF_OVERLAP,1.0,0.25,0.8);
+							A_Startsound("Microwave/Explosion/Monster",54,CHANF_OVERLAP,1.0,0.25);
+							Exp.Alpha = 1.0;
+							Exp.A_SetRenderStyle(5.0,STYLE_ADDSHADED);
+							Exp.SetShade("9595FF");
+							Exp.bFLATSPRITE = False;
+							Exp.Scale*=3;
+							Exp.Target=Self;
+							Actor Exp2=Spawn("RemoteDetonateWave",Invoker.Tracer.Pos+(0,0,Invoker.Tracer.Default.Height/2),ALLOW_REPLACE);
+							Exp2.Alpha = 1.0;
+							Exp2.A_SetRenderStyle(5.0,STYLE_ADDSHADED);
+							Exp2.SetShade("9595FF");
+							Exp2.bFLATSPRITE = False;
+							Exp2.Scale*=3;
+							Exp2.Target=Self;
+						}
+						EOA_Weapon.HLExplode(Exp,Exp,Self,192,300,0);
+					}
+					/*For(int i=0;i<50;i++)
+					{
+						Actor P=Spawn("DEPlasmaParticle",Ep,ALLOW_REPLACE);
+						If(P)
+						{
+							p.Vel3DFromAngle(20,FRandom(1,360),FRandom(-90,45));
+							P.Scale*=3;
+							P.Gravity*=6;
+						}
+					}*/
+					A_StopSound(5);
+					A_StartSound("Microwave/FailLockOn",4,CHANF_OVERLAP,1.0);
+					A_StartSound("Microwave/End",4,CHANF_OVERLAP,0.5);
+					A_TakeInventory("BeamTarget");
+					PSprite psp=Player.FindPSprite(PSP_WEAPON);
+					If(Psp)
+					Psp.SetState(ResolveState("LockClose"));
+					Invoker.Tracer=Null;
+				}
+				Invoker.BeamDamageCounter = 0;
+				If(Puff) Puff.Destroy();
+			}
+			invoker.weaponspecial++;
+			Return ResolveState(null);
+		}
+		Loop;
+	Reload:
+		TNT1 A 0 A_JumpIf(CountInv("HeatBlast") && !CountInv("HeatBlastSelected"), "SwitchToHeatBlast");
+		TNT1 A 0 A_JumpIf(CountInv("StunBomb") && !CountInv("StunBombSelected"), "SwitchToStunBomb");
+		Goto ReadyLoop;
+	SwitchToHeatBlast:
+		PRSR A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNR A 0;
+		"####" HGFEDCBA 1;
+	HeatBlastMod:
+		TNT1 A 0
+		{
+			A_GiveInventory("HeatBlastSelected");
+			A_TakeInventory("StunBombSelected");
+			EOA_SpawnNoiseMaker("HeatBlast/Equip");
+			If (CountInv("HeatBlastCharged") && CountInv("HeatBlastSelected"))
+			{
+				EOA_SpawnNoiseMaker("HeatBlast/Charged");
+				A_GiveInventory("HeatBlastReady");
+				A_TakeInventory("HeatBlastCharged");
+			}
+		}
+		PRHM ABCDEFGHIJKLMNOPQ 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		PRHM RRRRRRRRRRRRRRRRRRRRRRRRRR 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("StunBomb"), EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		PRHM SSTT 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("StunBomb"), EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		Goto ReadyLoop;
+	SwitchToStunBomb:
+		PRHR A 0 A_JumpIfInventory("HeatBlastSelected", 1, 2);
+		PRNR A 0;
+		"####" HGFEDCBA 1;
+	StunBombMod:
+		TNT1 A 0 
+		{
+			A_GiveInventory("StunBombSelected");
+			A_TakeInventory("HeatBlastChargeCounter");
+			A_TakeInventory("HeatBlastSelected");
+			A_TakeInventory("HeatBlastReady");
+			EOA_SpawnNoiseMaker("StunBomb/Equip");
+		}
+		PRSM ABCDEFGHIJKLMNOPQ 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		PRSM RRRRRRRRRRR 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("HeatBlast"), EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		PRSM SSSSSSSSSSS 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("HeatBlast"), EOA_ALLOWMANTLE|EOA_WEAPSPEEDUPGRADE * CountInv("HotSwap"));
+		PRSM TUVW 1 EOA_WeaponReady(WRF_NOFIRE|WRF_ALLOWRELOAD * CountInv("HeatBlast"), EOA_ALLOWMANTLE);
+		Goto ReadyLoop;
+	Zoom:
+		PRHT A 0 A_JumpIfInventory("HeatBlastSelected", 1, 3);
+		PRST A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNT A 0;
+		"####" "#" 0 EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "", 7);
+		Goto Super::Melee;
+	LedgeClimb:
+		"####" "#" 0 EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "", 7);
+		Goto Super::LedgeClimb;
+	UseEquipment:
+		PRHT A 0 A_JumpIfInventory("HeatBlastSelected", 1, 3);
+		PRST A 0 A_JumpIfInventory("StunBombSelected", 1, 2);
+		PRNT A 0;
+		"####" "#" 0 EOA_SpawnPersistentNoiseMaker(Invoker.SlotNumber, "", 7);
+		Goto Super::UseEquipment;
+	}
+}
+
+Class EOA_PlasmaBall : EOA_Projectile //Many sources use these sprites... my source was ZION.
+{
+	Default
+	{
+		Radius 4;
+		Height 8;
+		DamageFunction 10;
+		Speed 50;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Scale 0.075;
+		Decal "EMGPuffBigScorch";
+		Translation "0:255=%[0, 0, 0]:[0.7, 0.9, 2]";
+		EOA_Projectile.PuffType "EOA_PlasmaPuffComplex";
+		+BRIGHT
+		+FORCERADIUSDMG
+		+FORCEXYBILLBOARD
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	Override Void PostBeginPlay()
+	{
+		A_StartSound("PlasmaBall/Fly", 1, CHAN_LOOP, 0.5);
+		A_StartSound("PlasmaBall/Add1", 2, CHAN_LOOP, 0.25);
+		A_StartSound("PlasmaBall/Add2", 3, CHAN_LOOP, 0.25);
+		Super.PostBeginPlay();
+	}
+	States
+	{
+	Spawn:
+		PLSB A 1 EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (25, 204, 255), 16, 16, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		Loop;
+	XDeath:
+		TNT1 A 0 A_StartSound("Projectile/HitFlesh");
+	Crash:
+	Death:
+		TNT1 A 1
+		{
+			A_Explode(4 * (1 - (Self.GetClassName() == "DecoyPlasmaBall")), 48, 0, 1, 48);
+			A_SpawnItemEx("EOA_PlasmaPuffComplex");
+			A_StartSound("PlasmaBall/Impact", 5, 0, 0.25);
+		}
+		Stop;
+	}
+}
+
+Class EOA_SurgePlasmaBall : EOA_Projectile //Many sources use these sprites... my source was ZION.
+{
+	Default
+	{
+		Radius 4;
+		Height 8;
+		DamageFunction 27;
+		Speed 50;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Scale 0.075;
+		Decal "EMGPuffBigScorch";
+		Translation "0:255=%[0.00,0.00,0.00]:[1.00,0.30,0.00]", "4:4=192:192", "3:3=0:0";
+		EOA_Projectile.PuffType "EOA_PlasmaPuffComplex";
+		+BRIGHT
+		+FORCERADIUSDMG
+		+FORCEXYBILLBOARD
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	Override Void PostBeginPlay()
+	{
+		A_StartSound("PlasmaBall/Fly", 1, CHAN_LOOP, 0.5);
+		A_StartSound("PlasmaBall/Add1", 2, CHAN_LOOP, 0.25);
+		A_StartSound("PlasmaBall/Add2", 3, CHAN_LOOP, 0.25);
+		Super.PostBeginPlay();
+	}
+	States
+	{
+	Spawn:
+		PLSB A 1 Bright EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (255, 74, 25), 8, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		Loop;
+	XDeath:
+		TNT1 A 0 A_StartSound("Projectile/HitFlesh");
+	Crash:
+	Death:
+		TNT1 A 3
+		{
+			EOA_SpawnCustomDynamicLight("PLRAddLight", DynamicLight.PulseLight, (25, 204, 255), 32, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2), 1.0 * Tics / TICRATE);
+			A_Explode(4 * (1 - (Self.GetClassName() == "DecoyPlasmaBall")), 48, 0, 1, 48);
+			A_SpawnItemEx("EOA_PlasmaPuffComplex");
+			A_StartSound("PlasmaBall/Impact", 5, 0, 0.25);
+		}
+		Stop;
+	}
+}
+
+Class DecoyPlasmaBall : EOA_PlasmaBall
+{
+	Default
+	{
+		Decal "";
+		DamageFunction random(0, 1);
+		+PAINLESS
+	}
+}
+
+Class EOA_PlasmaPuff : Actor//Graphics taken from D4T and ZION. :D
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		RenderStyle "Add";
+		Scale 0.25;
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[0.6, 1, 1.8]";
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		DBP2 A 0 A_Jump(128, 2);
+		DBPP A 0;
+		"####" ABCDEFGHI 1;
+		Stop;
+	}
+}
+
+Class EOA_PlasmaPuffComplex : EOA_PlasmaPuff
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SpawnItemEx("PlasmaShockwave", Flags: SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EOA_PlasmaPuff", Flags: SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("PlasmaImpactLightning", frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), Flags: SXF_NOCHECKPOSITION);
+			EOA_ActorExtensions.SpawnCustomDynamicLight(Self, "PLRAddLight", DynamicLight.PulseLight, (25, 204, 255), 32, 1, DYNAMICLIGHT.LF_ADDITIVE, 3, (0, 0, Height / 2), 1.0 * 3 / TICRATE);
+			EOA_ActorExtensions.SpawnCustomDynamicLight(Self, "PLRAttLight", DynamicLight.PulseLight, (25, 204, 255), 32, 1, DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 1.0 * 3 / TICRATE);
+		}
+		TNT1 AAAAAAAAAA 0
+		{
+			A_SpawnProjectile("PlasmaSpark", 0, 0, random(1, 360), CMF_AIMDIRECTION, random(-45, 45));
+			A_SpawnProjectile("ChaingunUraniumPuffSpark", 0, 0, random(1, 360), CMF_AIMDIRECTION, random(-90, 45));
+		}
+		Goto Super::Spawn;
+	}
+}
+
+//[DoomKrakken]: Effects pilfered from ZION... :D
+Class PlasmaShockWave : Actor
+{
+	Default
+	{
+		Scale 0.33;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class PlasmaImpactLightning : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2]";
+		Scale 0.075;
+		Alpha 0.99;
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_SetRoll(random(0, 359));
+			Return A_Jump(256, random(1, 8));
+		}
+		LBLT ABCDEFGH 0 A_Jump(256, "KeepSprite");
+	KeepSprite:
+		LBLT "#" 1 
+		{
+			A_FadeOut(0.25);
+			A_SetScale(Scale.X * 1.3);
+		}
+		Wait;
+	}
+}
+
+Class PlasmaSpark : Actor
+{
+	Default
+	{
+		Radius 0;
+		Height 0;
+		Speed 7;
+		RenderStyle "Add";
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2]";
+		Scale 0.2;
+		+BRIGHT
+		+CANNOTPUSH
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOBLOCKMONST
+		+NOTRIGGER
+		+THRUACTORS
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256, random(1, 4));
+		DEBR ABCD 0 A_Jump(256, "FX");
+	FX:
+		"####" "#" 3 
+		{
+			A_SetScale(Scale.X * frandom(1, 1.25));
+			A_SetRoll(random(0, 359));
+		}
+		"####" "#" 1
+		{
+			A_SetScale(Scale.X - 0.025);
+			If (Scale.X <= 0)
+			{
+				Return ResolveState("Null");
+			}
+			Return ResolveState(Null);
+		}
+		Wait;
+	}
+}
+
+Class PlasmaSpark2 : Actor
+{
+	Default
+	{
+		Radius 0;
+		Height 0;
+		Speed 7;
+		RenderStyle "Add";
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2]";
+		Scale 0.2;
+		+NOGRAVITY
+		+BRIGHT
+		+CANNOTPUSH
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+MISSILE
+		+NOBLOCKMAP
+		+NOBLOCKMONST
+		+NOTRIGGER
+		+THRUACTORS
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256, random(1, 4));
+		DEBR ABCD 0 A_Jump(256, "FX");
+	FX:
+		"####" "#" 0 
+		{
+			A_Jump(230, 2);
+			Actor a = Spawn("PlasmaImpactLightning", pos);
+			If(a) {a.Scale.X = 0.05;}
+			A_Jump(150, 2);
+		}
+		Stop;
+		"####" "#" 3 
+		{
+			A_SetScale(Scale.X * frandom(1, 1.25));
+			A_SetRoll(random(0, 359));
+		}
+		"####" "#" 1
+		{
+			A_SetScale(Scale.X - 0.025);
+			If (Scale.X <= 0)
+			{
+				Return ResolveState("Null");
+			}
+			Return ResolveState(Null);
+		}
+		Wait;
+	}
+}
+
+Class HeatBlastSFX : Actor
+{
+	Default
+	{
+		ReactionTime 70;
+		+DONTBLAST
+		+DONTTHRUST
+		+NOINTERACTION
+		+NOTIMEFREEZE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_StartSound("HeatBlast/Fire", 1);
+			A_StartSound("HeatBlast/Fire", 2);
+			A_StartSound("HeatBlast/Fire", 3);
+			A_StartSound("HeatBlast/Fire", 4);
+			A_StartSound("HeatBlast/Shrill", 5, 0, 0.25);
+			A_StartSound("HeatBlast/Distort", 6, 0, 0.5);
+			If (CountInv("ExpandedThreshold", AAPTR_TARGET))
+			{
+				A_StartSound("HeatBlast/Add", 7);
+			}
+		}
+		TNT1 A 1
+		{
+			A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, Null, 0.5);
+			If (ReactionTime-- <= 0 || !Target)
+			{
+				Return ResolveState("Null");
+			}
+			Return ResolveState(Null);
+		}
+		Wait;
+	}
+}
+
+Class StunBombSFX : HeatBlastSFX
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_StartSound("PRS/Fire", 1);
+			A_StartSound("PRS/Add", 2, 0, 0.5);
+		}
+		Goto Super::Spawn+1;
+	}
+}
+
+Class HeatBlastWave : Actor //Sprite modified from Guncaster.
+{
+	Default
+	{
+		Projectile;
+		Renderstyle "Add";
+		Alpha 0.99;
+		Scale 0.3;
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+FLATSPRITE
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay
+		{
+			A_FadeOut(0.10);
+			A_SetScale(Scale.X + 0.4);
+		}
+		Wait;
+	}
+}
+
+Class HeatBlastWaveFX : Actor
+{
+	Default
+	{
+		Projectile;
+		Renderstyle "Add";
+		Alpha 0.99;
+		Scale 0.3;
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay
+		{
+			A_SpawnItemEx("PlasmaShockWaveHBW", 20, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("PlasmaShockWaveSHBW", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EOA_PlasmaPuffHBW", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
+		Stop;
+	}
+}
+
+Class HeatBlastWaveFX2 : Actor
+{
+	Default
+	{
+		Projectile;
+		Renderstyle "Add";
+		Alpha 0.99;
+		Scale 0.3;
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay
+		{
+			A_SpawnItemEx("PlasmaShockWaveHBW2", 20, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("PlasmaShockWaveSHBW2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EOA_PlasmaPuffHBW2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
+		Stop;
+	}
+}
+
+Class HeatBlastWaveFX3 : Actor
+{
+	Default
+	{
+		Projectile;
+		Renderstyle "Add";
+		Alpha 0.99;
+		Scale 0.3;
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay
+		{
+			A_SpawnItemEx("PlasmaShockWaveHBW3", 20, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("PlasmaShockWaveSHBW3", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EOA_PlasmaPuffHBW3", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
+		Stop;
+	}
+}
+
+Class EOA_PlasmaPuffHBW : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Scale 0.25;
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[0.6, 1.0, 1.8]";
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		DBP2 A 0 A_Jump(128, 2);
+		DBPP A 0;
+		"####" ABCDEFGHI 1;
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveSHBW : Actor
+{
+	Default
+	{
+		Scale 0.30;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2.00]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveHBW : Actor
+{
+	Default
+	{
+		Scale 0.75;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2.00]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class EOA_PlasmaPuffHBW2 : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Scale 0.25;
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.1, 0.6, 1.1]";
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		DBP2 A 0 A_Jump(128, 2);
+		DBPP A 0;
+		"####" ABCDEFGHI 1;
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveSHBW2 : Actor
+{
+	Default
+	{
+		Scale 0.30;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.57, 1.00, 1.50]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveHBW2 : Actor
+{
+	Default
+	{
+		Scale 0.75;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.57, 1.00, 1.50]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class EOA_PlasmaPuffHBW3 : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Scale 0.25;
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.8, 0.4, 0.4]";
+		+BRIGHT
+		+DONTBLAST
+		+DONTTHRUST
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		DBP2 A 0 A_Jump(128, 2);
+		DBPP A 0;
+		"####" ABCDEFGHI 1;
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveSHBW3 : Actor
+{
+	Default
+	{
+		Scale 0.30;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class PlasmaShockWaveHBW3 : Actor
+{
+	Default
+	{
+		Scale 0.75;
+		RenderStyle "Add";
+		Alpha 0.99;
+		Translation "0:255=%[0, 0, 0]:[1.8, 0.6, 0.60]"; //"0:255=%[0, 0, 0]:[0, 0.5, 1.5]";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		PLSK A 0 NoDelay A_SetRoll(frandom(0, 359));
+		PLSK AAA 1 
+		{
+			A_FadeOut(0.2);
+			A_SetScale(Scale.X * 1.2);
+		}
+		Stop;
+	}
+}
+
+Class StunBombProjectile : EOA_Projectile
+{
+	Default
+	{
+		Radius 10;
+		Height 10;
+		Speed 40;
+		Scale 0.25;
+		RenderStyle "Add";
+		Gravity 0.5;
+		Alpha 0.99;
+		+BRIGHT
+		+FORCERADIUSDMG
+		+FORCEXYBILLBOARD
+		-NOGRAVITY
+	}
+	Override Int DoSpecialDamage(Actor Target, Int Damage, Name DamageType)
+	{
+		//[DoomKrakken]: Tanky monsters such as Barons burn through this stuff twice as fast... so the effect tics will be halved.
+		If (Target Is "EOA_WeakPoint")
+		{
+			EOA_WeakPoint WP = EOA_WeakPoint(Target);
+			If (WP && WP.Owner)
+			{
+				WP.Owner.A_GiveInventory("PowerStunned");
+				Let StunItem = PowerStunned(WP.Owner.FindInventory("PowerStunned"));
+				If (StunItem)
+				{
+					StunItem.EffectTics *= 1 + CountInv("LongerStun", AAPTR_TARGET);
+					StunItem.EffectTics = clamp(StunItem.EffectTics, 0, 88 * (1 + CountInv("LongerStun", AAPTR_TARGET))); 
+					StunItem.Master = WP.Owner.Target = Self.Target;
+				}
+			}
+		}
+		Else
+		{
+			If(!Target.bNODAMAGE && !Target.bNOPAIN)
+			{
+				Target.A_GiveInventory("PowerStunned");
+				Let StunItem = PowerStunned(Target.FindInventory("PowerStunned"));
+				If (StunItem)
+				{
+					StunItem.EffectTics *= 1 + CountInv("LongerStun", AAPTR_TARGET);
+					StunItem.EffectTics = clamp(StunItem.EffectTics, 0, 88 * (1 + CountInv("LongerStun", AAPTR_TARGET)));
+					StunItem.Master = Target.Target = Self.Target;
+				}
+			}
+		}
+		Return 0;
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256, random(1, 3));
+		STBM ABC 0 A_Jump(256, "SpawnLoop");
+	SpawnLoop:
+		"####" "#" 1 EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (25, 204, 255), 32, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+		Wait;
+	Death:
+		TNT1 A 10
+		{
+			A_SpawnItemEx("StunBombProjectileExplosionFX", Flags: SXF_NOCHECKPOSITION);
+			A_Explode(1, 48 + (112 * CountInv("BigShock", AAPTR_TARGET)), 0, 1, 48 + (112 * CountInv("BigShock", AAPTR_TARGET)));
+			A_StartSound("StunBomb/Impact", 1, 0, 0.5);
+			A_StartSound("StunBomb/Explode", 2);
+			A_StartSound("StunBomb/Shock", 3, 0, 0.5);
+			EOA_SpawnCustomDynamicLight("PLRAddLight", DynamicLight.PulseLight, (25, 204, 255), 96, 1, DYNAMICLIGHT.LF_ADDITIVE, Tics, (0, 0, Height / 2), 1.25 * Tics / TICRATE);
+			EOA_SpawnCustomDynamicLight("PLRAttLight", DynamicLight.PulseLight, (25, 204, 255), 96, 1, DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2), 1.25 * Tics / TICRATE);
+		}
+		Stop;
+	}
+}
+
+Class StunBombProjectileExplosionFX : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		Scale 0.2;
+		+NOINTERACTION
+		+FLATSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetScale(0.1 * (1 + CountInv("BigShock", AAPTR_TARGET)));
+		TNT1 AAAAA 0 A_SpawnItemEx("StunBombImpactLightning", frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), Flags: SXF_NOCHECKPOSITION|SXF_TRANSFERSCALE);
+		TNT1 AAA 0 A_SpawnItemEx("StunBombShockWave", Flags: SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS);
+		TNT1 A 1;
+		Stop;
+	}
+}
+
+Class StunBombImpactLightning : PlasmaImpactLightning
+{
+	Default
+	{
+		Scale 0.3;
+		+BRIGHT
+		+FLATSPRITE
+	}
+	States
+	{
+	KeepSprite:
+		LBLT "#" 1 
+		{
+			A_FadeOut(0.125);
+			A_SetScale(Scale.X * 1.3);
+		}
+		Wait;
+	}
+}
+
+Class PowerStunned : EOA_Powerup
+{
+	Default
+	{
+		Powerup.Duration 74;
+		+EOA_POWERUP.NOLIGHT //[DoomKrakken]: Only done so that the powerlight in the base class doesn't spawn in the first place. ;)
+	}
+	Override Void AttachToOwner(Actor Other)
+	{
+		ActiveSound = "StunBomb/Stun";
+		Super.AttachToOwner(Other);
+		Red = 1.0;
+		Green = 0.2;
+		Blue = 0.1;
+		Int R, G, B;
+		R = Red * 255;
+		G = Green * 255;
+		B = Blue * 255;
+		EOA_ActorExtensions.SpawnCustomDynamicLight(Other, Self.GetClassName(), DynamicLight.PointLight, (R, G, B), 32, 0, DYNAMICLIGHT.LF_ATTENUATE, -1, (0, 0, Owner.Height / 2));
+		Other.bFLOAT = False;
+		Other.A_SetSpeed(0);
+	}
+	Override Void DoEffect()
+	{
+		If (EffectTics < 0)
+		{
+			Destroy();
+			Return;
+		}
+		EOA_ActorExtensions.SpawnNoiseMaker(Owner, ActiveSound, 30, CHANF_LOOPING|CHANF_OVERLAP|CHANF_LISTENERZ);
+		If (!(GetAge() % 5))
+		{
+			Owner.A_SpawnItemEx("StunBombLightning", ZOfs: Owner.Height / 2, XVel: frandom(-3, 3), YVel: frandom(-3, 3), ZVel: frandom(-3, 3), Flags: SXF_NOCHECKPOSITION);
+		}
+		Owner.bFORCEPAIN = True;
+		Owner.bNODAMAGE = True;
+		Owner.A_DamageSelf(1, Flags: DMSS_FOILINVUL|DMSS_FOILBUDDHA|DMSS_NOFACTOR|DMSS_NOPROTECT);
+		Owner.bNODAMAGE = Owner.Default.bNODAMAGE;
+		Owner.bFORCEPAIN = Owner.Default.bFORCEPAIN;
+		Powerup.DoEffect(); //[DoomKrakken]: Not Super, because it calls unnecessary stuff we can skip.
+	}
+	Override Bool HandlePickup(Inventory Item)
+	{
+		If (Item.GetClass() == GetClass())
+		{
+			Let Power = EOA_Powerup(Item);
+			If (!Power.EffectTics)
+			{
+				Power.bPICKUPGOOD = True;
+				Return True;
+			}
+			If (Power.bADDITIVETIME) 
+			{
+				EffectTics += Power.EffectTics / (1 + (Owner.Default.Health >= 1000)); //[DoomKrakken]: Tanky monsters such as Barons burn through this stuff twice as fast... so the effect tics will be halved.
+				BlendColor = Power.BlendColor;
+			}
+			Else If (EffectTics > BLINKTHRESHOLD && !Power.bALWAYSPICKUP)
+			{
+				Return True;
+			}
+			Else If (Power.EffectTics > EffectTics)
+			{
+				EffectTics = Power.EffectTics / (1 + (Owner.Default.Health >= 1000));
+				BlendColor = Power.BlendColor;
+			}
+			Power.bPICKUPGOOD = True;
+			Return True;
+		}
+		Return False;
+	}
+	Override Void EndEffect()
+	{
+		If (Owner)
+		{
+			Owner.bNODAMAGE = Owner.Default.bNODAMAGE;
+			Owner.bFORCEPAIN = Owner.Default.bFORCEPAIN;
+			Owner.bFLOAT = Owner.Default.bFLOAT;
+			Owner.A_SetSpeed(Owner.Default.Speed);
+		}
+		Super.EndEffect();
+	}
+}
+
+Class StunBombShockWave : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Scale 0.1;
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+FLATSPRITE
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		BSW2 A 1 Bright
+		{
+			A_FadeOut(0.1);
+			A_SetScale(Scale.X + 0.05 * (1 + CountInv("BigShock", AAPTR_TARGET)));
+		}
+		Wait;
+	}
+}
+
+Class StunBombLightning : PlasmaImpactLightning
+{
+	Default
+	{
+		Scale 0.1;
+		Translation "Red";
+		+BRIGHT
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SetRoll(random(0, 359));
+			Return A_Jump(256, random(1, 8));
+		}
+		LBLT ABCDEFGH 0 A_Jump(256, "KeepSprite");
+	KeepSprite:
+		LBLT "#" 1 
+		{
+			A_FadeOut(0.1);
+			A_SetScale(Scale.X * 1.1);
+		}
+		Wait;
+	}
+}
+
+Class ChainStunTracerRetriever : Actor
+{
+	Action Bool EOA_ChainStun(Int Dist, Double Ang)
+	{
+		Let ChainStunOwner = Target;
+		If (ChainStunOwner)
+		{
+			Tracer = Null;
+			A_CopyFriendliness(AAPTR_MASTER);
+			A_ClearTarget();
+			A_LookEx(LOF_NOSOUNDCHECK|LOF_NOJUMP, 0, Dist, 0, Ang);
+			If (Target && CheckIfTargetInLOS(Ang, JLOSF_ALLYNOJUMP, Dist) && Invoker.Distance3D(Target) <= Dist)
+			{
+				Tracer = Target;
+				Target = ChainStunOwner;
+				If (Tracer && (!Tracer.bBOSS || (Tracer.bBOSS && Tracer.Default.Health < 3000)))
+				{
+					A_GiveInventory("PowerStunned", 1, AAPTR_TRACER);
+					Let StunItem = PowerStunned(Tracer.FindInventory("PowerStunned"));
+					If (StunItem)
+					{
+						StunItem.EffectTics *= 1 + CountInv("LongerStun", AAPTR_MASTER);
+						StunItem.EffectTics = clamp(StunItem.EffectTics, 0, 88 * (1 + CountInv("LongerStun", AAPTR_MASTER)));
+					}
+				}
+				Return True;
+			}
+			Target = ChainStunOwner;
+		}
+		Return False;
+	}
+}
+
+Class ChainStunLightningTracerSpawner : ChainStunTracerRetriever
+{
+	Default
+	{
+		Projectile;
+		Radius 1;
+		Radius 1;
+		ReactionTime 12;
+		MissileHeight 0;
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_MASTER, AAPTR_TARGET);
+	See:
+		TNT1 A 0 
+		{
+			/*If (EOA_ChainStun(400, 30))
+			{
+				A_SpawnItemEx("StunBombLightningTracerSpawner", Flags: SXF_TRANSFERPOINTERS);
+			}*/
+		}
+	Turnito:
+		TNT1 A 0
+		{
+			A_SetAngle(Angle + 30);
+			A_CountDown();
+		}
+		Goto See;
+	}
+}
+
+Class StunBombLightningTracerSpawner : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		+NOINTERACTION
+	}
+	States
+	{
+	Spawn:
+		TNT1 AAAAAAAA 1
+		{
+			If (Target)
+			{
+				A_Warp(AAPTR_TARGET, 0, 0, Target.Default.Height / 2, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE, Null);
+				A_SpawnItemEx("StunBombLightningTracer", Flags: SXF_TRANSFERPOINTERS);
+			}
+		}
+		Stop;
+	}
+}
+
+Class StunBombLightningTracer : LightningBeamBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			If (!Tracer)
+			{
+				Return ResolveState("Null");
+			}
+			Dist[1] =  Distance3D(Tracer);
+			Stats[0] = 64;
+			Stats[1] = 400;
+			Stats[2] = 8;
+			Return ResolveState("Fly");
+		}
+		Goto Fly;
+	Missile:
+		TNT1 A 0
+		{
+			A_SpawnItemEx("StunBombLightningTracerFX", cos(-Pitch) * (Stats[0] / 2), 0, sin(Pitch) * (Stats[0] / 2), cos(-Pitch) * (Stats[0] * 0.0001), 0, sin(Pitch) * (Stats[0] * 0.0001), 0, SXF_TRANSFERPITCH);
+			Return A_Jump(256, "Move");
+		}
+		Goto Move;
+	}
+}
+
+Class StunBombLightningTracerFX : LightningBeamTrailBase
+{
+	Default
+	{
+		Translation "0:255=%[0, 0, 0]:[1.07, 1.65, 2]";
+	}
+}
+
+//Red Plasma Ball, fired by enemies...
+Class EOA_EnemyPlasmaBall : EOA_PlasmaBall
+{
+	Default
+	{
+		DamageFunction 5;
+		RenderStyle "Add";
+		Speed 30;
+		Decal "EMGPuffBigScorchRed";
+		Translation "0:255=%[0, 0, 0]:[1.5, 0.66, 0.66]";
+		EOA_Projectile.PuffType "EOA_EnemyPlasmaPuffComplex";
+	}
+	States
+	{
+	Spawn:
+		PSB1 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (178, 84, 84), 16, 16, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 1, (0, 0, Height / 2));
+		PSB2 ABCDEF 1 EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (178, 84, 84), 16, 16, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, 1, (0, 0, Height / 2));
+		Loop;
+	XDeath:
+		TNT1 A 0 A_StartSound("Projectile/HitFlesh");
+	Crash:
+	Death:
+		TNT1 A 1
+		{
+			A_SpawnItemEx("EOA_EnemyPlasmaPuffComplex");
+			A_StartSound("PlasmaBall/Impact", 5, 0, 0.25);
+		}
+		Stop;
+	}
+}
+
+Class EOA_EnemyPlasmaPuff : EOA_PlasmaPuff //Graphics taken from D4T and ZION. :D
+{
+	Default
+	{
+		Translation "0:255=%[0, 0, 0]:[1.5, 0.66, 0.66]";
+	}
+}
+
+Class EOA_EnemyPlasmaPuffComplex : EOA_EnemyPlasmaPuff
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_SpawnItemEx("EnemyPlasmaShockwave", Flags: SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EOA_EnemyPlasmaPuff", Flags: SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("EnemyPlasmaImpactLightning", frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), Flags: SXF_NOCHECKPOSITION);
+			EOA_ActorExtensions.SpawnCustomDynamicLight(Self, "PLRAddLight", DynamicLight.PulseLight, (178, 84, 84), 32, 1, DYNAMICLIGHT.LF_ADDITIVE, 3, (0, 0, Height / 2), 1.0 * 3 / TICRATE);
+			EOA_ActorExtensions.SpawnCustomDynamicLight(Self, "PLRAttLight", DynamicLight.PulseLight, (178, 84, 84), 32, 1, DYNAMICLIGHT.LF_ATTENUATE, 3, (0, 0, Height / 2), 1.0 * 3 / TICRATE);
+		}
+		TNT1 AAAAAAAAAA 0
+		{
+			A_SpawnProjectile("EnemyPlasmaSpark", 0, 0, random(1, 360), CMF_AIMDIRECTION, random(-45, 45));
+			A_SpawnProjectile("RedPlasmaPuffSpark", 0, 0, random(1, 360), CMF_AIMDIRECTION, random(-90, 45));
+		}
+		Goto Super::Spawn;
+	}
+}
+
+//[DoomKrakken]: Effects pilfered from ZION... :D
+Class EnemyPlasmaShockWave : PlasmaShockWave
+{
+	Default
+	{
+		Translation "0:255=%[0, 0, 0]:[1.5, 0.66, 0.66]";
+	}
+}
+
+Class EnemyPlasmaImpactLightning : PlasmaImpactLightning
+{
+	Default
+	{
+		Translation "Red";
+	}
+}
+
+Class EnemyPlasmaSpark : PlasmaSpark
+{
+	Default
+	{
+		Translation "Red";
+	}
+}

@@ -1,0 +1,193 @@
+
+/// +++++++++++++++++////
+/// Blood Base
+/// +++++++++++++++++////
+decal BlueBloodSplat001
+{
+pic BSPLNEW
+shade "00 00 50"
+x-scale 0.35
+y-scale 0.35
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat002
+{
+pic BSPLNEW2
+shade "00 00 50"
+x-scale 0.35
+y-scale 0.35
+randomflipx
+randomflipy
+}
+
+decal BlueBloodSplat003
+{
+pic BSPLNEW3
+shade "00 00 50"
+x-scale 0.35
+y-scale 0.35
+randomflipx
+randomflipy
+}
+
+decalgroup BlueBloodSplat
+{
+BlueBloodSplat001 6
+BlueBloodSplat002 6
+BlueBloodSplat003 6
+}
+
+
+
+
+decal BrutalBlueBloodSmear1
+{
+	pic BSPLNEW4
+	x-scale 0.4
+	y-scale 0.4
+	shade "00 00 50"
+	randomflipx
+	animator BrutalBloodSmearer
+}
+
+decal BrutalBlueBloodSmear2
+{
+	pic BSPLNEW5
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	shade "00 00 50"
+	animator BrutalBloodSmearer
+}
+
+decalgroup BrutalBlueBloodSmear
+{
+	BrutalBlueBloodSmear1	1
+	BrutalBlueBloodSmear2	1
+}
+
+
+
+decal BrutalBlueBloodSmearSmall1
+{
+	pic BSPLNEW8
+	x-scale 0.355
+	y-scale 0.355
+	randomflipx
+	shade "00 00 50"
+	animator BrutalBloodSmearerSmall
+}
+
+decal BrutalBlueBloodSmearSmall2
+{
+	pic BSPLNEW7
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	shade "00 00 50"
+	animator BrutalBloodSmearerSmall
+}
+
+decalgroup BrutalBlueBloodSmearSmall
+{
+	BrutalBlueBloodSmearSmall1	1
+	BrutalBlueBloodSmearSmall2	1
+}
+
+
+
+decal BlueBloodSplat01
+{
+pic BSPLNEW
+x-scale 0.355
+y-scale 0.355
+randomflipx
+randomflipy
+shade "00 00 50"
+}
+
+decal BlueBloodSplat02
+{
+pic BSPLNEW2
+x-scale 0.355
+y-scale 0.355
+randomflipx
+randomflipy
+shade "00 00 50"
+}
+
+
+
+decalgroup BlueBloodSplat
+{
+BlueBloodSplat01 6
+BlueBloodSplat02 6
+}
+
+
+decalgroup BlueBlood
+{
+BlueBloodSplat01 6
+BlueBloodSplat02 6
+}
+
+
+
+
+decal BlueBloodSuper01
+{
+pic BSPLBIG1
+x-scale 0.45
+y-scale 0.45
+randomflipx
+randomflipy
+shade "00 00 50"
+lowerdecal BlueBloodSmear
+}
+
+decal BlueBloodSuper02
+{
+pic BSPLBIG2
+x-scale 0.45
+y-scale 0.45
+randomflipx
+shade "00 00 50"
+lowerdecal BlueBloodSmear
+}
+
+decalgroup BlueBloodSuper
+{
+BlueBloodSuper01 6
+BlueBloodSuper02 6
+}
+
+
+
+decal BrutalBloodGiant01
+{
+pic BSPLBIG1
+x-scale 1.0
+y-scale 1.0
+randomflipx
+randomflipy
+shade "00 00 50"
+lowerdecal BrutalBloodSmear
+}
+
+decal BrutalBloodGiant02
+{
+pic BSPLBIG2
+x-scale 1.0
+y-scale 1.0
+randomflipx
+shade "00 00 50"
+lowerdecal BrutalBloodSmear
+}
+
+decalgroup BrutalBloodGiant
+{
+BrutalBloodGiant01 6
+BrutalBloodGiant02 6
+}

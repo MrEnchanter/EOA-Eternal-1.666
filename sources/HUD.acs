@@ -1,0 +1,1083 @@
+#library "HUD"
+#include "zcommon.acs"
+#Define HUDBaseWidth 1280 //1120
+#Define HUDBaseHeight 960 //840
+#Define PlayerLowHealth 40
+#Define MaxWeapons 12
+#DEFINE GXHairW 1364
+#DEFINE GXHairH 1023
+
+#Define WeapInfo_Ammo 1
+#Define WeapInfo_AmmoType 2
+#Define WeapInfo_MaxAmmo 3
+#Define WeapInfo_MaxAmmo2 4
+#Define WeapInfo_LowAmmo 5
+
+#Define WeapInfo_WeaponIcon 0
+//#Define WeapInfo_AmmoType 1
+#Define WeapInfo_AmmoAmount 1
+#Define WeapInfo_AmmoMaxAmount 2
+#Define WeapInfo_AmmoWarnAmount 3
+#Define WeapInfo_AmmoLowAmount 4
+//[DoomKrakken]: Taken from ZION, adjusted to fit this mod accordingly. ;)
+/*Str FunnyChainsawPics[5][8]={
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+{ "TNT1A0", "HUDSAW3", "HUDSAW2", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1", "HUDSAW1"},
+};*/
+//[Fat tony]: no more chainsaw hud for you lolmao
+Str HUDWeaponIcons[14]={
+"ICOPISS",
+"ICONCSG",
+"ICOMCSG",
+"ICONHAR",
+"ICONRLR",
+"ICONPLR",
+"ICONPLR",
+"ICONHAR",
+"ICONBFG",
+"ICONBFG",
+"ICONSAW",
+"ICONSAW",
+"ICOFIST"
+};
+
+Str HUDWeaponMIcons[14]={
+"ICOPISS",
+"ICOMCSG",
+"ICOMCSG",
+"ICOMHAR",
+"ICOMRLR",
+"ICOMPLR",
+"ICOMPLR",
+"ICOMHAR",
+"ICONBFG",
+"ICONBFG",
+"ICONSAW",
+"ICONSAW",
+"ICOFIST"
+};
+
+
+Str SelectedWeapons[10]={
+"",
+"CombatShotgunSelected",
+"SuperShotgunSelected",
+"HeavyAssaultRifleSelected",
+"RocketLauncherSelected",
+"PlasmaRifleSelected",
+"GaussCannonSelected",
+"ChaingunSelected",
+""
+};
+
+Str SelectedMods[10][2]={
+{"",""},
+{"ChargedBurstSelected", "ExplosiveShotSelected"},
+{"", ""},
+{"MicroMissilesSelected", "TacticalScopeSelected"},
+{"LockOnBurstSelected", "RemoteDetonationSelected"},
+{"HeatBlastSelected", "StunBombSelected"},
+{"PrecisionBoltSelected", "SiegeModeSelected"},
+{"GatlingRotatorSelected", "MobileTurretSelected"},
+{"",""}
+};
+
+Str HUDAmmoTypeIcons[9]={
+"AMTPSHEL",
+"AMTPBOLT",
+"AMTPCELL",
+"AMTPRCKT",
+"AMTPBFG",
+"AMTPBFG",
+"AMTPFUEL",
+"AMTPCRUC",
+"ICOFIST"
+};
+
+Str HUDRuneIcons[9]={
+"VACUM",
+"DZDNCNF",
+"SAVGRY",
+"SEKDSTRY",
+"INFMOB",
+"ARMRDOF",
+"BLODFL",
+"IMTBST",
+"SVNGTHRW"
+};
+
+Function Int Min(Int x, Int y)
+{
+	If (x < y) { Return x; }
+	Return y;
+}
+
+Function Int Max (Int x, Int y)
+{
+	If (x > y) { Return x; }
+	Return y;
+}
+
+Function Void DrawHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha)
+{
+	SetFont(Font);
+	Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+	Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+	X = FixedMul(X, Scale) * 1.0 + 0.1;
+	Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+	SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+	HudMessage(s:Text;HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Int CurrentFrame;
+Int CurTick;
+
+Function Void DrawAnimatedHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha, Int FramesNumber, Int TickSpeed)
+{
+		CurTick -= 1;
+		If(CurTick <= 0)
+		{
+			CurrentFrame += 1;
+			CurTick = TickSpeed;
+		}
+		If (CurrentFrame > FramesNumber)
+		{CurrentFrame = 0;}
+		Str sFont = StrParam(s:Font, d:CurrentFrame);
+		SetFont(sFont);
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		X = FixedMul(X, Scale) * 1.0 + 0.1;
+		Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:Text;HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Function Void DrawReadyEquipment(Int PosX, Int PosY, Int Alpha)
+{
+	Int U_XOffset = 210;
+	Int U_YOffset = 32;
+	Int Scale = 1.1 + 0.4;
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (350 - U_XOffset);
+	DrawAnimatedHUDStuff("EQRDY", "A", HudRXOffset + FixedDiv(PosX, Scale), HudYOffset + FixedDiv(PosY, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 3.0), Alpha, 9, 1);
+}
+
+Script "DrawReadyAnim" (Int PosX, Int PosY, Int Frames)
+{
+	for (int i = 0; i < Frames; i++)
+	{
+		DrawReadyEquipment(PosX, PosY, 1.0);
+		DrawReadyEquipment(PosX, PosY, 1.0);
+		Delay(1);
+	}
+}
+
+Function Void DrawReadyEquipment2(Int PosX, Int PosY, Int Alpha)
+{
+	Int U_XOffset = 210;
+	Int U_YOffset = 32;
+	Int Scale = 1.1 + 0.4;
+	Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+	Int HudLXOffset = (-370 + U_XOffset);
+	DrawAnimatedHUDStuff("EQRDY", "A", HudLXOffset + FixedDiv(PosX, Scale), HudYOffset + FixedDiv(PosY, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 3.0), Alpha, 9, 1);
+	DrawAnimatedHUDStuff("EQFLSH", "A", HudLXOffset + FixedDiv(PosX + 10, Scale), HudYOffset + FixedDiv(PosY + 25, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 2.7), Alpha - 0.7, 9, 1);
+}
+
+Script "DrawReadyAnimR" (Int PosX, Int PosY, Int Frames)
+{
+	for (int i = 0; i < Frames; i++)
+	{
+		DrawReadyEquipment2(PosX, PosY, 1.0);
+		Delay(1);
+	}
+}
+
+Function Void SDrawHUDStuff(Str Font, Str Text, Int X, Int Y, Int Color, Int Flags, Int Scale, Int Alpha, Int FrameNumber)
+{
+	Str SText = StrParam(s:Font, d:FrameNumber);
+	SetFont(SText);
+	Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+	Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+	X = FixedMul(X, Scale) * 1.0 + 0.1;
+	Y = FixedMul(Y, Scale) * 1.0 + 0.2;
+	SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+	HudMessage(s:"A";HUDMSG_PLAIN|HUDMSG_NOTWITHFULLMAP|HUDMSG_ALPHA|Flags, 0, Color, X, Y, 0.033, Alpha);
+}
+
+Script "HUDStuffSwitch" (void)
+{
+	SetActivator(0, AAPTR_PLAYER1);
+	If (GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11 )
+	{
+		SetResultValue(0);
+	}
+	Else
+	{
+		If (GetActorProperty(0, APROP_HEALTH) <= 0)
+		{
+			SetResultValue(0);
+		}
+		Else { SetResultValue(1); }
+	}
+}
+
+Str Weapons[MaxWeapons] = {"EOA_Pistol", "EOA_CombatShotgun", "EOA_SuperShotgun", "EOA_HeavyAssaultRifle", "EOA_RocketLauncher", "EOA_PlasmaRifle", "EOA_GaussCannon", "EOA_Chaingun", "EOA_BFG", "EOA_Unmaykr", "EOA_Chainsaw", "DEHellBreaker"};
+Int WeaponAmmoTypes[MaxWeapons] = {1, 3, 3, 2, 4, 5, 5, 2, 6, 7, 9};
+Str AmmoTypes[9] = {"None", "EOA_EMGAmmo", "EOA_BulletAmmo", "EOA_ShellAmmo", "EOA_RocketAmmo", "EOA_CellAmmo", "EOA_BFGAmmo", "EOA_FuelAmmo", "CrucibleAmmo"};
+Int LowAmmoValues[8][2]={{-1, -1}, {-1, -1}, {30, 60}, {6, 12}, {5, 10}, {50, 100}, {-1, -1}, {1, 2}};
+
+Function Int GetWeaponInfo(Str Weapon, Int Info)
+{
+	Int WeapNum = -1;
+	Int AMTPNum = -1;
+	For (Int i = 0; i < MaxWeapons; i++)
+	{
+		If (StrICmp(Weapons[i], Weapon) == 0)
+		{
+			WeapNum = i;/*
+		Str AmmoInfo = StrParam(s:Weapon,s:"/",s:Weapons[i]);
+		DrawHUDStuff("BIGFONT",GetWeaponModInfo(i,0),500,192,CR_WHITE,0,0.5,1.0);
+		DrawHUDStuff("BIGFONT",GetWeaponModInfo(i,1),500,210,CR_WHITE,0,0.5,1.0);*/
+			Break;
+		}
+	}
+	If (Info == 0)
+	{
+		Return WeapNum;
+	}
+	Int AmmoNum = WeaponAmmoTypes[WeapNum];
+	Str AmmoType = AmmoTypes[AmmoNum];
+	//Int Upgrades = CheckInventory("PlayerAmmoUpgrade");
+	If (AmmoType == "None" || AmmoType == "EOA_EMGAmmo" || ScriptCall("EOA_Weapon", "CheckInfiniteAmmoFunction"))
+	{
+		Return -2;
+	}
+	If (Info == WeapInfo_Ammo)
+	{
+		Return CheckInventory(AmmoType);
+	}
+	Else If (Info == WeapInfo_AmmoType)
+	{
+		Return AmmoNum;
+	}
+	Else If (Info == WeapInfo_MaxAmmo)
+	{
+		Return GetAmmoCapacity(AmmoType);
+	}
+	/*Else If(Info == WeapInfo_MaxAmmo2)
+	{
+		Int MaxAmmoBase=AmmoUpgrades[0][AmmoNum];
+		Int MaxAmmo=MaxAmmoBase+(AmmoUpgrades[1][AmmoNum]*Upgrades);
+		Return MaxAmmo;
+	}*/
+	Else If (Info == WeapInfo_LowAmmo)
+	{
+		If (CheckInventory(AmmoType) <= LowAmmoValues[AmmoNum][0])
+		{
+			Return 1;
+		}
+		Else If (CheckInventory(AmmoType) <= LowAmmoValues[AmmoNum][1])
+		{
+			Return 2;
+		}
+		Else
+		{
+			Return 0;
+		}
+	}
+	Return WeapNum;
+}
+
+Str WeaponMods[MaxWeapons][2][2]={
+{ {"Health", "Health"}, {"PISMOD","PISMOD"} }, //EMG Pistol
+{ {"ChargedBurstSelected", "ExplosiveShotSelected"}, {"CSMOD1","CSMOD2"} },//Combat Shotgun
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} }, //Super Shotgun
+{ {"TacticalScopeSelected", "MicroMissilesSelected"}, {"HARMOD1","HARMOD2"} },//Heavy Assault Rifle
+{ {"RemoteDetonationSelected", "LockOnBurstSelected"}, {"RLMOD1","RLMOD2"} }, //Rocket Launcher
+{ {"StunBombSelected", "HeatBlastSelected"}, {"PLSMOD1","PLSMOD2"} }, //Plasma Rifle
+{ {"PrecisionBoltSelected", "SiegeModeSelected"}, {"GCMOD1","GCMOD2"} }, //Gauss Cannon
+{ {"GatlingRotatorSelected", "MobileTurretSelected"}, {"CHAMOD1","CHAMOD2"} }, //Chaingun
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} }, //BFG-9000
+{ {"Health", "Health"}, {"TNT1A0","TNT1A0"} } //Chainsaw
+};
+
+Function Str GetWeaponModInfo (Int WeaponNumber, Int Info)
+{
+	Str ModName = "Health";
+	Str ModIcon = "TNT1A0";
+	Bool Thingy;
+	If (!CheckInventory(WeaponMods[WeaponNumber][0][0]))
+	{
+		Thingy = True;
+	}
+	If (CheckInventory(WeaponMods[WeaponNumber][0][Thingy]))
+	{
+		ModName = WeaponMods[WeaponNumber][0][Thingy];
+		ModIcon = WeaponMods[WeaponNumber][1][Thingy];
+	}
+	If (Info == 1)
+	{
+		Return ModIcon;
+	}
+	Return ModName;
+}
+
+Script "NOTARGET" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("NOTRGT");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+Script "NOFUEL" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("NOFUEL");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+Script "INVALIDTARGET" (void)
+{
+	Int PNum = PlayerNumber();
+	Int Scale = 1.1 + 1.0;
+	If (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		SetFont("INVALID");
+		Int ScaledHUDW = FixedMul(HUDBaseWidth, Scale);
+		Int ScaledHUDH = FixedMul(HUDBaseHeight, Scale);
+		Int X = FixedMul(80, Scale) * 1.0 + 0.1;
+		Int Y = FixedMul(750, Scale) * 1.0 + 0.2;
+		SetHudSize(ScaledHUDW, ScaledHUDH, 0);
+		HudMessage(s:"NO TARGET";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, X, Y, 0.2, 0.005, 0.2);
+		Delay(12);
+	}
+}
+
+
+Script "EOA HUD" Enter ClientSide
+{
+	Int PNum = PlayerNumber();
+	Int bossesfound = CheckInventory("BossFound");
+	Int TotalMonsters = GetLevelInfo(LEVELINFO_TOTAL_MONSTERS);
+	Bool ChargedGrenade = True;
+	Bool FlashedGrenadeIcon = True;
+	While (PNum == PlayerNumber() && PlayerInGame(PNum))
+	{
+		While (GetActorProperty(0, APROP_HEALTH) < 1 || GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11)
+		{
+			Delay(1);
+		}
+		Int U_XOffset = 210;
+		Int U_YOffset = 32;
+		Int Scale = 1.1 + 0.4;
+		Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+		Int HudLXOffset = (-370 + U_XOffset);
+		If (GetActorProperty(0, APROP_HEALTH) <= PlayerLowHealth) //Pulsing glow
+		{
+			Bool LowHPSound;
+			If (!LowHPSound)
+			{
+				LocalAmbientSound("Player/LowHealth", 127);
+				LowHPSound = True;
+			}
+			Int RedAlpha;
+			Bool FadingRedAlpha;
+
+			If (RedAlpha < 0.2)
+			{
+				FadingRedAlpha = False;
+			}
+			Else If (RedAlpha > 0.75)
+			{
+				FadingRedAlpha = True;
+			}
+
+			If (FadingRedAlpha)
+			{
+				RedAlpha -= 0.033;
+			}
+			Else
+			{
+				RedAlpha += 0.033;
+			}
+			DrawHUDStuff("MHLTHBAR", "A", HudLXOffset, HudYOffset + FixedDiv(-15, Scale), 0, HUDMSG_ADDBLEND, Scale, RedAlpha - 0.2);
+			DrawHUDStuff("LHLTHBAR", "A", HudLXOffset, HudYOffset + FixedDiv(-15, Scale), 0, HUDMSG_ADDBLEND, Scale, RedAlpha + 0.25);
+		}
+		Else
+		{
+			LowHPSound = False;
+		}
+		If (LowHPSound)
+		{
+			Int LowHPAddOffset, LowHPAlpha;
+			//DrawHUDStuff("SUPERMOL", "LOW HEALTH", 530, 830, CR_WHITE, 0, 0.6, 1.0);
+			//DrawHUDStuff("HUDLOWHP", "A", 430, 850, 0, HUDMSG_ADDBLEND, 0.8, 1.0);
+			DrawHUDStuff("LOWHLTH", "A", 440, 835, 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.7), 1.0);
+			DrawHUDStuff("LOWHLTH", "A", 440, 835, 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.7), RedAlpha / 2);
+
+			/*If (LowHPAlpha > 0)
+			{
+				DrawHUDStuff("HUDLHP2", "A", 410, 900 + LowHPAddOffset, 0, HUDMSG_ADDBLEND, 0.8, LowHPAlpha);
+				LowHPAlpha -= 0.06;
+				LowHPAddOffset -= 10;
+			}*/
+		}
+		Else
+		{
+			LowHPAddOffset = 0;
+			LowHPAlpha = 1.0;
+		}
+
+		/*-------------------------
+				LEFT BAR
+		--------------------------*/
+		Str Extrelives = StrParam(d:CheckInventory("extralive"));
+		Str RadSuit = StrParam(d:CheckInventory("EOA_RadSuit"));
+		Str Health = StrParam(d:GetActorProperty(0, APROP_HEALTH));
+		If (GetActorProperty(0, APROP_HEALTH) > 1000)
+		{
+			Health = "1000";
+		}
+		// dash
+		Int Dashes = CheckInventory("B5_DDash");
+		Bool HasRadSuit = False;
+		If(CheckInventory("EOA_RadSuit"))
+		{HasRadSuit = True;}
+		Else
+		{HasRadSuit = False;}
+		If(CheckInventory("DoubleDash"))
+		{SDrawHUDStuff("Dash", "A", HudLXOffset + FixedDiv(40 + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-140 - (50 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 1.8), 1.5, Dashes);}
+		//blood punch
+			Int GlowAlpha;
+			Bool FadingGlowAlpha;
+
+			If (GlowAlpha < 0.2)
+			{
+				FadingGlowAlpha = False;
+			}
+			Else If (GlowAlpha > 0.75)
+			{
+				FadingGlowAlpha = True;
+			}
+
+			If (FadingGlowAlpha)
+			{
+				GlowAlpha -= 0.033;
+			}
+			Else
+			{
+				GlowAlpha += 0.033;
+			}
+		Bool HasAOF = CheckInventory("ArmoredOffensiveSelected");
+		Int BPCounter = CheckInventory("bloodpunchCounter");
+		Int EBPCounter = CheckInventory("BloodPunchCounter") + CheckInventory("ExtraBloodPunchCounter");
+		If(CheckInventory("BloodPunch"))
+		{
+			If(EBPCounter >= 2)
+			{DrawHUDStuff("BLDFLSH", "A", HudLXOffset + FixedDiv(145 - (105 * !CheckInventory("DoubleDash")) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-140 - (50 * HasRadSuit), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.8), GlowAlpha);}
+			If (CheckInventory("ArmoredOffensiveSelected"))
+			{
+				SDrawHUDStuff("EXBDICO", "A", HudLXOffset + FixedDiv(145 - (105 * !CheckInventory("DoubleDash")) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-140 - (50 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 1.8), 1.5, EBPCounter);
+			}
+			Else
+			{
+				SDrawHUDStuff("BLODICO", "A", HudLXOffset + FixedDiv(145 - (105 * !CheckInventory("DoubleDash")) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-140 - (50 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 1.8), 1.5, BPCounter);
+			}
+		}
+		//Hammer
+		Int HammerCharges = CheckInventory("CrucibleAmmo");
+		Str STRHammerCharges = StrParam(d:CheckInventory("CrucibleAmmo") /2);
+		If(CheckInventory("DEHellBreaker"))
+		{
+			If(HammerCharges >= 2)
+			{DrawHUDStuff("HAMFLSH", "A", HudLXOffset + FixedDiv(250 - (105 * (!CheckInventory("DoubleDash") + !CheckInventory("BloodPunch"))) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-140 - (50 * HasRadSuit), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.8), GlowAlpha);}
+			DrawHUDStuff("HAMBAK", "A", HudLXOffset + FixedDiv(300 - (110 * (!CheckInventory("DoubleDash") + !CheckInventory("BloodPunch"))) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-195 - (50 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 0.35), 1.5);
+			DrawHUDStuff("HAMICO", "A", HudLXOffset + FixedDiv(306 - (110 * (!CheckInventory("DoubleDash") + !CheckInventory("BloodPunch"))) + (20 * HasRadSuit), Scale),HudYOffset + FixedDiv(-195 - (50 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 0.35), 1.5);
+			SDrawHUDStuff("H2MFL", "A", HudLXOffset + FixedDiv(300 - (110 * (!CheckInventory("DoubleDash") + !CheckInventory("BloodPunch"))) + (20 * HasRadSuit), Scale), HudYOffset + FixedDiv(-195 - (50 * HasRadSuit), Scale), CR_RED, 0, FixedDiv(Scale, 0.35), 5.0, HammerCharges * (2 - HasAOF));
+			DrawHUDStuff("TTSPRMOL", STRHammerCharges, HudLXOffset + FixedDiv(400 - (110 * (!CheckInventory("DoubleDash") + !CheckInventory("BloodPunch"))) + (12 - (12 * StrLen(STRHammerCharges))) + (20 * HasRadSuit), Scale), HudYOffset - FixedDiv(255 + (50 * HasRadSuit), Scale), CR_RED, HUDMSG_ADDBLEND, FixedMul(Scale, 0.5), 3.5);
+		}
+		DrawHUDStuff("TTSPRMOL", "000", HudLXOffset + FixedDiv(137 - 24, Scale), HudYOffset - FixedDiv(57, Scale), CR_CYAN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 0.15);
+		DrawHUDStuff("TTSPRMOL", Health, HudLXOffset + FixedDiv(172 + 30 - (30 * StrLen(Health)), Scale), HudYOffset - FixedDiv(57, Scale), CR_CYAN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 1.0);
+		//DrawHUDStuff("TTSPRMOL", Health, HudLXOffset + FixedDiv(137 + (12 - (12 * StrLen(Health))), Scale), HudYOffset - FixedDiv(57, Scale), CR_CYAN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 1.0);
+		Int DefInterpolationSpeed = 4;
+		Int InterpolationSpeed = DefInterpolationSpeed;
+		//Health
+		Int HBarAmount = GetActorProperty(0, APROP_HEALTH); //Health
+		//Int MaxPips = GetActorProperty(0, APROP_SPAWNHEALTH)/25;
+		For (int i = 0; i < 4 + CheckInventory("EOA_ArgentHealthBonusCounter"); i++)
+		{
+			Int PipNumber = HBarAmount - (i * 25);
+			If (PipNumber > 25) PipNumber = 25;
+			If (PipNumber < 0) PipNumber = 0;
+			SDrawHUDStuff("H1PIP", "A", HudLXOffset + FixedDiv(210 + (40 * i), Scale), HudYOffset + FixedDiv(-49, Scale), 0, 0, FixedDiv(Scale, 1.2), 5.0, PipNumber);
+			DrawHUDStuff("H1CON", "A", HudLXOffset + FixedDiv(210 + (40 * i), Scale), HudYOffset + FixedDiv(-49, Scale), 0, 0, FixedDiv(Scale, 1.2), 5.0);
+		}
+		//Armor
+		Int MaxArmor = 100; 
+		Str Armor = StrParam(d:CheckInventory("BasicArmor"));
+		Int ArmorAlpha;
+		Int ArmorAmount = CheckInventory("BasicArmor");
+		DrawHUDStuff("TTSPRMOL", "000", HudLXOffset + FixedDiv(112, Scale), HudYOffset - FixedDiv(122, Scale), CR_GREEN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 0.15);
+		If (CheckInventory("BasicArmor"))
+		{
+			DrawHUDStuff("TTSPRMOL", Armor, HudLXOffset + FixedDiv(172 + 30 - (30 * StrLen(Armor)), Scale), HudYOffset - FixedDiv(122, Scale), CR_GREEN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 3.5);
+		}
+		If(CheckInventory("Armor")) {ArmorAlpha = 1.0;}
+		Else {ArmorAlpha = 0.6;}
+		For (int r = 0; r < 2 + CheckInventory("EOA_ArgentArmorBonusCounter"); r++)
+		{
+			PipNumber = ArmorAmount - (r * 25);
+			If (PipNumber > 25) PipNumber = 25;
+			If (PipNumber < 0) PipNumber = 0;
+			SDrawHUDStuff("A1PIP", "A", HudLXOffset + FixedDiv(210 + (40 * r), Scale), HudYOffset + FixedDiv(-117, Scale), 0, 0, FixedDiv(Scale, 1.2), ArmorAlpha, PipNumber);
+			DrawHUDStuff("A1CON", "A", HudLXOffset + FixedDiv(210 + (40 * r), Scale), HudYOffset + FixedDiv(-117, Scale), 0, 0, FixedDiv(Scale, 1.2), ArmorAlpha);
+		}
+		
+		//Rad Suit
+		If(HasRadSuit)
+		{
+			Int RadSuitAmount = CheckInventory("EOA_RadSuit");
+			For (int h = 0; h < 4; h++)
+			{
+				PipNumber = RadSuitAmount - (h * 25);
+				If (PipNumber > 25) PipNumber = 25;
+				If (PipNumber < 0) PipNumber = 0;
+				SDrawHUDStuff("R1PIP", "A", HudLXOffset + FixedDiv(235 + (40 * h), Scale), HudYOffset + FixedDiv(-186, Scale), 0, 0, FixedDiv(Scale, 1.2), 5.0 , PipNumber);
+				DrawHUDStuff("R1CON", "A", HudLXOffset + FixedDiv(235 + (40 * h), Scale), HudYOffset + FixedDiv(-186, Scale), 0, 0, FixedDiv(Scale, 1.2), 5.0);
+			}
+		}
+		////////////////////////////////////
+		Bool HasBlueCard = CheckInventory("BlueCard");
+		Bool HasRedCard = CheckInventory("RedCard");
+		Bool HasYellowCard = CheckInventory("YellowCard");
+		Bool HasBlueSkull = CheckInventory("BlueSkull");
+		Bool HasRedSkull = CheckInventory("RedSkull");
+		Bool HasYellowSkull = CheckInventory("YellowSkull");
+		Bool HasAnyCard;
+		If (HasBlueCard || HasRedCard || HasYellowCard || HasBlueSkull || HasRedSkull || HasYellowSkull)
+		{HasAnyCard = True;}
+		Else
+		{HasAnyCard = False;}
+		DrawHUDStuff("KEYBAR", "A", HudLXOffset + FixedDiv(0 + (20 * HasAnyCard), Scale), HudYOffset + FixedDiv(-15 + (45 * HasAnyCard), Scale), 0, 0, Scale, 0.7);
+		If(HasBlueCard)
+		{DrawHUDStuff("HUDBKEY", "A", HudLXOffset + FixedDiv (90, Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		If(HasRedCard)
+		{DrawHUDStuff("HUDRKEY", "A", HudLXOffset + FixedDiv (90 + (40 * HasBlueCard), Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		If(HasYellowCard)
+		{DrawHUDStuff("HUDYKEY", "A", HudLXOffset + FixedDiv (90 + (40 * (HasBlueCard + HasRedCard)), Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		If(HasBlueSkull)
+		{DrawHUDStuff("HUDBSKU", "A", HudLXOffset + FixedDiv (90 + (40 * (HasBlueCard + HasRedCard + HasYellowCard)), Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		If(HasRedSkull)
+		{DrawHUDStuff("HUDRSKU", "A", HudLXOffset + FixedDiv (90 + (40 * (HasBlueCard + HasRedCard + HasYellowCard + HasBlueSkull)), Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		If(HasYellowSkull)
+		{DrawHUDStuff("HUDYSKU", "A", HudLXOffset + FixedDiv (90 + (40 * (HasBlueCard + HasRedCard + HasYellowCard + HasBlueSkull + HasRedSkull)), Scale), HudYOffset + FixedDiv(10, Scale), 0, 0, FixedMul(Scale, 1.25), 1.0);}
+		DrawHUDStuff("HLTHICO", "A", HudLXOffset + FixedDiv(40, Scale), HudYOffset + FixedDiv(-47, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.85), 5.0);
+		DrawHUDStuff("HLTHBAR", "A", HudLXOffset, HudYOffset + FixedDiv(-15, Scale), 0, 0, Scale, 1.0);
+		DrawHUDStuff("ARMRICO", "A", HudLXOffset + FixedDiv(45, Scale), HudYOffset + FixedDiv(-113, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.75), ArmorAlpha);
+		DrawHUDStuff("ARMRBAR", "A", HudLXOffset, HudYOffset + FixedDiv(-100, Scale), 0, 0, Scale, ArmorAlpha);
+		If (CheckInventory("EOA_RadSuit"))
+		{
+			DrawHUDStuff("RADBAR", "A", HudLXOffset + FixedDiv(38, Scale), HudYOffset + FixedDiv(-170, Scale), 0, 0, Scale, 0.5);
+			DrawHUDStuff("RADICO", "A", HudLXOffset + FixedDiv(72, Scale), HudYOffset + FixedDiv(-175, Scale), 0, 0, FixedDiv(Scale, 0.90), 5.0);
+			DrawHUDStuff("TTSPRMOL", RadSuit, HudLXOffset + FixedDiv(175 + (12 - (12 * StrLen(RadSuit))), Scale), HudYOffset - FixedDiv(196, Scale), CR_GREEN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.37), 1.0);
+		}
+		Bool HasLeftAbility = CheckInventory("DoubleDash") || CheckInventory("BloodPunch") || CheckInventory("DEHellBreaker");
+		DrawHUDStuff("ABLTYPT", "A", HudLXOffset + FixedDiv(30 - (70 * !HasLeftAbility) + (45 * HasRadSuit), Scale), HudYOffset + FixedDiv(-220 + (130 * !HasLeftAbility) - (65 * HasRadSuit), Scale), 0, 0, FixedDiv(Scale, 1.5), 0.7);
+		//======ExtraLives======
+		If(CheckInventory("extralive"))
+		{
+			DrawHUDStuff("EXLVA0", "A", HudLXOffset + FixedDiv(70, Scale), HudYOffset + FixedDiv(-1050, Scale), 0, 0, FixedDiv(Scale, 1.2), 1.0);
+			DrawHUDStuff("TTSPRMOL", Extrelives, HudLXOffset + FixedDiv(140 + (12 - (12 * StrLen(Extrelives))), Scale), HudYOffset - FixedDiv(1170, Scale), CR_GREEN, HUDMSG_ADDBLEND, FixedMul(Scale, 0.5), 1.0);
+		}
+		//----------Runes-----------//
+		Int RS1 = GetCvar("RuneSlot1");
+		Int RS2 = GetCvar("RuneSlot2");
+		Int RS3 = GetCvar("RuneSlot3");
+		
+		Str RuneIcon1;
+		Str RuneIcon2;
+		Str RuneIcon3;
+		
+		//slot 1
+		Switch(RS1)
+		{
+			Default:
+			RuneIcon1 = "plsmtr0";
+			Break;
+			
+			Case 1:
+			RuneIcon1 = HudRuneIcons[0];
+			Break;
+			
+			Case 2:
+			RuneIcon1 = HudRuneIcons[1];
+			Break;
+			
+			Case 16:
+			RuneIcon1 = HudRuneIcons[2];
+			Break;
+			
+			Case 32:
+			RuneIcon1 = HudRuneIcons[3];
+			Break;
+			
+			Case 64:
+			RuneIcon1 = HudRuneIcons[4];
+			Break;
+			
+			Case 128:
+			RuneIcon1 = HudRuneIcons[5];
+			Break;
+			
+			Case 256:
+			RuneIcon1 = HudRuneIcons[6];
+			Break;
+			
+			Case 512:
+			RuneIcon1 = HudRuneIcons[7];
+			Break;
+			
+			Case 2048:
+			RuneIcon1 = HudRuneIcons[8];
+			Break;
+		}
+		//slot 2
+		Switch(RS2)
+		{
+			Default:
+			RuneIcon2 = "plsmtr0";
+			Break;
+			
+			Case 1:
+			RuneIcon2 = HudRuneIcons[0];
+			Break;
+			
+			Case 2:
+			RuneIcon2 = HudRuneIcons[1];
+			Break;
+			
+			Case 16:
+			RuneIcon2 = HudRuneIcons[2];
+			Break;
+			
+			Case 32:
+			RuneIcon2 = HudRuneIcons[3];
+			Break;
+			
+			Case 64:
+			RuneIcon2 = HudRuneIcons[4];
+			Break;
+			
+			Case 128:
+			RuneIcon2 = HudRuneIcons[5];
+			Break;
+			
+			Case 256:
+			RuneIcon2 = HudRuneIcons[6];
+			Break;
+			
+			Case 512:
+			RuneIcon2 = HudRuneIcons[7];
+			Break;
+			
+			Case 2048:
+			RuneIcon2 = HudRuneIcons[8];
+			Break;
+		}
+		
+		//slot 3
+		Switch(RS3)
+		{
+			Default:
+			RuneIcon3 = "plsmtr0";
+			Break;
+			
+			Case 1:
+			RuneIcon3 = HudRuneIcons[0];
+			Break;
+			
+			Case 2:
+			RuneIcon3 = HudRuneIcons[1];
+			Break;
+			
+			Case 16:
+			RuneIcon3 = HudRuneIcons[2];
+			Break;
+			
+			Case 32:
+			RuneIcon3 = HudRuneIcons[3];
+			Break;
+			
+			Case 64:
+			RuneIcon3 = HudRuneIcons[4];
+			Break;
+			
+			Case 128:
+			RuneIcon3 = HudRuneIcons[5];
+			Break;
+			
+			Case 256:
+			RuneIcon3 = HudRuneIcons[6];
+			Break;
+			
+			Case 512:
+			RuneIcon3 = HudRuneIcons[7];
+			Break;
+			
+			Case 2048:
+			RuneIcon3 = HudRuneIcons[8];
+			Break;
+		}
+		
+		Int RuneOffset1 = 1035;
+		Int	RuneOffset2 = 1160;
+		Int	RuneOffset3 = 1285;
+		
+		Int HasRune1 = 0.0;
+		Int HasRune2 = 0.0;
+		Int HasRune3 = 0.0;
+		
+		If(RS1 > 0)
+		HasRune1 = 1.0;
+		Else
+		HasRune1 = 0;
+		
+		If(RS2 > 0)
+		HasRune2 = 1.0;
+		Else
+		HasRune2 = 0;
+		
+		If(RS3 > 0)
+		HasRune3 = 1.0;
+		Else
+		HasRune3 = 0;
+		
+		DrawHUDStuff(RuneIcon1, "A", HudLXOffset + FixedDiv(RuneOffset1, Scale), HudYOffset + FixedDiv(-18, Scale), 0, 0, FixedDiv(Scale , 0.4), 1.5);
+		DrawHUDStuff("RUNBACK", "A", HudLXOffset + FixedDiv(RuneOffset1 - 22, Scale), HudYOffset + FixedDiv(-5, Scale), 0, 0, FixedDiv(Scale , 0.7), HasRune1);
+		
+		DrawHUDStuff(RuneIcon2, "A", HudLXOffset + FixedDiv(RuneOffset2, Scale), HudYOffset + FixedDiv(-18, Scale), 0, 0, FixedDiv(Scale , 0.4), 1.5);
+		DrawHUDStuff("RUNBACK", "A", HudLXOffset + FixedDiv(RuneOffset2 - 22, Scale), HudYOffset + FixedDiv(-5, Scale), 0, 0, FixedDiv(Scale , 0.7), HasRune2);
+		
+		DrawHUDStuff(RuneIcon3, "A", HudLXOffset + FixedDiv(RuneOffset3, Scale), HudYOffset + FixedDiv(-18, Scale), 0, 0, FixedDiv(Scale , 0.4), 1.5);
+		DrawHUDStuff("RUNBACK", "A", HudLXOffset + FixedDiv(RuneOffset3 - 22, Scale), HudYOffset + FixedDiv(-5, Scale), 0, 0, FixedDiv(Scale , 0.7), HasRune3);
+		
+		If(RS1 > 0 || RS2 > 0 || RS3 > 0)
+		{
+			DrawHUDStuff("RUNEBAR", "A", HudLXOffset + FixedDiv(950, Scale), HudYOffset + FixedDiv(-7, Scale), 0, 0, FixedDiv(Scale , 2.0), 0.5);
+		}
+		
+		/*-------------------------
+				RIGHT BAR
+		--------------------------*/
+		Int HudRXOffset = HUDBaseWidth - FixedDiv(330, Scale) + (350 - U_XOffset);
+		//demonic curroption
+		/*if(CheckInventory("CombatToken") == 0)
+		{DrawHUDStuff("DMNCRMT", "A", HudRXOffset + FixedDiv(100, Scale),HudYOffset + FixedDiv(-1250, Scale), 0, 0, FixedDiv(Scale, 0.5), 1.5);}
+		if(CheckInventory("CombatToken") >= 1 && CheckInventory("CombatToken") < 5)
+		{SDrawHUDStuff("DMNCRM", "A", HudRXOffset + FixedDiv(100, Scale),HudYOffset + FixedDiv(-1250, Scale), 0, 0, FixedDiv(Scale, 0.5), 1.5, CheckInventory("CombatToken"));}
+		if(CheckInventory("CombatToken") == 5)
+		{DrawHUDStuff("DMNCRNO", "A", HudRXOffset + FixedDiv(100, Scale),HudYOffset + FixedDiv(-1250, Scale), 0, 0, FixedDiv(Scale, 0.5), 1.5);}
+		*/
+		/*
+		Str AmmoInfo = StrParam(s:"Ammo: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_Ammo)
+		,s:"\nMax Ammo2: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_MaxAmmo2)
+		,s:"\nMax Ammo: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_MaxAmmo)
+		,s:"\nWeapon Number: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_Number)
+		,s:"\nLow ammo: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_LowAmmo)
+		,s:"\nAmmo Type Number: ",d:GetWeaponInfo(GetWeapon(),WeapInfo_AmmoType));
+		DrawHUDStuff("BIGFONT",AmmoInfo,0,192,CR_WHITE,0,0.5,1.0);
+		*/
+
+		Int WeapNum = GetWeaponInfo(GetWeapon(), 0);
+		Int OldWeapNum;
+		Str WeaponIcon; //= ScriptCall("EOA_Weapon", "GetWeaponIcon");
+		Str WeaponModBar;
+		Str WeaponModIcon = GetWeaponModInfo(WeapNum, 1);
+		Str AmmoTypeIcon;
+		Int Ammo = ScriptCall("EOA_Weapon", "GetWeaponAmmoInfo", WeapInfo_AmmoAmount);//GetWeaponInfo(GetWeapon(), WeapInfo_Ammo);
+		Str AmmoType = ScriptCall("EOA_Weapon", "GetWeaponAmmoType");//GetWeaponInfo(GetWeapon(), WeapInfo_Ammo);
+		Int AMTPNum = AmmoType;
+		Int MaxAmmo = ScriptCall("EOA_Weapon", "GetWeaponAmmoInfo", WeapInfo_AmmoMaxAmount);//GetWeaponInfo(GetWeapon(), WeapInfo_MaxAmmo);
+		Int WarnAmmo = MaxAmmo / 3; //ScriptCall("EOA_Weapon", "GetWeaponAmmoInfo", WeapInfo_AmmoWarnAmount);
+		Int LowAmmo = ScriptCall("EOA_Weapon", "GetWeaponAmmoInfo", WeapInfo_AmmoLowAmount);//GetWeaponInfo(GetWeapon(), WeapInfo_LowAmmo);
+		If (Ammo > MaxAmmo)
+		{
+			Ammo = MaxAmmo;
+		}
+		If (MaxAmmo == 0) //[DoomKrakken]: Debugging...
+		{
+			Ammo = 1;
+			MaxAmmo = 1;
+		}
+		str Weap = SelectedWeapons[WeapNum];
+		str Mod1 = SelectedMods[WeapNum][0];
+		str Mod2 = SelectedMods[WeapNum][1];
+		str lastselected = SelectedWeapons[WeapNum];
+		Bool HasWeaponMod = CheckInventory(Weap) && (CheckInventory(Mod1) | CheckInventory(Mod2));
+		Bool InfiniteAmmo = ScriptCall("EOA_Weapon", "CheckInfiniteAmmoFunction") || AmmoType == "None";
+		If (InfiniteAmmo)
+		{
+			Ammo = 1;
+			MaxAmmo = 1;
+		}
+		
+		If (WeapNum == -1 || Ammo == -2)
+		{
+			InfiniteAmmo = True;
+			Ammo = 1;
+			MaxAmmo = 1;
+		}
+		If (WeapNum >= 0)
+		{
+			WeaponIcon = HUDWeaponIcons[WeapNum];
+			WeaponModBar = HUDWeaponMIcons[WeapNum];
+		}
+		Else
+		{
+			WeaponIcon = "ICOFIST";
+			WeaponModBar = "ICOFIST";
+		}
+		If (AmmoType == "EOA_ShellAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[0];
+		}
+		Else If (AmmoType == "EOA_BulletAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[1];
+		}
+		Else If (AmmoType == "EOA_CellAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[2];
+		}
+		Else If (AmmoType == "EOA_RocketAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[3];
+		}
+		Else If (AmmoType == "EOA_BFGAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[4];
+		}
+		Else If (AmmoType == "EOA_FuelAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[5];
+		}
+		Else If (AmmoType == "None")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[8];
+		}
+		Else If (AmmoType == "CrucibleAmmo")
+		{
+			AmmoTypeIcon = HUDAmmoTypeIcons[7];
+		}
+		Else
+		{
+			AmmoTypeIcon = "TNT1A0";
+		}
+		If (Ammo <= WarnAmmo && !InfiniteAmmo)
+		{
+			Int LowAmmoAlpha;
+			Str LowAmmoPic = "ICONCRU";
+			DrawHUDStuff(LowAmmoPic, "A", HudRXOffset + FixedDiv(-160, Scale), HudYOffset - 18 - FixedDiv(30, Scale), 0, HUDMSG_ADDBLEND, Scale, LowAmmoAlpha);
+			DrawHUDStuff("LOWAMMO", "A", 490, 790, 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.55), 1.0);
+			DrawHUDStuff("LOWAMMO", "A", 490, 790, 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.55), LowAmmoAlpha/3);
+			If (LowAmmoAlpha <= 0)
+			{
+				LowAmmoAlpha = 1.0;
+			}
+			LowAmmoAlpha -= 0.05;
+		}
+		Str AmmoNumber = StrParam(d:Ammo);
+		If (CheckInventory("GrenadeSelected"))
+		{
+			If (!CheckInventory("GrenadeSelected"))
+			{
+				TakeInventory("EOA_Unmaykr", 1);
+			}
+		}
+		//Equipment HUD
+			Int FTCT = CheckInventory("FlameThrowerCooldownToken");
+			Int IBCT = CheckInventory("IceBombCooldownToken");
+			Int FGCT = CheckInventory("GrenadeCooldownToken");
+			Int FGCT2 = CheckInventory("ExtraGrenadeCooldownToken");
+			Int FUAM = CheckInventory("EOA_FuelAmmo");
+			Int FCOL = CheckInventory("ChainsawCooldownToken");
+			Int FlameOffset = 27;
+			Int IceOffset = 175;
+			Int NadeOffset = 102;
+			Int SawOffset = 250;
+			If(CheckInventory("FlameBelch"))
+			{
+				DrawHUDStuff("EQBACK", "A", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.8);
+				If (FTCT >= 1)
+				{	
+					
+					DrawHUDStuff("FLAMIC", "A", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 0.5);
+					DrawHUDStuff("FLAMIC", "A", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 0.5);
+					DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(FlameOffset + 10 + (20 - (FTCT * 1)), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (FTCT * 2)), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);
+				}
+				Else
+				{
+					DrawHUDStuff("FLAMIC", "A", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 5.0);
+					DrawHUDStuff("EQFLM", "A", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+					DrawHUDStuff("EQFLMF", "A", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.7);	
+					DrawHUDStuff("EQFLMF", "A", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+				}
+			}
+			If(CheckInventory("EOA_Chainsaw"))
+			{
+				DrawHUDStuff("EQBACK", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.8);
+				If(!InfiniteAmmo)
+				{
+					If (FUAM >= 1)
+					{	
+						DrawHUDStuff("SAWIC", "A", HudRXOffset + FixedDiv(SawOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 5.0);
+						DrawHUDStuff("EQSAW", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+						DrawHUDStuff("EQSAWF", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.7);	
+						DrawHUDStuff("EQSAWF", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+						SDrawHUDStuff("ESPIPG", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 1.0, FUAM);	
+						SDrawHUDStuff("ESPIPG", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 1.0, FUAM);	
+					}
+					Else
+					{
+						DrawHUDStuff("SAWIC", "A", HudRXOffset + FixedDiv(SawOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 0.5);
+						DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(SawOffset + 10 + (20 - FCOL), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (FCOL * 2)), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);
+					}
+				}
+				Else
+				{
+					DrawHUDStuff("SAWIC", "A", HudRXOffset + FixedDiv(SawOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 5.0);
+					DrawHUDStuff("EQSAW", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+					DrawHUDStuff("EQSAWF", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.7);	
+					DrawHUDStuff("EQSAWF", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+					DrawHUDStuff("ESPIPG3", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 1.0);	
+					DrawHUDStuff("ESPIPG3", "A", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 1.0);	
+				}
+			}
+			
+			If(CheckInventory("IceBomb"))
+			{
+				DrawHUDStuff("EQBACK", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.8);
+				If (IBCT >= 1)
+				{	
+					DrawHUDStuff("ICEEICO", "A", HudRXOffset + FixedDiv(IceOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 0.5);
+					DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(IceOffset + (30 - (10 * CheckInventory("FasterIceCoolDown")) - (IBCT / 2)), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (20 * CheckInventory("FasterIceCoolDown")) - IBCT), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);	
+				}
+				Else
+				{
+					DrawHUDStuff("ICEEICO", "A", HudRXOffset + FixedDiv(IceOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.6), 5.0);
+					DrawHUDStuff("EQICE", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+					DrawHUDStuff("EQICEF", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.7);	
+					DrawHUDStuff("EQICEF", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+				}
+			}
+			If(CheckInventory("FragGrenade"))
+			{
+				DrawHUDStuff("EQBACK", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.8);
+				if(!CheckInventory("StockUp"))
+				{
+					If (FGCT >= 1)
+					{	
+						DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.5);	
+						DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(NadeOffset + (30 - (10 * CheckInventory("FasterFragCoolDown")) - (FGCT / 2)), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (20 * CheckInventory("FasterFragCoolDown")) - FGCT), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);	
+					}
+					Else
+					{
+						DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 5.0);
+						DrawHUDStuff("EQGRE", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+						//DrawHUDStuff("EQGREF1", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.7);	
+						DrawHUDStuff("EQGREF1", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+					}
+				}
+				Else
+				{
+					If (FGCT == 0 && FGCT2 >= 1)
+					{	
+						DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.5);
+						DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(NadeOffset + (30 - (10 * CheckInventory("FasterFragCoolDown")) - (FGCT2 / 4)), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (20 * CheckInventory("FasterFragCoolDown")) - FGCT2/2), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);	
+						DrawHUDStuff("EQGRE", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+						DrawHUDStuff("EQGREF3", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.4);	
+						DrawHUDStuff("EQGREF3", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+						
+					}
+					Else If (FGCT >= 1 && FGCT2 >= 1)
+					{
+						DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.8);
+						DrawHUDStuff("EQPMTR", "A", HudRXOffset + FixedDiv(NadeOffset + (60 - (5 * CheckInventory("FasterFragCoolDown")) - (FGCT2 + FGCT / 2)), Scale), HudYOffset - 18 - FixedDiv(125 + (40 - (10 * CheckInventory("FasterFragCoolDown")) - (FGCT + FGCT2)/2), Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 1.35), 1.0);	
+					}
+					Else
+					{
+						DrawHUDStuff("GRNDIC", "A", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(125, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);
+						DrawHUDStuff("EQGRE", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 0.9);
+						DrawHUDStuff("EQGREF2", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, HUDMSG_ADDBLEND, FixedDiv(Scale, 0.5), 0.4);	
+						DrawHUDStuff("EQGREF2", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(83, Scale), 0, 0, FixedDiv(Scale, 0.5), 5.0);	
+					}
+				}
+			}
+		If (CheckInventory("SuperShotgunSelected"))
+		{
+			WeaponModIcon = "SSGMOD";
+		}
+		If (WeapNum >= 0)
+		{
+			DrawHUDStuff(WeaponModIcon, "A", HudRXOffset + FixedDiv(247, Scale), HudYOffset - 18 - FixedDiv(40, Scale), 0, 0, FixedMul(Scale, 4.3), 3.0); //Mod icon
+		}
+		DrawHUDStuff(AmmoTypeIcon, "A", HudRXOffset + FixedDiv(150, Scale), HudYOffset - 18 - FixedDiv(36, Scale), 0, 0, Scale, 1.0);//ammo icon
+		If (!InfiniteAmmo)
+		{
+			DrawHUDStuff("TTSPRMOL", AmmoNumber, HudRXOffset + FixedDiv(100 - (12 * StrLen(AmmoNumber)), Scale), HudYOffset - 18 - FixedDiv(55, Scale), CR_WHITE, HUDMSG_ADDBLEND, FixedMul(Scale, 0.5), 1.0); //Ammo number
+		}
+		Else
+		{
+			DrawHUDStuff("HUDAINF", "A", HudRXOffset + FixedDiv(75, Scale), HudYOffset - 18 + FixedDiv(-55, Scale), 0, HUDMSG_ADDBLEND, FixedMul(Scale, 0.9), 1.0);//Infinite
+		}
+		If(HasWeaponMod)
+		{
+			DrawHUDStuff(WeaponModBar, "A", HudRXOffset + FixedDiv(-160, Scale), HudYOffset - 18 - FixedDiv(30, Scale), 0, 0, Scale, 1.0);
+		}
+		Else
+		{
+			DrawHUDStuff(WeaponIcon, "A", HudRXOffset + FixedDiv(-160, Scale), HudYOffset - 18 - FixedDiv(30, Scale), 0, 0, Scale, 1.0);
+		}
+		if(CheckInventory("FragGrenade") && CheckInventory("IceBomb"))
+		{
+			If(CheckInventory("GrenadeSelected"))
+			{
+				//draw it 3 times because fucking hell i want to shoot my ass with 50. cal armor piercing explosive red tracers and have it slide up my ass and exit through my mouth as i scream in agony
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+			}
+			Else If(!CheckInventory("GrenadeSelected"))
+			{
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+				DrawHUDStuff("EQIND", "A", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(100, Scale), 0, 0, FixedDiv(Scale, 1.35), 5.0);
+			}
+		}
+		OldWeapNum = WeapNum;
+		Delay(1);
+	}
+}

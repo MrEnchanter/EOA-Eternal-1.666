@@ -1,0 +1,11 @@
+#library "CVARS"
+#include "zcommon.acs"
+
+Script "CheckDoom4Set" (void)
+{
+	if(GetCVar("doom4set") == true)
+		SetResultValue(1);
+	else
+		SetResultValue(0);
+		
+}

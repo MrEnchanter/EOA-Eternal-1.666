@@ -1,0 +1,381 @@
+Class EOAE_MIXINLIST : GenericMenu
+{
+	override void Init(Menu parent)
+	{
+		Super.Init(parent);
+		DontDim = true;
+	}
+}
+
+Class ListMenuItemPatchItem_EOAE : ListMenuItemSelectable //Edited and taken from Treasure tech
+{
+	TextureID mTexture;
+	Int SPosX; Int SPosY;
+	
+	void Init(ListMenuDescriptor desc, TextureID patch, String hotkey, Name child, Int PosX, Int PosY, int param = 0)
+	{
+		Super.Init(PosX, PosY, desc.mLinespacing, child, param);
+		mHotkey = hotkey.GetNextCodePoint(0);
+		mTexture = patch;
+		SPosX = PosX;
+		SPosY = PosY;
+	}
+	
+	override void Drawer(bool selected)
+	{
+		screen.DrawTexture (mTexture, true, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);//, DTA_COLOR, 0xFF000000);//, DTA_Clean, true);
+	}
+	
+	override void DrawSelector(double xofs, double yofs, TextureID tex)
+	{
+		screen.DrawTexture (tex, true, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240, DTA_Clean);
+	}
+}
+
+Class ListMenuItemDeathMenuButton_EOAE : ListMenuItemSelectable //Edited and taken from Treasure tech
+{
+	TextureID mTexture;
+	ListMenuDescriptor sDesc;
+	TextureID BloodBackGround, SecretText;
+	Int SPosX, SPosY;
+	Double DeathAlpha;
+	
+	void Init(ListMenuDescriptor desc, TextureID patch , Int PosX, Int PosY, int param = 0)
+	{
+		Super.Init(PosX, PosY, desc.mLinespacing, "", param);
+		sDesc = desc;
+		mTexture = patch;
+		BloodBackGround = TexMan.CheckForTexture("DeadBG", TexMan.TYPE_ANY);
+		SecretText = TexMan.CheckForTexture("D_UDED2", TexMan.TYPE_ANY);
+		/*A_Jump(255, 2);
+		SecretText = TexMan.CheckForTexture("NULL", TexMan.TYPE_ANY);*/
+		SPosX = PosX;
+		SPosY = PosY;
+	}
+	
+	override bool Activate()
+    {
+		PlayerInfo Player = Players[ConsolePlayer];
+		String GiveItem = String.Format("GiveItem:%s", "Respawnpls");
+		EventHandler.SendNetworkEvent(GiveItem);
+		DeathAlpha = 0;
+		Menu.SetMenu("Null");
+		Return True;
+    }
+
+	override void Drawer(bool selected)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		If(DeathAlpha < 50)
+		{DeathAlpha++;}
+		Screen.DrawTexture(BloodBackGround, True, 0, 0, DTA_Alpha, DeathAlpha/50, DTA_VirtualWidth, 1276, DTA_VirtualHeight, 718, DTA_KeepRatio, True);
+		Screen.DrawTexture(SecretText, True, 85, 90, DTA_Alpha, DeathAlpha/250, DTA_KeepRatio, True);
+		screen.DrawTexture (mTexture, true, SPosX, SPosY + 20, DTA_Alpha, DeathAlpha/50, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);
+	}
+	
+	override void DrawSelector(double xofs, double yofs, TextureID tex)
+	{
+		screen.DrawTexture (tex, true, SPosX, SPosY + 20, DTA_Alpha, DeathAlpha/50, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);
+	}
+}
+
+Class ListMenuItemAnimatedPatchItem_EOAE : ListMenuItemSelectable //Edited and taken from Treasure tech
+{
+	TextureID mTexture;
+	String SPatch, Texturething;
+	Int SFramesNumber, CurFrame, SCurFrame, ENextFrame;
+	Int SPosX, SPosY;
+	Int STickSpeed, OGTickSpeed;
+	
+	void Init(ListMenuDescriptor desc, String Patch, String hotkey, Name child, Int PosX, Int PosY, Int FramesNumber = 0, Int TickSpeed = 1, int param = 0)
+	{
+		CurFrame = 0;
+		ENextFrame = 1;
+		mHotkey = hotkey.GetNextCodePoint(0);
+		SFramesNumber = FramesNumber;
+		SPatch = Patch;
+		STickSpeed = TickSpeed;
+		OGTickSpeed = TickSpeed;
+		SPosX = PosX;
+		SPosY = PosY;
+		Super.Init(PosX, PosY, desc.mLinespacing, child, param);
+	}
+	
+	Void Tick()
+	{
+		STickSpeed -= 1;
+		If(STickSpeed < 0)
+		{STickSpeed = OGTickSpeed;}
+		If(CurFrame < SFramesNumber && STickSpeed <= 0)
+		{
+			CurFrame += 1;
+			ENextFrame = CurFrame + 1;
+		}
+		Else If(CurFrame >= SFramesNumber && STickSpeed <= 0)
+		{
+			CurFrame = 0;
+			ENextFrame = 1;
+		}
+		SCurFrame = CurFrame;
+		Texturething = String.Format(SPatch, SCurFrame);
+		mTexture = TexMan.checkForTexture(Texturething, TexMan.Type_Any);
+	}
+	
+	override void Drawer(bool selected)
+	{
+		Tick();
+		screen.DrawTexture (mTexture, true, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);//, DTA_Clean, true);
+	}
+	
+	override void DrawSelector(double xofs, double yofs, TextureID tex)
+	{
+		screen.DrawTexture (tex, true, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240, DTA_Clean);
+	}
+}
+
+Class ListMenuItemPatchSubMenu_EOAE : ListMenuItemSelectable
+{
+	TextureID mTexture;
+	ListMenuDescriptor sDesc;
+	String InvName;
+	Int minAmount;
+	Bool IsLessThan;
+	Int SPosX, SPosY;
+	Int SMX, SMY;
+	Bool BSelected;
+	Int SButtonBoundX, SButtonBoundY;
+	
+	void Init(ListMenuDescriptor desc, TextureID patch, String InvnName, Name child, Int PosX, Int PosY, Int ButtonBoundX, Int ButtonBoundY, Int minmAmount = 1, Bool CheckLessThan = False, int param = 0)
+	{
+		Super.Init(PosX, PosY, desc.mLinespacing, child, param);
+		sDesc = desc;
+		mTexture = patch;
+		InvName = InvnName;
+		minAmount = minmAmount;
+		SButtonBoundX = ButtonBoundX + PosX;
+		SButtonBoundY = ButtonBoundY + PosY;
+		IsLessThan = CheckLessThan;
+		SPosX = PosX;
+		SPosY = PosY;
+	}
+	
+	override bool MouseEvent(int type, int x, int y)
+	{
+		//SMX = x;
+		//SMY = y;
+		if (type == Menu.MOUSE_Release)
+		{
+			let m = Menu.GetCurrentMenu();
+			if (m != NULL  && m.MenuEvent(Menu.MKEY_Enter, true))
+			{
+				Return Super.MouseEvent(type, x, y);;
+			}
+		}
+		else if (type == Menu.MOUSE_Move)
+		{
+			Console.PrintF("MOVED");
+			let m = Menu.GetCurrentMenu();
+			if (m != NULL  && m.MenuEvent(Menu.MKEY_Enter, true))
+			{
+				Return Super.MouseEvent(type, x, y);;
+			}
+		}
+		return Super.MouseEvent(type, x, y);
+	}
+	
+	override bool CheckCoordinate(int x, int y)
+	{
+		SMX = x;
+		SMY = y;
+		return mEnabled > 0 && y >= mYpos && y < mYpos + mHeight;	// no x check here
+	}
+	
+	override bool Activate()
+    {
+		PlayerInfo Player = Players[ConsolePlayer];
+		//Return (Player.Mo.CountInv(invName) <= minAmount);
+		DetectButtonClick();
+		if(Player.Mo.CountInv(invName) >= minAmount && SMX >= SPosX && SMX <= SButtonBoundX)
+		{
+			Menu.SetMenu(mAction, mParam);
+		}
+		Return (Player.Mo.CountInv(invName) >= minAmount);
+    }
+	
+	Override Bool Selectable() 
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		/*if (Player.Mo.CountInv(invName) >= minAmount && SMX <= SButtonBoundX)
+		{
+			Return True;
+		}
+		Else
+		{
+			Return False;
+		}*/
+		Return BSelected;
+	}
+	
+	Void DetectButtonClick()
+	{
+		If(SMX <= SButtonBoundX && SMX >= SPosX)
+		{BSelected = True;}
+		Else
+		{BSelected = False;}
+	}
+	Override void Ticker() {
+		Console.PrintF("===============================");
+		Console.PrintF(String.Format("X: %d, boundboX: %d", SMX, SButtonBoundX));
+		DetectButtonClick();
+		Selectable();
+	}
+	
+	override void Drawer(bool selected)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		//Selected = BSelected;
+		if(Player.Mo.CountInv(invName) >= minAmount)
+		{
+			screen.DrawTexture (mTexture, False, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);
+		}
+	}
+	override void DrawSelector(double xofs, double yofs, TextureID tex)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		if(Player.Mo.CountInv(invName) >= minAmount && BSelected)
+		{
+			screen.DrawTexture (tex, true, SPosX, SPosY + 20, DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);
+		}
+	}
+}
+
+
+class ListMenuItemChalStaticText : ListMenuItem
+{
+    String mText;
+    Font mFont;
+    int mColor;
+    bool mCentered;
+	String DisplayType;
+	Int Index;
+
+    void Init(ListMenuDescriptor desc, String DisplayType, Int Index, Font font, double x, double y)
+    {
+		Self.DisplayType = DisplayType;
+		Self.Index = Index;
+        Super.Init(x, y);
+        //mText = text;
+		mFont = font;
+        //mColor = color >= 0? color : desc.mFontColor;
+        mCentered = false;
+    }
+    
+    void InitDirect(double x, double y, String text, Font font, int color = Font.CR_UNTRANSLATED, bool centered = false)
+    {
+        Super.Init(x, y);
+        //mText = text;
+        mFont = font;
+        mColor = color;
+        mCentered = centered;
+    }
+	
+	Override Void Ticker()
+	{
+		Let Challenges = EOA_ChallengeArchive.Retrieve();
+		If (Challenges)
+		{
+			For (Int i = 0; i < Challenges.ChallengeData.Size(); i++)
+			{
+				If (Challenges.ChallengeData[i].Active && Challenges.ChallengeData[i].ChallengeNum == Index)
+				{
+					If (DisplayType == "Name")
+					{
+						mText = String.Format("%s", Challenges.ChallengeData[i].Name);
+					}
+					Else If (DisplayType == "Description")
+					{
+						mText = String.Format("%s", Challenges.ChallengeData[i].Desc);
+					}
+					Else If (DisplayType == "Amount")
+					{
+						If (Challenges.ChallengeData[i].Amount >= Challenges.ChallengeData[i].MaxAmount)
+						{
+							mText = "Challenge Complete";
+						}
+						Else
+						{
+							mText = String.Format("%d / %d", Challenges.ChallengeData[i].Amount, Challenges.ChallengeData[i].MaxAmount);
+						}
+					}
+					Break;
+				}
+				Else
+				{
+					mText = "";
+				}
+			}
+		}
+	}
+	
+    override void Drawer(bool selected)
+    {
+        if (mText.Length() != 0)
+        {
+            double x = mXpos;
+			mColor = 1 & 0xffffFF;
+			screen.DrawText(mFont, mColor, x, mYpos, mText, DTA_Clean, False);
+			//DTA_VirtualWidth, 320, DTA_VirtualHeight, 240);
+		}
+    }
+}
+
+
+Class OptionMenuItemEOAE_ResetRColors : OptionMenuItemSubmenu
+{
+	Int mParam;
+	OptionMenuItemEOAE_ResetRColors Init(String label, Name command)
+	{
+		Super.Init (label, command, True);
+		Return Self;
+	}
+	
+
+	Override Int Draw(OptionMenuDescriptor Desc, Int y, Int Indent, Bool Selected)
+	{
+		Int X = DrawLabel(Indent, Y, Selected ? OptionMenuSettings.mFontColorSelection : OptionMenuSettings.mFontColorMore, !Self.Selectable ());
+		If (mCentered)
+		{
+			Return X - 16 * CleanXfac_1;
+		}
+		Return Indent;
+	}
+
+	Override Bool Activate()
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		Cvar.GetCvar("HealthColor", Player).ResetToDefault();
+		Cvar.GetCvar("ArmorColor", Player).ResetToDefault();
+		Cvar.GetCvar("RadColor", Player).ResetToDefault();
+		Return True;
+	}
+}
+
+Class OptionMenuItemEOAE_ResetLColors : OptionMenuItemEOAE_ResetRColors
+{
+
+	Override Bool Activate()
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		Cvar.GetCvar("BulletAmmo", Player).ResetToDefault();
+		Cvar.GetCvar("ShellAmmo", Player).ResetToDefault();
+		Cvar.GetCvar("CellAmmo", Player).ResetToDefault();
+		Cvar.GetCvar("RocketAmmo", Player).ResetToDefault();
+		Cvar.GetCvar("BFGAmmo", Player).ResetToDefault();
+		Cvar.GetCvar("SawEqColor", Player).ResetToDefault();
+		Cvar.GetCvar("IceEqColor", Player).ResetToDefault();
+		Cvar.GetCvar("GenEqColor", Player).ResetToDefault();
+		Cvar.GetCvar("FlameEqColor", Player).ResetToDefault();
+		Cvar.GetCvar("HamEqColor", Player).ResetToDefault();
+		Return True;
+	}
+}

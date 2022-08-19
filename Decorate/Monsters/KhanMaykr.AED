@@ -1,0 +1,832 @@
+
+
+ACTOR DEKhanMaykr : EDE_FlyingBoss replaces SpiderMastermind
+{
+	//$Category "DE base monsters"
+	//$Color 12
+	var int user_attack;
+	Health 9000
+	Radius 72
+	Height 100
+	Mass 50000
+	Speed 22
+	PainChance 0
+	Monster
+	Scale 1.25
+	MeleeRange 160
+	+NEVERRESPAWN
+	+NoTarget
+	+NoInFighting
+	+FLOORCLIP
+	+BOSSDEATH
+	+DONTHARMSPECIES
+	+FLOAT
+	+NOGRAVITY
+	+Boss
+	+MissileMore
+	SeeSound 	"Khan/See"
+	PainSound 	"Khan/Pain"
+	DeathSound 	"Khan/Death"
+	ActiveSound "Doom4/Monsters/Baron/Idle"
+	Obituary "%o fell to the Khan Maykr"
+	HitObituary "%o fell to the Khan Maykr"
+	Gravity 0.83
+	WoundHealth 100
+	Damage 5
+	Tag "Khan Maykr"
+	DamageFactor "BFGDamage", 0
+	DamageFactor "Maykr", 0
+	Species "SpiderMastermind"
+	+DONTHARMSPECIES
+	States
+	{
+	Spawn:
+		KAHN A 0 A_SetUserVar(user_attack,0)
+		Goto Value
+	Value:
+		TNT1 A 0 A_jump(128,"idle")
+		TNT1 A 0 A_SetUserVar(user_attack,1)
+		Goto Idle
+	Idle:
+		KAHN A 10 A_Look 
+		Loop
+	See:
+		//TNT1 A 0 ThrustThingZ(0,1,0,0)
+		TNT1 A 0 A_Jump(16,"Slide")
+		TNT1 A 0 A_Jump(16,"MaykrCreate")
+		KAHN AAAAAA 2 BRIGHT A_Chase
+		KAHN BBCCDD 2 BRIGHT A_Chase
+		Loop
+	MaykrCreate:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItemEX("DEmaykrDroneGN",0,256)
+		TNT1 A 0 A_SpawnItemEx("TeleportFog",0,256)
+		TNT1 A 0 A_Jump(128,"see")
+		TNT1 A 0 A_SpawnItemEX("DEmaykrDroneGN",0,-256)
+		TNT1 A 0 A_SpawnItemEx("TeleportFog",0,-256)
+		Goto See
+	Missile:
+		TNT1 A 0 A_jump(72,"Fire")
+		Goto Attack1
+	Fire:
+		TNT1 A 0 A_JumpIf(user_attack==1,"GodBeam")
+		KAHN A 0 A_SetUserVar(user_attack,1)
+		KAHN AABCDAABCDAA 3 BRIGHT A_SpawnItemEx("KhanGasSpawner",Random(128,720),Random(128,720),0,0,0,0,Random(-320,320),0,0,0)
+		Goto See
+	GodBeam:
+		KAHN E 4 A_PlaySound("Khan/BeamStart",7,1.0,False,ATTN_NONE)
+		KAHN EEFFG 4 A_FaceTarget
+		KAHN G 4 A_SpawnItemEX("KhanBeam",192)
+		KAHN EEEFFGG 4 A_FaceTarget
+		KAHN A 0 A_SetUserVar(user_attack,0)
+		Goto See
+	Attack1:
+		TNT1 A 0 A_Jump(128,"Attack2")
+		KAHN EE 4 BRIGHT A_FaceTarget
+		KAHN F 4 BRIGHT A_FaceTarget		
+		TNT1 A 0 A_CustomMissile("KhanProjectile2",42,72)		
+		KAHN GG 4 BRIGHT A_FaceTarget
+		KAHN EE 4 BRIGHT A_FaceTarget		
+		TNT1 A 0 A_CustomMissile("KhanProjectile1",42,-72)		
+		KAHN GG 4 BRIGHT A_FaceTarget
+		KAHN EE 4 BRIGHT A_FaceTarget
+		KAHN F 4 BRIGHT A_FaceTarget		
+		TNT1 A 0 A_CustomMissile("KhanProjectile2",42,72)		
+		KAHN GGEEFF 4 BRIGHT A_FaceTarget
+		Goto Purple
+	Attack2:
+		KAHN EE 4 BRIGHT A_FaceTarget
+		KAHN F 4 BRIGHT A_FaceTarget		
+		TNT1 A 0 A_CustomMissile("KhanProjectile1",42,72)		
+		KAHN GG 4 BRIGHT A_FaceTarget
+		KAHN EE 4 BRIGHT A_FaceTarget
+		KAHN F 4 BRIGHT A_FaceTarget		
+		TNT1 A 0 A_CustomMissile("KhanProjectile2",42,-72)		
+		KAHN GG 4 BRIGHT A_FaceTarget
+		KAHN EE 4 BRIGHT A_FaceTarget
+		KAHN F 4 BRIGHT A_FaceTarget
+		TNT1 A 0 A_CustomMissile("KhanProjectile1",42,72)
+		KAHN GGEEFF 4 BRIGHT A_FaceTarget
+		Goto Purple
+	Purple:
+		TNT1 A 0 A_Jump(140,"See")
+		TNT1 A 0 A_PlaySound("Khan/Charge",7,1.0,False,ATTN_None)
+		TNT1 A 0 A_SpawnItemEX("KhanFlare",16,0,48)
+		KAHN GGEEF 4 BRIGHT A_FaceTarget
+		TNT1 A 0 A_CustomMissile("KhanPurple",48)
+		KAHN GGEEF 4 BRIGHT A_FaceTarget
+		Goto See
+	Melee:
+	Slide:
+		TNT1 A 0 A_SpawnItemEX("KhanDashPuff",0,0,12)
+		TNT1 A 0 A_PlaySound("Khan/Flight",6,1.0,False,2.5)
+		TNT1 A 0 A_Jump(128,"Slide2")
+		TNT1 E 0 A_FaceTarget
+		TNT1 E 0 ThrustThing (angle*256/360+160, 20,0,0)
+		TNT1 E 0 A_FaceTarget 
+		Goto SlideAfter
+	Slide2:
+		TNT1 E 0 A_FaceTarget
+		TNT1 E 0 ThrustThing (angle*256/360+96, 20,0,0)
+		TNT1 E 0 A_FaceTarget 
+		Goto SlideAfter
+	SlideAfter:
+		KAHN ABCD 6 BRIGHT A_SpawnItemEx("KhanDashTrail",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		MAUD U 0 A_Stop
+		Goto See
+	Pain:
+		KAHN H 2
+		KAHN H  2 A_Pain
+		Goto See	
+	XDeath:
+	Death:
+		KAHN I 4 A_Scream
+		KAHN J 4 Bright A_NoBlocking
+		KAHN K 4 Bright A_BossDeath
+		KAHN L 4 Bright 
+		KAHN M 4
+		KAHN N 4
+		Wait
+	Raise:
+		CYDT B 0 A_ChangeFlag("THRUSPECIES",False)
+		"####" "#" 0 A_ChangeFlag("CORPSE",False)
+		"####" "#" 0 A_ChangeFlag("SHOOTABLE",True)
+		"####" "#" 0 A_ChangeFlag("NORADIUSDMG",True)
+		KAHN N 4 
+		KAHN M 4 Bright
+		KAHN L 4 Bright
+		KAHN K 4 Bright 
+		KAHN J 4
+		KAHN I -1
+		Goto See
+
+	}
+}
+
+
+Actor KhanDashPuff
+{
+	+NOINTERACTION
+	RenderStyle Add
+	Scale 0.1
+	+FORCEXYBILLBOARD
+	Translation "0:255=%[0,0,0]:[8.0,5.0,0.08]"
+	States
+	{
+	Spawn:
+		X072 L 1 Bright NODELAY A_SetScale(scalex+0.1)
+		TNT1 A 0 A_FadeOut(0.05)
+		Loop
+	}
+}
+
+
+Actor KhanDashTrail
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	Renderstyle Translucent
+	Alpha 0.5
+	Scale 1.25
+	States
+	{
+	Spawn:
+		KAHN ABCD 2 BRIGHT A_FadeOut(0.05)
+		Wait
+	}
+}
+
+
+Actor KhanBeam
+{
+	var int user_time;
+	//radius 20
+	//height 6
+	mass 0x7fffffff
+	Health 500000
+	speed 18
+	scale 1.8
+	MaxStepHeight 900
+	MONSTER
+	-Shootable
+	-Solid
+	+FLOORCLIP	
+	+NOGRAVITY
+	//+SPAWNCEILING
+	//+CEILINGHUGGER
+	+FloorHugger
+	+DropOff
+	+DONTFALL
+	SeeSound "Khan/BeamLoop"
+	DeathSound "Khan/HeavyDeath"
+	Translation "0:255=%[0,0,0]:[3.0,3.0,0.08]"
+	RenderStyle ADD
+	States
+   {
+   Spawn: 
+		TNT1 A 4 A_Look
+		loop
+	See:
+		TNT1 A 0 A_PlaySound("Khan/BeamSpawn",6,1.0,False,ATTN_NONE)
+		TNT1 A 0 A_SpawnItem("KhanBeamFX")
+		TNT1 A 0 A_SpawnItem("KhanBeamUpperFX")
+		TNT1 A 0 A_SpawnItem("KhanBeamMiddleFX")
+		TNT1 A 0 A_SpawnItem("KhanBeamLowerFX")
+		TNT1 A 0 A_SetUserVar(user_time,0)
+	Goto Looping
+   Looping:
+		MLFY EFGH 2 Bright A_GiveInventory("BeamProc")
+		MLFY EFGH 2 Bright A_GiveInventory("BeamProc")
+		TNT1 A 0 A_SetUserVar(user_time,user_time+1)
+		TNT1 A 0 A_JumpIf(user_time==30,"Death")
+		Loop
+   Death:
+		MLF3 A 2 Bright A_Scream
+		MLF3 BCDEKLM 3 Bright
+		ACLO E 35
+		MLF3 NO 3 Bright
+		MLF3 P 4 Bright
+		MLF3 QP 3 Bright
+		MLF3 Q 4 Bright
+		MLF3 P 3 Bright
+		MLF3 O 3 Bright
+		MLF3 P 3 Bright
+		MLF3 P 1 Bright 
+		ACLO E 1050
+      stop
+	
+   }
+}
+Actor BeamProc : CustomInventory { States { Pickup:
+		TNT1 A 0 A_Chase
+		TNT1 A 0 A_Explode(2,128,0,0,0,0,0,0,"Maykr")
+		TNT1 A 0 A_SpawnItemEx("StoneImpBallFlarePrepare",Random(16,-16),Random(16,-16),32,0,0,0,0,SXF_NOCHECKPOSITION)
+		TNT1 AA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(12,32),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+Actor KhanBeamFX
+{
+	var int user_time;
+	+NORADIUSDMG
+	+NOGRAVITY
+	+NEVERTARGET
+	-SHOOTABLE
+	+NOTONAUTOMAP
+	-SOLID
+	+NOTELEPORT
+	+QUICKTORETALIATE
+	+GHOST
+	-COUNTKILL
+	+NOTARGETSWITCH
+	Radius 16
+	Height 32
+	RenderStyle Add
+	Mass 0x7FFFFFFF
+	scale 1.8
+	+THRUSPECIES
+	+SPAWNCEILING
+	+CEILINGHUGGER
+	+DropOff
+	MaxStepHeight 1200
+	//BloodType "PinkyArmorPuff"
+	PainChance 256
+	Translation "0:255=%[0,0,0]:[1.8,1.8,0.1]"	
+	States
+	{
+	Spawn:
+		//setup stage, puts target (monster that spawned it) as master, and as tracer to keep resetting it
+		TNT1 A 0 NODELAY A_RearrangePointers(AAPTR_DEFAULT,AAPTR_TARGET,AAPTR_TARGET)
+		TNT1 A 0 A_SetUserVar(user_time,0)
+	SpawnLooper:
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		MLFY ABCD 2 BRIGHT A_GiveInventory("BeamFXProc")
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		MLFY ABCD 2 BRIGHT A_GiveInventory("BeamFXProc")
+		TNT1 A 0 A_SetUserVar(user_time,user_time+1)
+		TNT1 A 0 A_JumpIf(user_time==30,"Death")
+		Loop
+	Death:
+		MLF3 F 2 Bright 
+		MLF3 GHIJKLM 3 Bright
+		ACLO E 20
+		MLF3 NO 3 Bright
+		MLF3 P 4 Bright
+		MLF3 QP 3 Bright
+		MLF3 Q 4 Bright 
+		MLF3 POP 3 Bright
+		MLF3 P 1 Bright 
+		Stop
+	}
+}
+Actor BeamFXProc : CustomInventory { States { Pickup:
+		
+		TNT1 A 0 BRIGHT A_Warp(AAPTR_TARGET,0,0,120,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		TNT1 A 0 A_Explode(1,128,0,0,0,0,0,0,"Maykr")
+		TNT1 A 0 A_SpawnItemEx("StoneImpBallFlarePrepare",Random(16,-16),Random(16,-16),32,0,0,0,0,SXF_NOCHECKPOSITION)
+		TNT1 AA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(12,32),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+Actor KhanBeamUpperFX : KhanBeamFX
+{
+	XScale 0.75
+    YScale 5.0
+	+THRUSPECIES
+	-SPAWNCEILING
+	-CEILINGHUGGER
+	-FLOORHUGGER
+	+DropOff
+	MaxStepHeight 1200
+	//BloodType "PinkyArmorPuff"
+	PainChance 256
+	Translation "0:255=%[0,0,0]:[1.8,1.8,0.1]"	
+	States
+	{
+	Spawn:
+		//setup stage, puts target (monster that spawned it) as master, and as tracer to keep resetting it
+		TNT1 A 0 NODELAY A_RearrangePointers(AAPTR_DEFAULT,AAPTR_TARGET,AAPTR_TARGET)
+		TNT1 A 0 A_SetUserVar(user_time,0)
+	SpawnLooper:
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamUpperFXProc")
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamUpperFXProc")
+		TNT1 A 0 A_SetUserVar(user_time,user_time+1)
+		TNT1 A 0 A_JumpIf(user_time==30,"Death")
+		Loop
+	Death:
+		MLF3 F 2 Bright 
+		MLF3 GHIJKLM 3 Bright
+		ACLO E 20
+		MLF3 NO 3 Bright
+		MLF3 P 4 Bright
+		MLF3 QP 3 Bright
+		MLF3 Q 4 Bright 
+		MLF3 POP 3 Bright
+		MLF3 P 1 Bright 
+		Stop
+	}
+}
+Actor BeamUpperFXProc : CustomInventory { States { Pickup:
+		
+		TNT1 A 0 BRIGHT A_Warp(AAPTR_TARGET,0,0,384,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		TNT1 A 0 A_Explode(1,160,0,0,0,0,0,0,"Maykr")
+		TNT1 AAAA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(-72,72),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+
+Actor KhanBeamMiddleFX : KhanBeamFX
+{
+	XScale 0.75
+    YScale 5.0
+	+THRUSPECIES
+	-SPAWNCEILING
+	-CEILINGHUGGER
+	-FLOORHUGGER
+	+DropOff
+	MaxStepHeight 1200
+	//BloodType "PinkyArmorPuff"
+	PainChance 256
+	Translation "0:255=%[0,0,0]:[1.8,1.8,0.1]"	
+	States
+	{
+	Spawn:
+		//setup stage, puts target (monster that spawned it) as master, and as tracer to keep resetting it
+		TNT1 A 0 NODELAY A_RearrangePointers(AAPTR_DEFAULT,AAPTR_TARGET,AAPTR_TARGET)
+		TNT1 A 0 A_SetUserVar(user_time,0)
+	SpawnLooper:
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamMiddleFXProc")
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamMiddleFXProc")
+		TNT1 A 0 A_SetUserVar(user_time,user_time+1)
+		TNT1 A 0 A_JumpIf(user_time==30,"Death")
+		Loop
+	Death:
+		MLF3 F 2 Bright 
+		MLF3 GHIJKLM 3 Bright
+		ACLO E 20
+		MLF3 NO 3 Bright
+		MLF3 P 4 Bright
+		MLF3 QP 3 Bright
+		MLF3 Q 4 Bright 
+		MLF3 POP 3 Bright
+		MLF3 P 1 Bright 
+		Stop
+	}
+}
+Actor BeamMiddleFXProc : CustomInventory { States { Pickup:
+		
+		TNT1 A 0 BRIGHT A_Warp(AAPTR_TARGET,0,0,256,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		TNT1 A 0 A_Explode(2,192,0,0,0,0,0,0,"Maykr")
+		TNT1 AAAA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(-72,72),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+Actor KhanBeamLowerFX : KhanBeamFX
+{
+	XScale 0.75
+    YScale 5.0
+	+THRUSPECIES
+	-SPAWNCEILING
+	-CEILINGHUGGER
+	-FLOORHUGGER
+	+DropOff
+	MaxStepHeight 1200
+	//BloodType "PinkyArmorPuff"
+	PainChance 256
+	Translation "0:255=%[0,0,0]:[1.8,1.8,0.1]"	
+	States
+	{
+	Spawn:
+		//setup stage, puts target (monster that spawned it) as master, and as tracer to keep resetting it
+		TNT1 A 0 NODELAY A_RearrangePointers(AAPTR_DEFAULT,AAPTR_TARGET,AAPTR_TARGET)
+		TNT1 A 0 A_SetUserVar(user_time,0)
+	SpawnLooper:
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamLowerFXProc")
+		TNT1 A 0 A_RearrangePointers(AAPTR_TRACER,AAPTR_TARGET,AAPTR_DEFAULT) 
+		RR28 ABCD 2 BRIGHT A_GiveInventory("BeamLowerFXProc")
+		TNT1 A 0 A_SetUserVar(user_time,user_time+1)
+		TNT1 A 0 A_JumpIf(user_time==30,"Death")
+		Loop
+	Death:
+		MLF3 F 2 Bright 
+		MLF3 GHIJKLM 3 Bright
+		ACLO E 20
+		MLF3 NO 3 Bright
+		MLF3 P 4 Bright
+		MLF3 QP 3 Bright
+		MLF3 Q 4 Bright 
+		MLF3 POP 3 Bright
+		MLF3 P 1 Bright 
+		Stop
+	}
+}
+Actor BeamLowerFXProc : CustomInventory { States { Pickup:
+		
+		TNT1 A 0 BRIGHT A_Warp(AAPTR_TARGET,0,0,128,0,WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE)
+		TNT1 A 0 A_Explode(3,192,0,0,0,0,0,0,"Maykr")
+		TNT1 AAAA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(-72,72),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+
+
+
+//----------------------------------------
+Actor KhanBeamBall
+{
+	Projectile
+	Radius 7
+	Height 12
+	Scale 1.4
+	RenderStyle Add
+	Speed 15
+	FastSpeed 15
+	Damage 1
+	//SeeSound "Maykr/shoot"
+	Translation "0:255=%[0,0,0]:[1.8,1.8,0.025]"
+	+FORCEXYBILLBOARD
+	+THRUSPECIES
+	Species "Maykr"
+	Decal "D4PlasmaMonster"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+		Goto Looper
+	Looper:
+		MLF3 IJKLM 4 Bright A_GiveInventory("BallProc")
+		Loop
+	Death:
+		TNT1 A 0 A_SpawnItemEx("MaykrBallPuff",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION)
+		TNT1 A 3 Light("OrangeSmallPoint1")
+		TNT1 A 3 Light("OrangeSmallPoint2")
+		TNT1 A 3 Light("OrangeSmallPoint3")
+		Stop
+	}
+}
+Actor BallProc : CustomInventory { States { Pickup:
+		
+		TNT1 A 0 A_Explode(2,160,0,0,0,0,0,0,"Maykr")
+		TNT1 AAA 0 A_SpawnItemEx("StoneImpFlamelet",Random(3,-3),Random(3,-3),Random(-32,32),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+Actor KhanFlare
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.1
+	Translation "0:255=%[0,0,0]:[1.0,0.0,5.08]"
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		DB19 A 1  Bright A_SetScale(0.5,0.5)
+		DB19 B 1  Bright A_SetScale(1.0,1.0)
+		DB19 C 1  Bright A_SetScale(1.5,1.5)
+		DB19 D 1  Bright A_SetScale(2.0,2.0)
+		DB19 EFGHIJKLMNOPQRST 1 Bright
+		DB19 EFGHIJKLMNOPQRST 1 Bright
+		//X072 L 0 A_FadeOut(0.1)
+		Stop
+	}
+}
+Actor KhanPurple : FastProjectile
+{
+	Projectile
+	Speed 32
+	FastSpeed 32
+	Radius 48
+	Height 8
+	Damage (60)
+	RenderStyle Add
+	Scale 2.0
+	Translation "0:255=%[0,0,0]:[1.0,0.0,5.08]"
+	SeeSound "Khan/HeavyShoot"
+	DeathSound "Khan/HeavyDeath"
+	MissileHeight 8
+	+SeekerMissile
+	+FORCEXYBILLBOARD
+	-Ripper
+	States
+	{
+	Spawn:
+		DB19 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright A_GiveInventory("KhanPurpleToekn")
+		Loop
+	Death:
+		TNT1 A 10 A_SpawnItemEx("PlasmaBombExplo",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATIoN)
+		Stop
+		
+	}
+}
+Actor KhanPurpleTrail
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 1.0
+	Translation "0:255=%[0,0,0]:[1.0,0.0,5.08]"
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		DB19 ABCDEFG 1 Bright A_FadeOut(0.1)
+		X072 L 0 
+		Stop
+	}
+}
+Actor KhanPurpleToekn : CustomInventory { States { Pickup:
+		TNT1 A 0 A_SeekerMissile(2,2)
+		TNT1 A 0 A_SpawnItemEx("KhanPurpleTrail",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+
+
+
+Actor KhanProjectile1 : FastProjectile
+{
+	Projectile
+	Speed 32
+	FastSpeed 32
+	Radius 48
+	Height 8
+	Damage (30)
+	RenderStyle Add
+	Xscale 1.2
+	Yscale 0.1
+	 Translation "0:255=%[0,0,0]:[2.0,1.1,0.1]"
+	SeeSound "Dread/blade"
+	MissileHeight 8
+	+FORCEXYBILLBOARD
+	-Ripper
+	States
+	{
+	Spawn:
+		X016 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright A_SpawnItemEx ("KhanProjectileTrail1",0,0,0,0,0,0,0,0,0,0)
+		Loop
+	Death:
+		TNT1 A 10
+		Stop
+		
+	}
+}
+Actor KhanProjectileTrail1
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	Renderstyle Translucent
+	Alpha 0.5
+	Xscale 0.6
+	Yscale 0.05
+	States
+	{
+	Spawn:
+		X016 ACDFHJLNPRTVX 1 Bright A_FadeOut(0.05)
+		Wait
+	}
+}
+
+Actor KhanProjectile2 : KhanProjectile1
+{
+	Radius 8
+	Height 48
+	Xscale 0.1
+	Yscale 1.2
+	MissileHeight 8
+	States
+	{
+	Spawn:
+		X016 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright A_SpawnItemEx ("KhanProjectileTrail2",0,0,0,0,0,0,0,0,0,0)
+		Loop
+	}
+}
+Actor KhanProjectileTrail2 : KhanProjectileTrail1
+{
+	Xscale 0.05
+	Yscale 0.6
+}
+
+
+
+//------------------------------------------------------------------
+
+
+Actor KhanGasSpawner 
+{
+	Projectile
+	Radius 2
+	Height 3
+	+FLOORHUGGER
+	+THRUACTORS
+	Scale 0.2
+	Speed 10
+	Gravity 9000
+	RenderStyle None
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_PlaySound("Khan/FireStart",7,1.0,false,1.75,0)
+		TNT1 AAAAAAAAAA 5 NODELAY A_SpawnItemEx("KhanGas", random(70,-70),random(70,-70),0, 0,0,0, 0,SXF_TRANSFERPOINTERS)
+		Stop
+	Death:
+		TNT1 A 1
+		Stop
+	}
+}
+
+Actor KhanGas
+{
+	+NOCLIP
+	+FloorHugger
+	-NOGRAVITY
+	Height 20
+	RenderStyle Add
+	Translation "0:255=%[0,0,0]:[1.0,0.6,0.0]"
+	XScale 1.6
+	YScale 0.6
+	Alpha 0.0
+	DamageType "KhanGas"
+	Obituary "%o fell to the stench of great evil."
+	+DONTSPLASH
+	+FORCEXYBILLBOARD
+	States
+	{
+	Spawn:
+		X110 A 0 NODELAY
+		X110 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		X110 ABCDEFGH 2  A_Fadeto(0.8,0.06)	
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 
+		X110 IJKLMNOP 2  A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 NODELAY
+		X110 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		X110 ABCDEFGH 2  A_Fadeto(0.8,0.06)	
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 
+		X110 IJKLMNOP 2  A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 NODELAY
+		X110 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		X110 ABCDEFGH 2  A_Fadeto(0.8,0.06)	
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 
+		X110 IJKLMNOP 2  A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 NODELAY
+		X110 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		X110 ABCDEFGH 2  A_Fadeto(0.8,0.06)	
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 
+		X110 IJKLMNOP 2  A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+
+		//
+		//	So it doesn't instantly hit the player
+		//
+		
+		X110 A 0 NODELAY A_Explode(5,60,0,0,30)
+		X110 A 0 A_Jump(256,1,2,3,4,5,6,7)
+		X110 ABCDEFGH 2 Bright A_Fadeto(0.8,0.06)	
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 IJKLMNOP 2 Bright A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 QRSTUVWX 2 Bright 			
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 PQRSTUVW 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 IJKLMNOP 2 Bright A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 QRSTUVWX 2 Bright 			
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 PQRSTUVW 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 IJKLMNOP 2 Bright A_Fadeto(0.8,0.06)
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 QRSTUVWX 2 Bright 			
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 PQRSTUVW 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 YABCDEFG 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 HIJKLMNO 2 Bright
+		X110 A 0 A_SpawnItemEx("KhanLightningSparkles",0,0,10, 0,0,0, 0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION, 200)
+	
+		
+		
+		X110 A 0 A_Explode(5,60,0,0,30) 
+		X110 PQRSTUVW 2 Bright Bright A_FadeOut(0.076)
+		X110 A 0 A_Explode(5,60,0,0,30)
+		X110 XYABCDEF 2 Bright Bright A_FadeOut(0.076)
+		sTOP
+		
+	}
+}
+
+Actor KhanLightningSparkles : TeslaRays
+{	Translation "0:255=%[0,0,0]:[1.0,0.6,0.0]" }

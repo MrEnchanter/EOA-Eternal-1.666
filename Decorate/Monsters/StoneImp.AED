@@ -1,0 +1,279 @@
+//================================================================================================================
+//================================================================================================================
+//
+//	Doom imp, sprites "TRO3h" from realm667, sprite recolor by DBT
+//  Doom 4 reskin by Phobos867
+// 	Stone Retexture by PhoenixFire
+//================================================================================================================
+//================================================================================================================
+ACTOR DEStoneImp : EDE_Imp
+{
+	//$Category "DE base monsters"
+	//$Color 12
+	var int user_accelerator;
+	Health 550
+	//Health 90
+	Radius 20
+	Height 56
+	Mass 600
+	Speed 16
+	PainChance 96
+	Monster
+	Scale 1
+	//MaxDropOffHeight 120
+	+NEVERRESPAWN
+	+FLOORCLIP
+	+NoTarget
+	+NoInFighting
+	+MissileMore
+	SeeSound 	"StoneImp/See"
+	PainSound 	"StoneImp/Pain"
+	DeathSound 	"StoneImp/Pain"
+	ActiveSound "StoneImp/Idle"
+	HitObituary "$OB_IMPHIT"
+	Obituary "$OB_IMP"
+	DamageFactor "PlasmaExploder", 0.3	//because otherwise, zombiemen would be killing everyone else easily
+	Tag "Imp"
+	DropItem "HeavyMediumDrop"
+	States
+	{
+	Spawn:
+		STNI A 0
+		Goto Idle
+	Idle:
+		STNI A random(5,15)
+	IdleLoop:
+		STNI A 10 A_Look
+		Loop
+	See:
+		TNT1 A 0 A_ChangeFlag(FRIGHTENED,0)
+		TNT1 A 0 A_JumpifCloser(200,"SeeScared")
+		STNI BBCCDDEE 2 A_Chase
+		Loop
+	SeeScared:
+		TNT1 A 0 A_ChangeFlag(FRIGHTENED,1)
+		STNI BB 2 A_Chase("","")
+		STNI CC 2 A_Chase
+		STNI DD 2 A_Chase("","")
+		STNI EE 2 A_Chase
+		TNT1 A 0 A_JumpifCloser(200,"SeeScared")
+		Goto See
+	Melee:
+	Missile:
+			TNT1 A 0 A_Jump(96,"FireBallhuge")	//yet, if close enough, it will still use sometimes the big ball
+			STNI FFFF 4 Light("ImpPrepareAttackSmall") A_FaceTarget
+			STNI G 6 A_CustomMissile("DEStoneImpBall",35,5,0)
+			Goto See
+		FireBallhuge:
+			ISPN A 0 A_SetUserVar(user_accelerator,4)
+			ISPN A 0  A_Playsound("Stoneimp/Charge",7,1.0,false,1.6)
+			ISPN A 0  A_Playsound("Stoneimp/Roll",6,1.0,false,1.6)
+			TNT1 A 0 A_SpawnItemEx("StoneImpFlare",0,-4,22)
+			ISPN ABCDEFG 1 BRIGHT A_GiveInventory("StoneChargeProc")
+			ISPN ABCDEFG 1 BRIGHT A_GiveInventory("StoneChargeProc")
+			ISPN A 0 A_Recoil(-user_accelerator-2)
+			// full acceleration round 1
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN ABCD 1 BRIGHT A_GiveInventory("StoneChargeProc")
+			TNT1 A 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 A 0 A_SetUserVar(user_accelerator,user_accelerator+2)
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN EFGH 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 B 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 B 0 A_SetUserVar(user_accelerator,user_accelerator+2)
+			ISPN C 0 A_Recoil(-user_accelerator)
+			ISPN ABCD 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 C 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 C 0 A_SetUserVar(user_accelerator,user_accelerator+2)
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN EFGH 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 B 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 B 0 A_SetUserVar(user_accelerator,user_accelerator+2)
+			// full acceleration round 2
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN ABCD 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 A 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN EFGH 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 B 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			ISPN C 0 A_Recoil(-user_accelerator)
+			ISPN ABCD 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 C 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			ISPN A 0 A_Recoil(-user_accelerator)
+			ISPN EFGH 1 BRIGHT  A_GiveInventory("StoneChargeProc")
+			TNT1 B 0 A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			//slowing down
+			ISPN ABCD 1 BRIGHT  A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 A 0 A_ChangeVelocity(velx*0.8,vely*0.8,velz*0.8,CVF_REPLACE)
+			ISPN EFGH 1 BRIGHT  A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 B 0 A_ChangeVelocity(velx*0.8,vely*0.8,velz*0.8,CVF_REPLACE)
+			ISPN ABCD 1 BRIGHT  A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 C 0 A_ChangeVelocity(velx*0.8,vely*0.8,velz*0.8,CVF_REPLACE)
+			ISPN EFGH 1 BRIGHT  A_JumpIf(velx==0 && vely==0,"CrashedSomewhere")
+			TNT1 B 0 A_ChangeVelocity(velx*0.8,vely*0.8,velz*0.8,CVF_REPLACE)
+			STNI A 20 //chance to hit when it slows down
+			Goto See
+		
+		CrashedSomewhere:
+			STNI A 0 A_PlaySound("StoneImp/Crash",6,1.0,0,2.0)
+			STNI A 0 A_SpawnItemEx("PinkyDustCloud",20,0,32,0,0,0,0,SXF_NOCHECKPOSITION)
+			STNI A 0 A_SetDamageType("PinkieRam")
+			STNI A 0 A_Explode(40,80,XF_NOTMISSILE,0,50)
+			STNI A 0 A_SetDamageType("Normal")
+			STNI H 40 A_Quake(sqrt(user_accelerator),user_accelerator/2,0,256) // chance to hit the back
+			Goto See
+	Pain:
+		STNI H 2
+		STNI H 2 A_Pain
+		Goto See
+
+	Death:
+		"####" "#" 0  A_SpawnItemEx("SituationalPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		STNI I 4 
+		STNI J 4 A_Scream
+		STNI K 4
+		STNI L 4 A_NoBlocking
+		STNI M -1 
+		Stop
+	
+	Death.Massacre:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Minimal",CHAN_AUTO,1.0,false,2.0)
+		TNT1 A 35 A_BossDeath
+		Stop
+	
+	XDeath:
+		TNT1 A 0 A_XScream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_JumpIf(GetCVAR("enhanced_gibs") == false,"XDeathMinimal")
+		TNT1 A 0 A_Jump(128,"BologneseXDeath")
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropper",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 0 A_Jump(256,3)
+	XDeathMinimal:
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropperMinimal",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 35 A_BossDeath
+		Stop	
+		
+	Raise:
+		Goto See
+		
+	
+
+	}
+}
+Actor StoneChargeProc : CustomInventory { States { Pickup:
+		TNT1 A 0 A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("StoneImpBallFlarePrepare",Random(16,-16),Random(16,-16),32,0,0,0,0,SXF_NOCHECKPOSITION)
+		TNT1 AA 0 A_SpawnItemEx("StoneImpFlamelet",Random(16,-16),Random(16,-16),Random(12,32),0,0,0,0,SXF_NOCHECKPOSITION)
+		Stop
+}	}
+
+
+
+
+//*********************************************
+ACTOR DEStoneImpBall : D4AbstractMissile
+{
+	Radius 6
+	Height 8
+	Speed 28
+	FastSpeed 28
+	Damage 3
+	Projectile
+	+RANDOMIZE
+	RenderStyle Add
+	Alpha 1
+	SeeSound "Doom4/Monsters/FireBallThrow"
+	DeathSound "Doom4/Other/FireballHit2"
+	scale 0.2
+	+FORCEXYBILLBOARD
+	Decal "FireballScorch"
+	Translation "0:255=%[0,0,0]:[1.1,1.1,0.1]"
+	States
+	{
+	Spawn:
+		DB58 ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 BRIGHT Light("YellowMediumFlicker3")
+		Loop
+	Death:
+		HIBI A 0 A_SetScale(0.4)
+		DB59 AB 1 BRIGHT Light("YellowSmallFlicker1")	//had to separate
+		DB59 CD 1 BRIGHT Light("YellowMediumFlicker3")
+		DB59 EF 1 BRIGHT Light("YellowMediumFlicker3")
+		DB59 GH 1 BRIGHT Light("YellowSmallFlicker1")
+		DB59 IJ 1 BRIGHT Light("YellowSmallFlicker1")
+		DB59 KL 1 BRIGHT Light("YellowSmallFlicker2")
+		DB59 MN 1 BRIGHT Light("YellowSmallFlicker2")
+		DB59 OP 1 BRIGHT Light("YellowSmallFlicker3")
+		DB59 QR 1 BRIGHT Light("YellowSmallFlicker3")
+		DB59 ST 1 BRIGHT Light("YellowSmallFlicker3")
+		Stop
+	}
+}
+Actor StoneImpBallFlarePrepare
+{
+	+NOINTERACTION
+	Alpha 0.5
+	Scale 0.25
+	RenderStyle Add
+	Alpha 0.99
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	Translation "0:255=%[0,0,0]:[1.1,1.1,0.1]"
+	States
+	{
+	Spawn:
+		PROJ DEFDEF 3 Bright A_FadeOut(0.07)
+		PROJ GHI 1 Bright A_FadeOut(0.2)
+		Wait
+	}
+}
+Actor StoneImpFlamelet
+{
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+CLIENTSIDEONLY
+	RenderStyle Add
+	Alpha 0.8
+	Scale 0.25
+	Translation "0:255=%[0,0,0]:[1.1,1.1,0.1]"
+	States
+	{
+	Spawn:
+		PROJ D 0 NODELAY A_Jump(220,5,6,7,8,9)
+		X056 ABCDEFGHIJKLMNOPR 1 Bright
+		Stop
+	}
+}
+Actor StoneImpFlare
+{
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	RenderStyle Add
+	Scale 0.1
+	Translation "0:255=%[0,0,0]:[1.1,1.1,0.08]"
+	Alpha 0.99
+	States
+	{
+	Spawn:
+		DB19 A 1  Bright A_SetScale(0.3,0.3)
+		DB19 B 1  Bright A_SetScale(0.6,0.6)
+		DB19 C 1  Bright A_SetScale(0.9,0.9)
+		DB19 D 1  Bright A_SetScale(1.2,1.2)
+		DB19 EFGHIJK 1 Bright
+		DB19 L 1 Bright A_SetScale(0.8,0.8)
+		DB19 M 1 Bright A_SetScale(0.6,0.6)
+		DB19 N 1 Bright	A_SetScale(0.4,0.4)
+		DB19 O 1 Bright A_SetScale(0.2,0.2)
+		//X072 L 0 A_FadeOut(0.1)
+		Stop
+	}
+}
+
+Actor DEstoneimpGN : DEstoneimp
+{
+	+LOOKALLAROUND
+	-COUNTKILL
+}

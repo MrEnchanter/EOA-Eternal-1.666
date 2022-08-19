@@ -1,0 +1,76 @@
+GameInfo
+{
+	PlayerClasses = "DoomSlayer"
+	MapArrow = "marrow", "ddtmarr" //strongbelly: map player arrow by m8f from Hellscape Navigator.
+	BlurAmount = 0.5
+	DimColor = "Black"
+	DimAmount = 0.8
+	ForceKillScripts = True
+	AddEventHandlers = /*"EOA_ReticleRenderer",*"EOAE_HudRenderer",*/ "EOA_ChallengeEventHandler", "EOA_StaticEventHandler", "DashAndBloodPunch", "hitmarkerhandler"
+	StatusBarClass = "EOA_UI"//"EOA_StatusBar"
+}
+
+Automap
+{
+	Base = "Doom"
+	Background = "22 1D 1C"
+	YourColor = "94 F2 37"
+	WallColor = "62 A3 25"
+	FloorDiffWallColor = "8B 8B 8B"
+	CeilingDiffWallColor = "83 83 83"
+	ExtraFloorWallColor = "66 55 55"
+	GridColor = "4B 4B 4B"
+	XHairColor = "80 80 80"
+	NotSeenColor = "6C 6C 6C"
+	//LockedColor = "B3 00 00"
+	IntraTeleportColor = "00 00 FF"
+	InterTeleportColor = "9F 00 9B"
+	SecretSectorColor = "AF 43 00"
+	SecretWallColor = "FF 9F 43"
+	ShowLocks = True
+	SpecialWallColor = "FF FF FF"
+}
+
+DoomEdNums
+{
+	//items and pickups
+	20020 = "EOA_AmmoCrate"
+	20021 = "EOA_ThrustBootsGiver"
+	20100 = "EOA_EliteGuardCorpse"
+	20101 = "EOA_FieldDrone"
+	20102 = "EOA_ArgentCell"
+	20103 = "EOA_RuneTrialStone"
+	22030 = "EOA_Allmap"
+	22031 = "EOA_AutomapStation"
+	20001 = "EOA_HAPistol"
+	
+	//Refills
+	22032 = "DDashRefill"
+	80085 = "BloodPunchRefill"
+	
+	//monkey Poles
+	22033 = "MonkeyPoleA"
+	22034 = "MonkeyPoleB"
+	22035 = "MonkeyPoleC"
+	22036 = "MonkeyPoleD"
+	
+	//climbable wall
+	22037 = "ClimbableWall"
+	
+	//HookShot Grapple Point
+	22038 = "HookPoint"
+}
+
+//Title Map
+Map TITLEMAP "Embers of Armageddon"
+{
+	//[Strongbelly]: There's a noticeable lag spike when the titlemap plays. This fixes that issue.
+	PrecacheSounds = "Doom4/Menu/Intro", "Doom4/Menu/MenuTheme"
+}
+
+//Title Map No Camera
+Map MAP69 "Menu Boundary Break"
+{
+	//[Strongbelly]: There's a noticeable lag spike when the titlemap plays. This fixes that issue.
+	PrecacheSounds = "Doom4/Menu/Intro", "Doom4/Menu/MenuTheme"
+}

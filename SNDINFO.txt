@@ -1,0 +1,488 @@
+//==============================================================================
+// Player Specific
+//==============================================================================
+Player/Pole				MANTLING
+
+ClimbableWall/Use		"sounds/Weapons/Melee/SPUNCH1.ogg"
+
+$random ClimbableWall/Walk		{ClimbableWall/Walk1 ClimbableWall/Walk2 ClimbableWall/Walk3 ClimbableWall/Walk4}
+ClimbableWall/Walk1		"sounds/Player/TMANTLE1.ogg"
+ClimbableWall/Walk2		"sounds/Player/TMANTLE2.ogg"
+ClimbableWall/Walk3		"sounds/Player/TMANTLE3.ogg"
+ClimbableWall/Walk4		"sounds/Player/TMANTLE4.ogg"
+
+//==============================================================================
+// Shoulder Cannon
+//==============================================================================
+Cannon/ReCharge 		"sounds/Equipment/equipnotready.ogg"
+Cannon/SWITCH  			"sounds/Equipment/switch.ogg"
+Cannon/READY   			"sounds/Equipment/ready.ogg"
+Cannon/SECSWITCH 		"sounds/Equipment/secondarym.ogg"
+FrozenSFX				"sounds/Equipment/ICEBRK3.ogg" //credits to Project Brutality
+BurningSFX				"sounds/Equipment/DSRDTRCH.ogg" //credits to Project Brutality
+IceReadySFX				"sounds/Equipment/icebombready.ogg"
+CannonLaunch			"sounds/Equipment/cannonlaunch.ogg"
+
+$random FlameBelch	{Flamebelch1 Flamebelch2 Flamebelch3 Flamebelch4}
+Flamebelch1				"sounds/Equipment/flamebelch1.ogg"
+Flamebelch2				"sounds/Equipment/flamebelch2.ogg"
+Flamebelch3				"sounds/Equipment/flamebelch3.ogg"
+Flamebelch4				"sounds/Equipment/flamebelch4.ogg"
+
+$random FlameReadySFX	{FlameReady1 FlameReady2}
+FlameReady1				"sounds/Equipment/flamebelchready.ogg"
+FlameReady2				"sounds/Equipment/flamebelchready2.ogg"
+
+$random b5.ddash {dash1 dash2 dash3 dash4 dash5}
+dash1		"sounds/Equipment/dash1.ogg"
+dash2		"sounds/Equipment/dash2.ogg"
+dash3		"sounds/Equipment/dash3.ogg"
+dash4		"sounds/Equipment/dash4.ogg"
+dash5		"sounds/Equipment/dash5.ogg"
+
+
+b5.drestock1 "sounds/Equipment/dashready1.ogg"
+b5.drestock2 "sounds/Equipment/dashready2.ogg"
+
+
+
+FragSelected		"sounds/Equipment/fragselected.ogg"
+IceBombSelected		"sounds/Equipment/icebombselected.ogg"
+
+//==============================================================================
+// Pickups
+//==============================================================================
+
+	Pickup/Shell		"sounds/items/Pickup/PICKSHL.ogg"
+	Pickup/Bullet		"sounds/items/Pickup/PICKBLT.ogg"
+	Pickup/Rocket		"sounds/items/Pickup/PICKRKT.ogg"
+	Pickup/Cell			"sounds/items/Pickup/PICKCEL.ogg"
+	Pickup/BFG			"sounds/items/Pickup/PICKBFG.ogg"
+	Pickup/Blood		"sounds/items/Pickup/PICKBLD.ogg"
+	Pickup/Dash			"sounds/items/Pickup/PICKDSH.ogg"
+	PickupLoop/Dash		"sounds/items/Pickup/PDSHLOP.ogg"
+	PickupLoop/Blood	"sounds/items/Pickup/PBLDLOP.ogg"
+	PickupLoop/Quad		"sounds/items/Pickup/PQUDLOP.ogg"
+	PickupLoop/Haste	"sounds/items/Pickup/PHSTLOP.ogg"
+	PickupLoop/Berserk	"sounds/items/Pickup/PBSKLOP.ogg"
+	$random Pickup/Fuel {Pickup/Fuel1 Pickup/Fuel2 Pickup/Fuel3}
+	Pickup/Fuel1		"sounds/items/Pickup/FUELP1.ogg"
+	Pickup/Fuel2		"sounds/items/Pickup/FUELP2.ogg"
+	Pickup/Fuel3		"sounds/items/Pickup/FUELP3.ogg"
+
+//==============================================================================
+// Misc
+//==============================================================================
+	Totem/Hum		"sounds/items/BuffTotem/TOTMHUMLOP.ogg"
+	$random Totem/Destroy {TotemDestroy1 TotemDestroy2 TotemDestroy3 TotemDestroy4 TotemDestroy5 TotemDestroy6}
+	TotemDestroy1	"sounds/items/BuffTotem/TOTMDEST1.ogg"
+	TotemDestroy2	"sounds/items/BuffTotem/TOTMDEST2.ogg"
+	TotemDestroy3	"sounds/items/BuffTotem/TOTMDEST3.ogg"
+	TotemDestroy4	"sounds/items/BuffTotem/TOTMDEST4.ogg"
+	TotemDestroy5	"sounds/items/BuffTotem/TOTMDEST5.ogg"
+	TotemDestroy6	"sounds/items/BuffTotem/TOTMDEST6.ogg"
+	
+	ExtaLifePickup		"Sounds/Equipment/ExtraLifePickup.ogg"
+	
+	QuickSaw			"Sounds/Weapons/chainsaw/quicksaw.ogg"
+	QuickSawEmpty       "Sounds/Weapons/chainsaw/QuickSawEmpty.ogg"
+	
+	BloodPunchSFX		"sounds/Equipment/bloodpunch.ogg"
+	BloodPunchCharged 	"sounds/Equipment/BPcharge.ogg"
+	fist/blod  fistblod
+	
+	$random GloryKillDing  	 	{GloryKillDing1 GloryKillDing2 GloryKillDing3 GloryKillDing4 GloryKillDing5}
+	GloryKillDing1 				"sounds/Equipment/GloryKillDing1.ogg"
+	GloryKillDing2 				"sounds/Equipment/GloryKillDing2.ogg"
+	GloryKillDing3 				"sounds/Equipment/GloryKillDing3.ogg"
+	GloryKillDing4 				"sounds/Equipment/GloryKillDing4.ogg"
+	GloryKillDing5 				"sounds/Equipment/GloryKillDing5.ogg"
+	
+	HeatBlastCharge1 	"sounds/Weapons/Plasma Rifle/Heat Blast/HBCharge1.ogg"
+	HeatBlastCharge2 	"sounds/Weapons/Plasma Rifle/Heat Blast/HBCharge2.ogg"
+	
+	$random HookFire			{HookFire1 HookFire2 HookFire3 HookFire4}
+	HookFire1			"sounds/Weapons/Super Shotgun/HOOKFIRE1.ogg"
+	HookFire2			"sounds/Weapons/Super Shotgun/HOOKFIRE2.ogg"
+	HookFire3			"sounds/Weapons/Super Shotgun/HOOKFIRE3.ogg"
+	HookFire4			"sounds/Weapons/Super Shotgun/HOOKFIRE4.ogg"
+	
+	HookLoop 			"sounds/Weapons/Super Shotgun/HOOKLOOP.ogg"
+	HookDet 			"sounds/Weapons/Super Shotgun/HOOKDET.ogg"
+	
+	HookRel1 			"sounds/Weapons/Super Shotgun/HOOKREL1.ogg"
+	HookRel2 			"sounds/Weapons/Super Shotgun/HOOKREL2.ogg"
+	
+	$random HookReady		{HookReady1 HookReady2}
+	HookReady1			"sounds/Weapons/Super Shotgun/HOOKRDY1.ogg"
+	HookReady2			"sounds/Weapons/Super Shotgun/HOOKRDY2.ogg"
+	HookReadyA			"sounds/Weapons/Super Shotgun/HOOKRDYA.ogg"
+	
+	
+	BurstWind           "sounds/Weapons/Combat Shotgun/Charged Burst/TRIBEEP.ogg"
+	BurstExit           "sounds/Weapons/Combat Shotgun/Charged Burst/TRIXT.ogg"
+	
+	$random PowerSurgeFire			{PowerSurgeFire1 PowerSurgeFire2 PowerSurgeFire3 PowerSurgeFire4 PowerSurgeFire5 PowerSurgeFire6}
+	PowerSurgeFire1			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE1.ogg"
+	PowerSurgeFire2			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE2.ogg"
+	PowerSurgeFire3			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE3.ogg"
+	PowerSurgeFire4			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE4.ogg"
+	PowerSurgeFire5			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE5.ogg"
+	PowerSurgeFire6			"sounds/Weapons/Plasma Rifle/Heat Blast/PRSRFIRE6.ogg"
+	
+	RLR/LockLoad1			"sounds/Weapons/Rocket Launcher/Lock-On Burst/LOCKLOAD1.ogg"
+	RLR/LockLoad2			"sounds/Weapons/Rocket Launcher/Lock-On Burst/LOCKLOAD2.ogg"
+	RLR/LockLoad3			"sounds/Weapons/Rocket Launcher/Lock-On Burst/LOCKLOAD3.ogg"
+
+	BladeExtened            "sounds/Weapons/Melee/BladeExtend.ogg"
+	CrucBossKill           "sounds/Weapons/Melee/BossSliceAdd.ogg"
+	
+	$random BladeSlice		{BladeSlice1 BladeSlice2 BladeSlice3 BladeSlice4}
+	BladeSlice1    			"sounds/Weapons/Melee/BladeSlice1.ogg"
+	BladeSlice2    			"sounds/Weapons/Melee/BladeSlice2.ogg"
+	BladeSlice3    			"sounds/Weapons/Melee/BladeSlice3.ogg"
+	BladeSlice4    			"sounds/Weapons/Melee/BladeSlice4.ogg"
+	
+	Shield/Activate			"sounds/Weapons/Chaingun/Gatling Rotator/ShieldActive.ogg"		
+	Chaingun/ESpin			"sounds/Weapons/Chaingun/CGESPN1.ogg"
+	Chaingun/ESpin2			"sounds/Weapons/Chaingun/CGESPN2.ogg"	
+	Chaingun/ESpin3			"sounds/Weapons/Chaingun/CGESPN3.ogg"	
+	Chaingun/ESpin4			"sounds/Weapons/Chaingun/CGESPN4.ogg"	
+	Chaingun/ESpin5 		"sounds/Weapons/Chaingun/CGESPN5.ogg"	
+	Shield/loop				"sounds/Weapons/Chaingun/Gatling Rotator/ShieldLoop.ogg"
+	Shield/Launch			"sounds/Weapons/Chaingun/Gatling Rotator/ShieldLaunch.ogg"
+	Shield/Break			"sounds/Weapons/Chaingun/Gatling Rotator/ShieldClose.ogg"
+	
+	$random Shield/ReChargeClick		{Shield/RechargeClick1 Shield/RechargeClick2 Shield/RechargeClick3}
+	Shield/RechargeClick1    "sounds/Weapons/Chaingun/Gatling Rotator/RechargeClick1.ogg"
+	Shield/RechargeClick2    "sounds/Weapons/Chaingun/Gatling Rotator/RechargeClick2.ogg"
+	Shield/RechargeClick3    "sounds/Weapons/Chaingun/Gatling Rotator/RechargeClick3.ogg"
+	
+	CG/HeatLoop				 "sounds/Weapons/Chaingun/CGHeatloop.ogg"
+	CG/FullLoop				 "sounds/Weapons/Chaingun/CGFullloop.ogg"
+
+	$random BoltEFire	{BoltEFire1 BoltEFire2 BoltEFire3}
+	BoltEFire1			"sounds/Weapons/Heavy Assault Rifle/Tactical Scope/HMSEFIR1.ogg"
+	BoltEFire2			"sounds/Weapons/Heavy Assault Rifle/Tactical Scope/HMSEFIR2.ogg"
+	BoltEFire3 			"sounds/Weapons/Heavy Assault Rifle/Tactical Scope/HMSEFIR3.ogg"
+	
+	BoltReady			"sounds/Weapons/Heavy Assault Rifle/Tactical Scope/BOLTRDY.ogg"
+	
+	MicroOpenEndless			"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/MMOPENE.ogg"
+	MicroClose1					"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/MMClose1.ogg"
+	MicroClose2 				"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/MMClose2.ogg"
+	
+	$random BottomlessFire	{BottomlessFire1 BottomlessFire2 BottomlessFire3 BottomlessFire4}
+	BottomlessFire1			"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/BMMFIR1.ogg"
+	BottomlessFire2			"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/BMMFIR2.ogg"
+	BottomlessFire3			"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/BMMFIR3.ogg"
+	BottomlessFire4			"sounds/Weapons/Heavy Assault Rifle/Micro Missiles/BMMFIR4.ogg"
+	
+	$random Ballista/Cycle	{BallistaCycle1 BallistaCycle2 BallistaCycle3}
+	BallistaCycle1			"sounds/Weapons/Gauss Cannon/GCCYCLE1.ogg"
+	BallistaCycle2			"sounds/Weapons/Gauss Cannon/GCCYCLE2.ogg"
+	BallistaCycle3			"sounds/Weapons/Gauss Cannon/GCCYCLE3.ogg"
+	
+	$random Ballista/ExplosionAdd	{Ballista/ExplosionAdd1 Ballista/ExplosionAdd2 Ballista/ExplosionAdd3}
+	Ballista/ExplosionAdd1		"sounds/Weapons/Gauss Cannon/GCNFADE1.ogg"
+	Ballista/ExplosionAdd2		"sounds/Weapons/Gauss Cannon/GCNFADE2.ogg"
+	Ballista/ExplosionAdd3		"sounds/Weapons/Gauss Cannon/GCNFADE3.ogg"
+	
+	$random Ballista/Impact		{BallistaImpact1 BallistaImpact2 BallistaImpact3}
+	BallistaImpact1				"sounds/Weapons/Gauss Cannon/GCIMPCT1.ogg"
+	BallistaImpact2				"sounds/Weapons/Gauss Cannon/GCIMPCT2.ogg"
+	BallistaImpact3				"sounds/Weapons/Gauss Cannon/GCIMPCT3.ogg"
+	
+	Ballista/FAdd			"sounds/Weapons/Gauss Cannon/GCNFADD.ogg"
+	Ballista/FireStart			"sounds/Weapons/Gauss Cannon/GCNFIRES.ogg"
+	
+	Destroyer/ChargeStart		"Sounds/Weapons/Gauss Cannon/Siege Mode/DSCHARGES.ogg"
+	
+	Destroyer/Charge1			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHARGE1.ogg"
+	Destroyer/Charge2			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHARGE2.ogg"
+	Destroyer/Charge3			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHARGE3.ogg"
+	
+	Destroyer/ChargeOverlay		"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHARGEOV.ogg"
+	
+	$random Destroyer/Fire		{Destroyer/Fire1 Destroyer/Fire2 Destroyer/Fire3 Destroyer/Fire4 Destroyer/Fire5 Destroyer/Fire6 Destroyer/Fire7 Destroyer/Fire8}
+	Destroyer/Fire1 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE1.ogg"
+	Destroyer/Fire2 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE2.ogg"
+	Destroyer/Fire3 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE3.ogg"
+	Destroyer/Fire4 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE4.ogg"
+	Destroyer/Fire5 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE5.ogg"
+	Destroyer/Fire6 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE6.ogg"
+	Destroyer/Fire7 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE7.ogg"
+	Destroyer/Fire8 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSFIRE8.ogg"
+	
+	$random Destroyer/Scream	{Destroyer/Scream1 Destroyer/Scream2 Destroyer/Scream3 Destroyer/Scream4 Destroyer/Scream5 Destroyer/Scream7}
+	Destroyer/Scream1 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM1.ogg"
+	Destroyer/Scream2			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM2.ogg"
+	Destroyer/Scream3 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM3.ogg"
+	Destroyer/Scream4 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM4.ogg"
+	Destroyer/Scream5 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM5.ogg"
+	Destroyer/Scream6 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSCREAM6.ogg"
+	
+	$random Destroyer/Arm1Open 		{Destroyer/Arm1Open1 Destroyer/Arm1Open2}
+	Destroyer/Arm1Open1 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSA1OP1.ogg"
+	Destroyer/Arm1Open2 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSA1OP2.ogg"
+	
+	$random Destroyer/Arm2Open 		{Destroyer/Arm2Open1 Destroyer/Arm2Open2}
+	Destroyer/Arm2Open1 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSA2OP1.ogg"
+	Destroyer/Arm2Open2 			"sounds/Weapons/Gauss Cannon/Siege Mode/DSA2OP2.ogg"
+	
+	Destroyer/SkullSlide			"sounds/Weapons/Gauss Cannon/Siege Mode/DSSKULL.ogg"
+	
+	Destroyer/ChargeLoop1			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHRGLP1.ogg"
+	Destroyer/ChargeLoop2			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHRGLP2.ogg"
+	Destroyer/ChargeLoop3			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHRGLP3.ogg"
+	Destroyer/ChargeLoop4			"sounds/Weapons/Gauss Cannon/Siege Mode/DSCHRGLP4.ogg"
+
+	Destroyer/ArmPull1				"sounds/Weapons/Gauss Cannon/Siege Mode/DSARMPL1.ogg"
+	Destroyer/ArmPull2				"sounds/Weapons/Gauss Cannon/Siege Mode/DSARMPL2.ogg"
+	
+	$random Destroyer/FireLevel1 		{Destroyer/FireLevel11 Destroyer/FireLevel12 Destroyer/FireLevel13}
+	Destroyer/FireLevel11			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV11.ogg"
+	Destroyer/FireLevel12			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV12.ogg"
+	Destroyer/FireLevel13			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV13.ogg"
+	
+	$random Destroyer/FireLevel2 		{Destroyer/FireLevel21 Destroyer/FireLevel22 Destroyer/FireLevel23}
+	Destroyer/FireLevel21			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV21.ogg"
+	Destroyer/FireLevel22			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV22.ogg"
+	Destroyer/FireLevel23			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV23.ogg"
+	
+	$random Destroyer/FireLevel3 		{Destroyer/FireLevel31 Destroyer/FireLevel32 Destroyer/FireLevel33}
+	Destroyer/FireLevel31			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV31.ogg"
+	Destroyer/FireLevel32			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV32.ogg"
+	Destroyer/FireLevel33			"sounds/Weapons/Gauss Cannon/Siege Mode/DFIRELV33.ogg"
+	
+	$random Sticky/ZoomIn		{CSG/ZoomIn1 CSG/ZoomIn2 CSG/ZoomIn3}
+	CSG/ZoomIn1					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMI1.ogg"
+	CSG/ZoomIn2					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMI2.ogg"
+	CSG/ZoomIn3					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMI3.ogg"
+	
+	$random Sticky/ZoomOut		{CSG/ZoomOut1 CSG/ZoomOut2 CSG/ZoomOut3}
+	CSG/ZoomOut1					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMO1.ogg"
+	CSG/ZoomOut2					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMO2.ogg"
+	CSG/ZoomOut3					"sounds/Weapons/Combat Shotgun/Explosive Shot/CSGZOOMO3.ogg"
+	
+	$random Sticky/MFire		{Sticky/MFire1 Sticky/MFire2 Sticky/MFire3 Sticky/MFire4 Sticky/MFire5}
+	Sticky/MFire1					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPMFIR1.ogg"
+	Sticky/MFire2					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPMFIR2.ogg"
+	Sticky/MFire3					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPMFIR3.ogg"
+	Sticky/MFire4					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPMFIR4.ogg"
+	Sticky/MFire5					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPMFIR5.ogg"
+	
+	Sticky/Reload					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPREL.ogg"
+	Sticky/SlideIn					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPSREL1.ogg"
+	Sticky/SlideOut					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPSREL2.ogg"
+	
+	Sticky/Explode					"sounds/Weapons/Combat Shotgun/Explosive Shot/EXPLD.ogg"
+	Sticky/FullReload1				"sounds/Weapons/Combat Shotgun/Explosive Shot/EXFREL1.ogg"
+	Sticky/FullReload2				"sounds/Weapons/Combat Shotgun/Explosive Shot/EXFREL2.ogg"
+	
+	$random Combat/Click		{Combat/Click1 Combat/Click2 Combat/Click3 Combat/Click4 Combat/Click5}
+	Combat/Click1					"sounds/Weapons/Combat Shotgun/CSGCLIK1.ogg"
+	Combat/Click2					"sounds/Weapons/Combat Shotgun/CSGCLIK2.ogg"
+	Combat/Click3					"sounds/Weapons/Combat Shotgun/CSGCLIK3.ogg"
+	Combat/Click4					"sounds/Weapons/Combat Shotgun/CSGCLIK4.ogg"
+	Combat/Click5					"sounds/Weapons/Combat Shotgun/CSGCLIK5.ogg"
+	
+	Rocket/LoadIn					"sounds/Weapons/Rocket Launcher/RLLOADIN.ogg"
+	Rocket/LoadOut					"sounds/Weapons/Rocket Launcher/RLLOADOUT.ogg"
+
+	Marksman/Fire					"sounds/Weapons/Marksman/MRKFIRE.WAV"
+	Marksman/CoinThrow				"sounds/Weapons/Marksman/COINFLP.wav"
+	Marksman/CoinSpin				"sounds/Weapons/Marksman/COINSPN.wav"
+	
+	$random Microwave/LockOn		{Microwave/LockOn1 Microwave/LockOn2 Microwave/LockOn3 Microwave/LockOn4 Microwave/LockOn5}
+	Microwave/LockOn1				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLOCK1.ogg"
+	Microwave/LockOn2				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLOCK2.ogg"
+	Microwave/LockOn3				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLOCK3.ogg"
+	Microwave/LockOn4				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLOCK4.ogg"
+	Microwave/LockOn5				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLOCK5.ogg"
+	
+	$random Microwave/End			{Microwave/End1 Microwave/End2 Microwave/End3 Microwave/End4 Microwave/End5}
+	Microwave/End1					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEND1.ogg"
+	Microwave/End2					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEND2.ogg"
+	Microwave/End3					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEND3.ogg"
+	Microwave/End4					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEND4.ogg"
+	Microwave/End5					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEND5.ogg"
+	
+	$random Microwave/FailLockOn	{Microwave/FailLockOn1 Microwave/FailLockOn2 Microwave/FailLockOn3}
+	Microwave/FailLockOn1			"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFAIL1.ogg"
+	Microwave/FailLockOn2			"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFAIL2.ogg"
+	Microwave/FailLockOn3			"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFAIL3.ogg"
+	
+	$random Microwave/FireLoop		{Microwave/FireLoop1 Microwave/FireLoop2 Microwave/FireLoop3}
+	Microwave/FireLoop1				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFIRL1.ogg"
+	Microwave/FireLoop2				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFIRL2.ogg"
+	Microwave/FireLoop3				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFIRL3.ogg"
+	
+	Microwave/Close					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWCLOS.ogg"
+	Microwave/IdleStart				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWNIDL.ogg"
+	Microwave/Idle					"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLIDL1.ogg"
+	Microwave/WheelSpin				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWLIDL2.ogg"
+	Microwave/FireAdd				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWFIREAD.ogg"
+	
+	Microwave/ExplosionAdd				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEXPA.ogg"
+	
+	
+	$random Microwave/Explosion/Weapon		{Microwave/Explosion/Weapon1 Microwave/Explosion/Weapon2 Microwave/Explosion/Weapon3}
+	Microwave/Explosion/Weapon1				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEXP1.ogg"
+	Microwave/Explosion/Weapon2				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEXP2.ogg"
+	Microwave/Explosion/Weapon3				"sounds/Weapons/Plasma Rifle/Stun Bomb/MWEXP3.ogg"
+	
+	$random Microwave/Explosion/Monster		{Microwave/Explosion/Monster1 Microwave/Explosion/Monster2 Microwave/Explosion/Monster3}
+	Microwave/Explosion/Monster1			"sounds/Weapons/Plasma Rifle/Stun Bomb/MEXPF1.ogg"
+	Microwave/Explosion/Monster2			"sounds/Weapons/Plasma Rifle/Stun Bomb/MEXPF2.ogg"
+	Microwave/Explosion/Monster3			"sounds/Weapons/Plasma Rifle/Stun Bomb/MEXPF3.ogg"
+	
+	$Random Shield/Impact					{ShieldImpact1 ShieldImpact2 ShieldImpact3}
+	ShieldImpact1 							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldIMP1.ogg"
+	ShieldImpact2 							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldIMP2.ogg"	
+	ShieldImpact3 							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldIMP3.ogg"
+	
+	$Random Shield/Damaged					{ShieldDamaged1 ShieldDamaged2 ShieldDamaged3 ShieldDamaged4 ShieldDamaged5}
+	ShieldDamaged1							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldDef1.ogg"
+	ShieldDamaged2							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldDef2.ogg"
+	ShieldDamaged3							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldDef3.ogg"
+	ShieldDamaged4							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldDef4.ogg"
+	ShieldDamaged5							"sounds/Weapons/Chaingun/Gatling Rotator/ShieldDef5.ogg"
+	
+	Shield/AlmostBroke						"sounds/Weapons/Chaingun/Gatling Rotator/ShieldWeak.ogg"
+	Shield/HeatReady						"sounds/Weapons/Chaingun/Gatling Rotator/ShieldHeatReady.ogg"
+	
+//==============================================================================
+// WeaponMod Switch
+//==============================================================================
+	TacticalScopeSwitch			TSCMOD
+	MicroMissilesSwitch			HMMMOD
+	
+	GatlingRotatorSwitch		GATMOD
+	MobileTurretSwitch			TURMOD
+	
+	FullAutoSwitch				TRIMOD
+	StickyBombSwitch			EXPMOD
+
+
+
+//==============================================================================
+// Microwave Beam
+//==============================================================================
+MCVB/Charge  MCVSPN
+$random MCVB/Fire			{MCVB/Fire1 MCVB/Fire2}
+MCVB/Fire1  MCVFIR1
+MCVB/Fire2  MCVFIR2
+MCVB/Fstr MCFIRS
+MCVB/idle MCVIDL
+
+//==============================================================================
+// Unmaykr
+//==============================================================================
+$random UNMK/fire			{UNMK/fire1	UNMK/fire2 UNMK/fire3 UNMK/fire4 UNMK/fire5 UNMK/fire6}
+UNMK/fire1					UMKFire1
+UNMK/fire2					UMKFire2
+UNMK/fire3					UMKFire3
+UNMK/fire4					UMKFire4
+UNMK/fire5					UMKFire5
+UNMK/fire6					UMKFire6
+
+//==============================================================================
+// Slayer Hurt sounds
+//==============================================================================
+$random Projectile/HitSlayer {Projectile/HitSlayer1 Projectile/HitSlayer2 Projectile/HitSlayer3 Projectile/HitSlayer4 Projectile/HitSlayer5 Projectile/HitSlayer6} //DoomKrakken
+Projectile/HitSlayer1		HITSLYR1
+Projectile/HitSlayer2		HITSLYR2
+Projectile/HitSlayer3		HITSLYR3
+Projectile/HitSlayer4		HITSLYR4
+Projectile/HitSlayer5		HITSLYR5
+Projectile/HitSlayer6		HITSLYR6
+
+$rolloff Projectile/HitSlayer 200 2000
+
+$playeralias		DoomSlayer	male	*pain100	Projectile/HitSlayer
+$playersounddup     DoomSlayer	male	*pain75		*pain100
+$playersounddup    	DoomSlayer	male	*pain50		*pain100
+$playersounddup     DoomSlayer	male	*pain25		*pain100
+
+//==============================================================================
+// Crucible
+//==============================================================================
+Eternal/Crucible/AmmoLoop		"Sounds/Weapons/Crucible/AmmoLoop.ogg"
+Eternal/Crucible/AmmoPickup		"Sounds/Weapons/Crucible/AmmoPickup.ogg"
+Eternal/Crucible/Deselect		"Sounds/Weapons/Crucible/Deselect.ogg"
+Eternal/Crucible/Deploy			"Sounds/Weapons/Crucible/Deploy.ogg"
+Eternal/Crucible/Pickup			"Sounds/Weapons/Crucible/Pickup.ogg"
+Eternal/Crucible/Idle			"Sounds/Weapons/Crucible/Idle.ogg"
+Eternal/Crucible/Select			"Sounds/Weapons/Crucible/Select.ogg"
+Eternal/Crucible/Swing1			"Sounds/Weapons/Crucible/Swing1.ogg"
+Eternal/Crucible/Swing2			"Sounds/Weapons/Crucible/Swing2.ogg"
+Eternal/Crucible/Swing3			"Sounds/Weapons/Crucible/Swing3.ogg"
+Eternal/Crucible/Swing4			"Sounds/Weapons/Crucible/Swing4.ogg"
+Eternal/Crucible/Swing5			"Sounds/Weapons/Crucible/Swing5.ogg"
+Eternal/Crucible/Swing6			"Sounds/Weapons/Crucible/Swing6.ogg"
+Eternal/Crucible/Swing7			"Sounds/Weapons/Crucible/Swing7.ogg"
+Eternal/Crucible/Return1		"Sounds/Weapons/Crucible/Return1.ogg"
+Eternal/Crucible/Return2		"Sounds/Weapons/Crucible/Return2.ogg"
+Eternal/Crucible/Return3		"Sounds/Weapons/Crucible/Return3.ogg"
+Eternal/Crucible/Return4		"Sounds/Weapons/Crucible/Return4.ogg"
+Eternal/Crucible/Return5		"Sounds/Weapons/Crucible/Return5.ogg"
+Eternal/Crucible/Ammo			"Sounds/Weapons/Crucible/Ammo.ogg"
+Eternal/Crucible/Slice1			"Sounds/Weapons/Crucible/Slice1.ogg"
+Eternal/Crucible/Slice2			"Sounds/Weapons/Crucible/Slice2.ogg"
+Eternal/Crucible/Slice3			"Sounds/Weapons/Crucible/Slice3.ogg"
+Eternal/Crucible/Slice4			"Sounds/Weapons/Crucible/Slice4.ogg"
+Eternal/Crucible/Slice5			"Sounds/Weapons/Crucible/Slice5.ogg"
+Eternal/Crucible/Slice6			"Sounds/Weapons/Crucible/Slice6.ogg"
+
+$random Eternal/Crucible/Slice
+{
+	Eternal/Crucible/Slice1
+	Eternal/Crucible/Slice2
+	Eternal/Crucible/Slice3
+	Eternal/Crucible/Slice4
+	Eternal/Crucible/Slice5
+	Eternal/Crucible/Slice6
+}
+
+$random Eternal/Crucible/Swing
+{
+	Eternal/Crucible/Swing1	Eternal/Crucible/Swing2	Eternal/Crucible/Swing3
+	Eternal/Crucible/Swing4	Eternal/Crucible/Swing5	Eternal/Crucible/Swing6
+	Eternal/Crucible/Swing7
+}
+
+$random Eternal/Crucible/Return
+{
+	Eternal/Crucible/Return1
+	Eternal/Crucible/Return2
+	Eternal/Crucible/Return3
+	Eternal/Crucible/Return4
+	Eternal/Crucible/Return5
+}
+
+$limit Eternal/Crucible/Swing 0
+$limit Eternal/Crucible/Slice 0
+$limit Eternal/Crucible/AmmoLoop 0
+$limit Eternal/Crucible/Return 0
+
+CruciblePuffHit1 "sounds/CruciblePuffHit1.ogg"
+CruciblePuffHit2 "sounds/CruciblePuffHit2.ogg"
+CruciblePuffHit3 "sounds/CruciblePuffHit3.ogg"
+CruciblePuffHit4 "sounds/CruciblePuffHit4.ogg"
+CruciblePuffHit5 "sounds/CruciblePuffHit5.ogg"
+CruciblePuffHit6 "sounds/CruciblePuffHit6.ogg"
+CruciblePuffHit7 "sounds/CruciblePuffHit7.ogg"
+CruciblePuffHit8 "sounds/CruciblePuffHit8.ogg"
+
+$random CruciblePuffHit
+{
+	CruciblePuffHit1
+	CruciblePuffHit2
+	CruciblePuffHit3
+	CruciblePuffHit4
+	CruciblePuffHit5
+	CruciblePuffHit6
+	CruciblePuffHit7
+	CruciblePuffHit8
+}	

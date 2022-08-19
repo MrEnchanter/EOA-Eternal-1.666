@@ -1,0 +1,648 @@
+ACTOR UnmaykerSelected : EOA_Token{}
+
+ACTOR EOA_BFG : EOA_Weapon replaces BFG9000 20009
+{
+	Inventory.Icon "ICONBFG"
+	Weapon.AmmoType "EOA_BFGAmmo"
+	Weapon.AmmoUse 30
+	Weapon.AmmoGive 60
+	Inventory.PickupMessage "BFG-9000"
+	Tag "BFG-9000"
+	+BFG
+	+NOAUTOFIRE
+	+POWERWEAPON
+	+SEMIAUTO
+	States
+	{
+	Spawn:
+		BFGW A 0 NoDelay A_Jump(55 ,"Spawnunmayker") 
+		BFGW A -1
+		Stop
+	Select:
+		TNT1 A 0
+		{
+			A_WeaponOffset(0, 32);
+			//A_SpawnNoiseMaker("BFG/Idle", 6, 0.25, 1);
+			SetPlayerProperty(0, 1, PROP_INSTANTWEAPONSWITCH);
+			A_GiveInventory("UnmaykerSelected");
+			ACS_NamedExecuteAlways("BFGReticle", 0);
+			A_SetCrosshair(99);
+			A_ZoomFactor;
+		}
+		TNT1 A 1 A_Raise(60)
+		Wait
+	Spawnunmayker:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("eoa_unmayker",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+       Stop 
+	Deselect:
+		TNT1 A 0 A_ZoomFactor
+		BFGR FEDCBA 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))
+		TNT1 A 2
+		{
+			A_TakeInventory("BFGSelected");
+			SetPlayerProperty(0, 0, PROP_INSTANTWEAPONSWITCH);
+		}
+		TNT1 A 4 A_SetTics(4 * !CountInv("Adept") * !CountInv("PowerBerserk"))
+		TNT1 A 1 A_Lower(36)
+		Wait
+	Ready:
+		TNT1 A 0
+		{
+			A_SpawnNoiseMaker("Weapon/Switch");
+			A_SpawnNoiseMaker("BFG/Raise", 5, 0.5);
+		}
+		BFGR ABCDEFGH 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE|EOA_WEAPSPEEDUPGRADE * CountInv("Adept"))//ABCDEFGH 1
+		Goto ReadyLoop
+	ReRaise:
+		BFGR ABCDEFGH 1 EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		//"####" "#" 0 A_WeaponReady(WRF_NOBOB|WRF_NOSWITCH|WRF_ALLOWRELOAD|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM))
+	ReadyLoop:
+		BFGI A 1 EOA_WeaponReady(WRF_NOFIRE * (GetPlayerInput(INPUT_OLDBUTTONS) & BT_ATTACK)|WRF_ALLOWZOOM * !(GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT)
+		Loop
+	Fire:
+		TNT1 A 0 
+		{
+			A_SpawnNoiseMaker("BFG/Fire", 5, 1);
+			A_AlertMonsters;
+			A_Overlay(-2, "BFGFOV");
+		}
+		BFGC AAABBBCCDEFGHIJKLMN 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_DISABLEHASTE)
+		TNT1 A 0
+		{
+			//A_SpawnNoiseMaker("BFG/Fire", 5);
+			EOA_FireBullets(0, 0, -1, 0, "EOA_NullPuff", FBF_NORANDOMPUFFZ|FBF_USEAMMO, 32767, "EOA_BFGBall", -11 + GetViewZ, 5 + GetRelVelY / 3);
+			EOA_SetWeaponRecoilOffset(0, -6, 0, 0.5);
+			EOA_SpawnCustomDynamicLight("PulseLight", 0.7, 1, 0.5, 64, 0, 8, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 0.7, 1, 0.5, 64, 0, 8, 1, DYN_ATTENUATE);
+			If (CountInv("PowerQDMG"))
+			{
+				A_SpawnNoiseMaker("QuadDamage/Shot", 4, 1.0, 0, ATTN_NORM, 0, 18); //A_GiveInventory("QuadDamageShot");
+			}
+		}
+		BFGX ABCDEFFGGGHHIIJKLMMNOPQRST 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		"####" "#" 0 A_SpawnNoiseMaker("BFG/Add", 6, 0.7)
+		BFGX UVVVVVWXYZ 1 EOA_WeaponReady(WRF_NOFIRE|WRF_NOSWITCH, EOA_ALLOWMANTLE|EOA_DISABLEHASTE)
+		Goto ReadyLoop
+	BFGFOV:
+		TNT1 A 1 A_ZoomFactor(0.9925, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.985, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9775, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.97, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9625, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.955, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9475, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.94, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9325, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.925, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9175, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.91, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9005, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.89, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.8825, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.875, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.8675, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.86, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.8525, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.85, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.8625, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.875, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.8875, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.9, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.925, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.95, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor(0.975, ZOOM_NOSCALETURNING)
+		TNT1 A 1 A_ZoomFactor
+		Stop
+	Zoom:
+		BFGT A 0
+		Goto Super::Melee
+	UseEquipment:
+		BFGT A 0
+		Goto Super::UseEquipment
+	}
+}
+
+ACTOR EOA_BFGBall : EOA_BFGProjectile
+{
+	Projectile
+	Radius 8
+	Height 8
+	Speed 20
+	Damage (400)
+	RenderStyle "Add"
+	Alpha 0.99
+	Scale 0.67
+	+EXTREMEDEATH
+	+FORCEXYBILLBOARD
+	+HITTRACER
+	+NOBOSSRIP
+	+NODAMAGETHRUST
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("BFG/Ball", 4, 1.0, 1)
+	SpawnLoop:
+		BFGP ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright
+		{
+			A_SpawnItemEx("BFGLightningTracerSpawner", 0, 0, -16, -VelX, -VelY, -VelZ, 0, SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERPOINTERS|SXF_SETMASTER|SXF_ORIGINATOR);
+			EOA_SpawnCustomDynamicLight("PointLight", 0.7, 1, 0.5, 128, 0, 1, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PointLight", 0.7, 1, 0.5, 128, 0, 1, 1, DYN_ATTENUATE);
+		}
+		Loop
+	Death:
+		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_CustomMissile("BFGExplosionFX", 0, 0, random(1, 720), 2, random(0, 360))
+		TNT1 A 8
+		{
+			EOA_SpawnCustomDynamicLight("PulseLight", 0.7, 1, 0.5, 256, 0, 10, 1, DYN_ADDITIVE);
+			EOA_SpawnCustomDynamicLight("PulseLight", 0.7, 1, 0.5, 256, 0, 10, 1, DYN_ATTENUATE);
+			A_PlaySound("BFG/Explode", 1); //[DoomKrakken]: Apparently, Radius_Quake plays some sort of sound on Channel 4, cancelling out any sounds playing there at the time.
+			A_Explode(1200, 1200, XF_THRUSTZ, 1, 1200);
+			/*If (!A_CheckFlag("BOSS", "Null", AAPTR_TRACER) || (A_CheckFlag("BOSS", "Null", AAPTR_TRACER) && CallACS("GetMaxTracerHealth") < 3000))
+			{
+				A_DamageTracer(0, "Extreme", DMSS_KILL|DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "None", "None", AAPTR_TARGET);
+			}
+			Else
+			{
+				A_DamageTracer(500 * (1 + CountInv("PowerBFGStunned", AAPTR_TRACER)), "Extreme", DMSS_FOILINVUL|DMSS_NOPROTECT, "none", "none", AAPTR_TARGET);
+				//[DoomKrakken]: Remember that DMSS_NOPROTECT applies to ALL PowerProtection factors... even debuffs.  We'll have to account for this stuff manually...
+				A_GiveInventory("BFGStunItem", 1, AAPTR_TRACER);
+				A_TakeInventory("BFGKillCounter", 0, 0, AAPTR_TRACER);
+			}
+			A_RadiusGive("BFGKillCounter", 1200, RGF_MONSTERS|RGF_OBJECTS|RGF_NOTRACER, 1, "None", "None", 0, 8);
+			A_SpawnItemEx("BFGKillIterator", 0, 0, -16, -VelX, -VelY, -VelZ, 0, SXF_ABSOLUTEMOMENTUM|SXF_TRANSFERPOINTERS|SXF_SETMASTER|SXF_ORIGINATOR);
+			//A_RadiusGive("BFGSprayItem", 1200, RGF_MONSTERS|RGF_OBJECTS);*/ //[DoomKrakken]: One call to destroy anything else nearby...
+			//A_RadiusGive("BFGCatchItem", 1536, RGF_MONSTERS|RGF_OBJECTS|RGF_NOSIGHT); //[DoomKrakken]: ... and one call to destroy anybody nearby who's hiding behind a wall but was affected prior.  Unfortunately, this doesn't happen in DOOM.
+			A_SpawnItemEx("BFGExplosionFlash", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
+		TNT1 A 0
+		{
+			//Radius_Quake(2, 10, 0, 24, 0);
+			A_SpawnItemEx("BFGImpactFX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("BFGImpactFX", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("BFGImpactShockwave", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			A_SpawnItemEx("BFGImpactShockwave", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+		}
+		BXPL ABCDEFG 1 Bright
+		Stop
+	}
+}
+
+ACTOR BFGSprayItem : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 
+		{
+			If (CountInv("BFGKillCounter"))
+			{
+				If (A_CheckFlag("ISMONSTER", "Null"))
+				{
+					If ((!A_CheckFlag("BOSS", "Null") || (A_CheckFlag("BOSS", "Null") && GetSpawnHealth < 3000)))
+					{
+						A_GiveInventory("BFGKillCounter", 9);
+						/*If (!A_CheckFlag("ISMONSTER", "Null")) //[DoomKrakken]: This is handled by the thinker attached to monsters, so that the spray flash will spawn properly.
+						{
+							A_Die("Extreme");
+						}*/
+					}
+				}
+				Else
+				{
+					A_DamageSelf(500 * (1 + CountInv("PowerBFGStunned")), "Extreme", DMSS_FOILINVUL|DMSS_NOPROTECT, "none", "none", AAPTR_TARGET);
+				}
+			}
+		}
+		Stop
+	}
+}
+
+ACTOR BFGCatchItem : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 
+		{
+			If (CountInv("BFGKillCounter"))
+			{
+				A_GiveInventory("BFGKillCounter", 9);
+			}
+		}
+		Stop
+	}
+}
+
+ACTOR BFGStunItem : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetSpawnHealth >= 3000)
+			{
+				A_GiveInventory("BFGStunned");
+				A_SpawnItemEx("BFGStunner", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS|SXF_SETTRACER);
+			}
+		}
+		Stop
+	}
+}
+
+ACTOR BFGStunner
+{
+	+NOINTERACTION
+	+NOCLIP
+	+NOGRAVITY
+	+FORCEPAIN
+	+NODAMAGETHRUST
+	Var Int User_Lightning;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInventory("IsBFGStunned", 1, "Null", AAPTR_TRACER)
+		TNT1 A 0
+		{
+			A_GiveInventory("IsBFGStunned", 1, AAPTR_TRACER);
+			A_PlaySound("BFG/Stun", 4, 1.0, 1);
+			A_PlaySound("BFG/StunLightning", 5, 1.0, 1);
+		}
+		TNT1 A 1
+		{
+			A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE, 0, 0.5);
+			If (User_Lightning >= 5)
+			{
+				A_SpawnItemEx("BFGStunLightning", frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), 0, 0, 0, SXF_NOCHECKPOSITION);
+				A_SetUserVar("User_Lightning", 0);
+			}
+			If (A_JumpIfHealthLower(2, "Null", AAPTR_TRACER)) //[DoomKrakken]: So that this system doesn't kill the monster.
+			{
+				A_DamageTracer(-1, 0, DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none");
+				A_DamageTracer(1, 0, DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none");
+			}
+			Else
+			{
+				A_DamageTracer(1, 0, DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none");
+				A_DamageTracer(-1, 0, DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none");
+			}
+			If (A_JumpIfHealthLower(1, "Null", AAPTR_TRACER) || CountInv("GloryKillCounter", AAPTR_TRACER) || !CountInv("PowerBFGStunned", AAPTR_TRACER))
+			{
+				A_TakeInventory("IsBFGStunned", 1, 0, AAPTR_TRACER);
+				A_PlaySound("BFG/StunEnd", 4);
+				A_StopSound(5);
+				Return State ("Null");
+			}
+			Else
+			{
+				A_SetUserVar("User_Lightning", User_Lightning + 1);
+				Return State ("");
+			}
+		}
+		Wait
+	}
+}
+
+ACTOR BFGStunLightning : StunBombLightning
+{
+	Scale 0.2
+	Translation "0:255=%[0, 0, 0]:[0, 1, 0]"
+}
+
+ACTOR IsBFGStunned : EOA_Token{}
+
+ACTOR BFGStunned : EOA_TempToken
+{
+	Powerup.Type "BFGStunned"
+	Powerup.Duration -5
+}
+
+ACTOR PowerBFGStunned : PowerProtection{DamageFactor "Normal", 2.0}
+
+//[DoomKrakken]: ZION is credit to team! :D
+ACTOR BFGLightningTracerSpawner : ZSTracerRetriever
+{
+	Projectile
+	Radius 1
+	Radius 1
+	+EXTREMEDEATH
+	+NODAMAGETHRUST
+	+NOINTERACTION
+	+PAINLESS
+	ReactionTime 6
+	MissileHeight 0
+	Var Int User_Dist;
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_MASTER, AAPTR_TARGET)
+	See:
+		TNT1 A 0 
+		{
+			If (AcquireTracerTargets(600, 60))
+			{
+				Return State ("");
+			}
+			Return State ("Turnito");
+		}
+	Missile:
+		//[DoomKrakken]: Check for the presence of the BFG kill counter.
+		TNT1 A 0
+		{
+			A_SpawnItemEx("BFGLightningTracer", 0, 0, 16, 0, 0, 0, 0, SXF_TRANSFERPOINTERS);
+			A_GiveInventory("BFGKillCounter", 1, AAPTR_TRACER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			EOA_DamageTracerTarget(24, AAPTR_TARGET, AAPTR_MASTER);
+			/*If (!A_CheckFlag("BOSS", "Null", AAPTR_TRACER) || (A_CheckFlag("BOSS", "Null", AAPTR_TRACER) && CallACS("GetMaxTracerHealth") < 3000))
+			{
+				If (CountInv("BFGKillCounter", AAPTR_TRACER) >= 9 + 4 * (CallACS("GetMaxTracerHealth") >= 300) + 5 * (CallACS("GetMaxTracerHealth") >= 1000))
+				{
+					A_DamageTracer(0, "Extreme", DMSS_KILL|DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "None", "None", AAPTR_MASTER, AAPTR_TARGET);
+				}
+			}
+			Else
+			{
+				A_DamageTracer(20 * (1 + CountInv("PowerBFGStunned", AAPTR_TRACER)), "Extreme", DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none", AAPTR_MASTER, AAPTR_TARGET); 
+				//[DoomKrakken]: Remember that DMSS_NOPROTECT applies to ALL PowerProtection factors... even debuffs.  We'll have to account for this stuff manually...
+			}*/
+		}
+	Turnito:
+		TNT1 A 0
+		{
+			A_SetAngle(Angle + 60);
+			A_CountDown;
+		}
+		Goto See
+	}
+}
+
+ACTOR BFGKillIterator : BFGLightningTracerSpawner
+{
+	ReactionTime 360
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_RearrangePointers(AAPTR_MASTER, AAPTR_TARGET)
+	See:
+		TNT1 A 0 A_JumpIf(AcquireTracerTargets(900, 1), "Missile")
+		TNT1 A 0 A_Jump(256, "Turnito")
+	Missile:
+		//[DoomKrakken]: Check for the presence of the BFG kill counter.
+		TNT1 A 0
+		{
+			If (CountInv("BFGKillCounter", AAPTR_TRACER))
+			{
+				If (!A_CheckFlag("BOSS", "Null", AAPTR_TRACER) || (A_CheckFlag("BOSS", "Null", AAPTR_TRACER) && CallACS("GetMaxTracerHealth") < 3000))
+				{
+					A_DamageTracer(0, "Extreme", DMSS_KILL|DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "None", "None", AAPTR_MASTER, AAPTR_TARGET);
+				}
+				Else
+				{
+					A_DamageTracer(500 * (1 + CountInv("PowerBFGStunned", AAPTR_TRACER)), "Extreme", DMSS_FOILINVUL|DMSS_NOFACTOR|DMSS_NOPROTECT, "none", "none", AAPTR_MASTER, AAPTR_TARGET);
+					//[DoomKrakken]: Remember that DMSS_NOPROTECT applies to ALL PowerProtection factors... even debuffs.  We'll have to account for this stuff manually...
+					A_TakeInventory("BFGKillCounter", 1, 0, AAPTR_TRACER);
+				}
+			}
+		}
+	Turnito:
+		TNT1 A 0 A_SetAngle(Angle + 1)
+		TNT1 A 0 A_CountDown
+		Goto See
+	}
+}
+/*
+ACTOR BFGDamager : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 
+		{
+			A_ChangeFlag("PAINLESS", 1);
+			A_DamageSelf(5, "Extreme", DMSS_NOPROTECT|DMSS_FOILINVUL, "none", "none", AAPTR_TARGET);
+			A_GiveInventory("BFGKillCounter");
+			A_ChangeFlag("PAINLESS", 0);
+		}
+		Stop
+	}
+}
+*/
+ACTOR BFGLightningTracer : LightningBeamBase
+{
+	Translation "0:255=%[0,0,0]:[0.75,1,0.45]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_SetUserArray("User_Dist", 1, ACS_NamedExecuteWithResult("GetDist", 0, AAPTR_TRACER, 1));
+			A_SetUserArray("User_Stats", 0, 64);
+			A_SetUserArray("User_Stats", 1, 900);
+			A_SetUserArray("User_Stats", 2, 12);
+			If (!Tracer)
+			{
+				Return State ("Null");
+			}
+			Else
+			{
+				Return State ("Fly");
+			}
+		}
+		Goto Fly
+	Missile:
+		TNT1 A 0 A_SpawnItemEx("BFGLightningTracerFX", cos(-Pitch) * (User_Stats[0] / 2), 0, sin(Pitch) * (User_Stats[0] / 2), cos(-Pitch) * (User_Stats[0] * 0.0001), 0, sin(Pitch) * (User_Stats[0] * 0.0001), 0, SXF_TRANSFERPITCH|SXF_TRANSFERTRANSLATION)
+		TNT1 A 0 A_Jump(256, "Move")
+		Goto Move
+	}
+}
+
+ACTOR BFGLightningTracerFX : LightningBeamTrailBase {Translation "0:255=%[0,0,0]:[0,1,0]"}
+
+ACTOR BFGExplosionFlash
+{
+	Radius 1
+	Height 1
+	RenderStyle "Add"
+	Alpha 0.4
+	Scale 6
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+DONTSPLASH
+	+THRUACTORS
+	+NOTRIGGER
+	+NOBLOCKMONST
+	+CANNOTPUSH
+	+MISSILE 
+	States
+	{
+	Spawn:
+		GXPL A 1 Bright NoDelay A_JumpIf(ScaleX <= 0, "Null")
+		GXPL A 0 A_SetScale(ScaleX - 0.5)
+		Loop
+	}
+}
+
+ACTOR BFGExplosionFX
+{
+	Radius 1
+	Height 1
+	RenderStyle "Add"
+	+BRIGHT
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+NOGRAVITY
+	+DONTSPLASH
+	+THRUACTORS
+	+NOTRIGGER
+	+NOBLOCKMONST
+	+CANNOTPUSH
+	+MISSILE 
+	Speed 80
+	ReactionTime 8
+	//Scale 0.66
+	Scale 0.1
+	Translation "0:255=%[0,0,0]:[0.5,2,0.5]"
+	Alpha 0.75
+	States
+	{
+	Spawn:
+		TNT1 A 1 NoDelay 
+		{
+			A_SetAngle(Angle + 180);
+			A_ScaleVelocity(-0.2);
+		}
+	Idle:
+		NULL A 1
+		{
+			A_SetScale(ScaleX * 1.15);
+			A_CountDown;
+		}
+		Loop
+	}
+}
+
+ACTOR BFGImpactFX : GaussImpactFX
+{
+	Scale 0.125
+	States
+	{
+	Spawn:
+		BFBA A 0 NoDelay A_Jump(256, random(1, 8))
+		BFBA ABCDEFGH 0
+		{
+			A_SpawnItemEx("BFGImpactFX2", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERSPRITEFRAME);
+			Return State ("Fade");
+		}
+	Fade:
+		"####" "######" 1 Bright A_SetScale(ScaleX * 1.27, ScaleY * 1.1)
+		"####" "#" 1 Bright
+		{
+			A_SetScale(ScaleX * 1.27, ScaleY * 1.1);
+			A_FadeOut(0.25);
+		}
+		Wait
+	}
+}
+
+ACTOR BFGImpactFX2 : BFGImpactFX
+{
+	Scale 0.09875
+	States
+	{
+	Spawn:
+		"####" "#" 0 NoDelay A_SetRoll(90)
+	Fade:
+		"####" "######" 1 Bright A_SetScale(ScaleX * 1.1, ScaleY * 1.27)
+		"####" "#" 1 Bright
+		{
+			A_SetScale(ScaleX * 1.1, ScaleY * 1.27);
+			A_FadeOut(0.25);
+		}
+		Wait
+	}
+}
+
+ACTOR BFGImpactShockwave : GaussCannonImpactShockWave
+{
+	Scale 0.3
+	States
+	{
+	Spawn:
+		BSW3 B 0 NoDelay 
+		{
+			A_SetRoll(random(0, 359));
+		}
+		BSW3 B 1 Bright 
+		{
+			A_SetScale(ScaleX * 1.25);
+			A_CountDown;
+		}
+		Wait
+	Death:
+		BSW3 B 1 Bright
+		{
+			A_SetScale(ScaleX * 1.25);
+			A_FadeOut(0.25);
+		}
+		Wait
+	}
+}
+
+ACTOR BFGSplashFX
+{
+	+NOINTERACTION
+	+DONTTHRUST
+	States
+	{
+	Spawn:
+		TNT1 AAA 0 NoDelay
+		{
+			A_SpawnItemEx("BFGExplosionSprite", 0, 0, 0, frandom(-1.5, 1.5), frandom(-1.5, 1.5), frandom(-1.5, 1.5), random(1, 360));
+			A_SpawnItemEx("BFGSplashExplosionTiny");
+		}
+		TNT1 AAAAAAAAAAAA 2 A_SpawnItemEx("BFGSplashLightning")
+		Stop
+	}
+}
+
+ACTOR BFGExplosionSprite : EOA_GenericExplosionFX
+{
+	Scale 0.5
+	Alpha 0.5
+	Translation "0:255=%[0,0,0]:[0.75,1,0.45]"
+}
+
+ACTOR BFGSplashExplosionTiny : BFGExplosionSprite
+{
+	Scale 0.33
+	Alpha 1
+	//Translation "0:255=%[0,0,0]:[0,1,0]"
+}
+
+ACTOR BFGSplashLightning : BFGStunLightning
+{
+	Scale 0.1
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359))
+		TNT1 A 0 A_Jump(256, random(1, 8))
+		LBLT ABCDEFGH 0 A_Jump(256, "KeepSprite")
+	KeepSprite:
+		LBLT "#" 1 Bright 
+		{
+			A_FadeOut(0.25);
+			A_SetScale(ScaleX * 1.3);
+		}
+		Wait
+	}
+}

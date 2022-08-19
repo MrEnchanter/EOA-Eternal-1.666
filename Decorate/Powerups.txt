@@ -1,0 +1,790 @@
+//Power Surge - Useful for barbecues, birthday parties, and violently dashing your enemies' brains out.
+ACTOR PowerSurgeBlastItem : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_SpawnItemEx("PowerSurgeBlast", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION|SXF_SETTARGET)
+		Stop
+	}
+}
+
+ACTOR PowerSurgeBlast
+{
+	Projectile
+	+DONTBLAST
+	+DONTTHRUST
+	+EXTREMEDEATH
+	+FOILINVUL
+	+NODAMAGETHRUST
+	+NOTIMEFREEZE
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay
+		{
+			A_PlaySound("Player/PowerSurge");
+			A_Explode(320, 512, 0, 1, 256);
+			A_SpawnItemEx("PowerSurgeBlastOuter", 0, 0, 10, 0, 0, 0, 0, SXF_CLIENTSIDE);
+			A_SpawnItemEx("PowerSurgeBlastInner", 0, 0, 10, 0, 0, 0, 0, SXF_CLIENTSIDE);
+		}
+		Stop
+	}
+}
+
+ACTOR PowerSurgeBlastOuter
+{
+	Renderstyle Add
+	Alpha 0.99
+	Scale 0.3
+	+FLATSPRITE
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	States
+	{
+	Spawn:
+		PSHK A 1 NoDelay
+		{
+			A_FadeOut(0.14);
+			A_SetScale(ScaleX + 0.8);
+		}
+		Wait
+	}
+}
+
+ACTOR PowerSurgeBlastInner : PowerSurgeBlastOuter
+{
+	States
+	{
+	Spawn:
+		PSHK B 1 NoDelay
+		{
+			A_FadeOut(0.14);
+			A_SetScale(ScaleX + 0.8);
+		}
+		Wait
+	}
+}
+
+ACTOR EOA_PowerupFXBase : EOA_PersistentNoiseMaker
+{
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTIMEFREEZE
+	ReactionTime 35
+	//Var Int User_ReactionTime;
+	States
+	{
+	Spawn:
+	Death:
+		//TNT1 B 0 NoDelay A_SetUserVar("User_ReactionTime", ReactionTime)
+
+		/*{
+			If (!User_ReactionTime)
+			{
+				A_SetUserVar("User_ReactionTime", 35);
+			}
+		}*/
+		TNT1 B 1 NoDelay
+		{
+			A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, 0.5);
+			
+			//A_SetUserVar("User_ReactionTime", User_ReactionTime - 1);
+			If (ReactionTime <= 0 || !Target)
+			{
+				Return State ("Null");
+			}
+			Else
+			{
+				ReactionTime--;
+				Return State ("");
+			}
+		}
+		Wait
+	Null:
+		TNT1 B 1 //Redefining this for this base actor, so that there isn't a little flicker with the dynamic lights at the end.
+		Stop
+	}
+}
+
+ACTOR EOA_Haste : EOA_Item 23000
+{
+	Powerup.Type "Haste"
+	Powerup.Duration -20
+	EOA_Item.Red 1.0
+	EOA_Item.Green 1.0
+	EOA_Item.Blue 0.1
+	EOA_Item.ActiveSound "Haste/Loop"
+	EOA_Item.WarningSound "Haste/Warn"
+	EOA_Item.ExpireSound "Haste/End"
+	Inventory.PickupSound "Haste/Pickup"
+	Inventory.PickupMessage "Haste"
+	Tag "Haste"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Item/Glow", 0, 1.0, 1)
+		SOUL A 0 A_Jump(30,"SpawnExtraLive") 
+	SpawnLoop:
+		HSTE ABCDEFGH 3 Light("HasteGlow")
+		Loop
+	  SpawnExtraLive:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("Extralive",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+        Stop
+	}
+}
+
+ACTOR EOA_Berserk : EOA_Item replaces Berserk 23001
+{
+	Powerup.Type "Berserk"
+	Powerup.Duration -25
+	EOA_Item.Red 0.5
+	EOA_Item.Green 0.25
+	EOA_Item.Blue 0
+	EOA_Item.WarningSound "Berserk/Warn"
+	EOA_Item.ExpireSound "Berserk/End"
+	Inventory.PickupSound "Berserk/Pickup"
+	Inventory.PickupMessage "Berserk"
+	Tag "Berserk"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_PlaySound("Item/Glow", 0, 1.0, 1);
+			A_SpawnItemEx("BerserkFlame", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_NOCHECKPOSITION);
+		}
+	SpawnLoop:
+		BSRK ABCDEFGHIJ 3 Light("BerserkGlow")
+		Loop
+	}
+}
+
+ACTOR EOA_QuadDamage : EOA_Item 23002
+{
+	Powerup.Type "QDMG"
+	Powerup.Duration -20
+	EOA_Item.Red 0.25
+	EOA_Item.Green 0
+	EOA_Item.Blue 0.5
+	EOA_Item.ActiveSound "Quad/Loop"
+	EOA_Item.WarningSound "Quad/Warn"
+	EOA_Item.ExpireSound "Quad/End"
+	Inventory.PickupSound "Quad/Pickup"
+	Inventory.PickupMessage "Quad Damage"
+	Tag "Quad Damage"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_PlaySound("Quad/Idle", 0, 1.0, 1);
+			A_SpawnItemEx("QuadDamageFlame", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_NOCHECKPOSITION);
+		}
+		SOUL A 0 A_Jump(30,"SpawnExtraLive") 
+	SpawnLoop:
+		QDMG ABCDEFGHIJ 3 Light("QuadDamageGlow")
+		Loop
+	 SpawnExtraLive:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("Extralive",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+        Stop
+	}
+}
+
+ACTOR EOA_Invulnerability : EOA_Item replaces InvulnerabilitySphere 23003
+{	
+	Scale 1
+	Powerup.Type "Invulnerability"
+	Powerup.Duration -15
+	EOA_Item.Red 0
+	EOA_Item.Green 1.0
+	EOA_Item.Blue 0
+	EOA_Item.ActiveSound "Invul/Loop"
+	EOA_Item.WarningSound "Invul/Warn"
+	EOA_Item.ExpireSound "Invul/End"
+	EOA_Item.WarnTics -2
+	Inventory.PickupSound "Invul/Pickup"
+	Inventory.PickupMessage "Invulnerability"
+	Tag "Invulnerability"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Invul/Hum", 0, 1.0, 1)
+		SOUL A 0 A_Jump(30,"SpawnExtraLive") 
+	SpawnLoop:
+		PINV ABCD 10 Light("InvulnerabilityGlow")
+		Loop
+	SpawnExtraLive:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("Extralive",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+        Stop
+	}
+}
+
+//Haste 
+/*ACTOR EOA_Haste : EOA_Item
+{
+	Powerup.Type "Haste"
+	Powerup.Duration -20
+	EOA_Item.Red 1.0
+	EOA_Item.Green 1.0
+	EOA_Item.Blue 0.1
+	EOA_Item.ActiveSound "Haste/Loop"
+	EOA_Item.WarningSound "Haste/Warn"
+	EOA_Item.ExpireSound "Haste/End"
+	Inventory.PickupSound "Haste/Pickup"
+	Inventory.PickupMessage "Haste"
+	Tag "Haste"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Item/Glow", 0, 1.0, 1)
+	SpawnLoop:
+		HSTE ABCDEFGH 3 Light("HasteGlow")
+		Loop
+	Pickup:
+		TNT1 A 0 
+		{
+			A_SpawnItemEx("HasteFX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_SETTARGET|SXF_NOCHECKPOSITION);
+			//A_PlaySound("Haste/Pickup", 0);
+			//A_PlaySound("Haste/Add", 0);
+			A_GiveInventory("PowerupEffectiveness"); //Praetor Suit Menu prerequisite...
+			If (CountInv("PowerHaste") && CountInv("PowerSurge"))
+			{
+				A_GiveInventory("PowerSurgeBlastItem");
+			}
+			If (CountInv("HealingPower"))
+			{
+				A_GiveInventory("MegaTempStim");
+			}
+			If (CountInv("PowerExtender"))
+			{
+				A_GiveInventory("ExtendedHastePowerup");
+			}
+			Else
+			{
+				A_GiveInventory("HastePowerup");
+			}
+		}
+		Stop
+	}
+}*/
+
+/*ACTOR HasteFX : EOA_PowerupFXBase
+{
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTIMEFREEZE
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("HasteActive", 1, "Null")
+		TNT1 A 1 Light("HasteGlow")
+		{
+			If (CountInv("PowerHaste", AAPTR_TARGET))
+			{
+				A_GiveToTarget("HasteActive");
+				A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, 0, 0.5);
+				A_PlaySound("Haste/Loop", 1, 1.0, 1);
+				If (CallACS("GetHasteTics") / 35 <= 5 && CallACS("GetHasteTics") / 35 >= 1 && CallACS("GetHasteTics") % 35 == 0)
+				{
+					A_PlaySound("Haste/Warn");
+				}
+				Return State ("");
+			}
+			Else
+			{
+				A_PlaySound("Haste/End", 1);
+				//A_TakeFromTarget("HasteActive");
+				If (CountInv("PowerSurge", AAPTR_TARGET))
+				{
+					A_GiveToTarget("PowerSurgeBlastItem");
+				}
+				Return State ("Death");
+			}
+		}
+		Wait
+	}
+}*/
+
+/*ACTOR HastePowerup : PowerupGiver
+{
+	Powerup.Type "Haste"
+	Powerup.Duration -30
+	Inventory.MaxAmount 0
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+}
+
+ACTOR ExtendedHastePowerup : HastePowerup
+{
+	Powerup.Duration -45
+}
+
+ACTOR PowerHaste : EOA_Powerup
+{
+	Speed 2.0
+}*/
+
+//ACTOR HasteActive : EOA_Token{}
+
+//[DoomKrakken]: This will be integral for shortening weapon animations influenced by Haste and other weapon speed perks.  Please refer to the weapon code for further information. :)
+ACTOR SpeedCounter : EOA_Token{Inventory.MaxAmount 3}
+
+//Berserk
+/*ACTOR EOA_Berserk : EOA_Item replaces Berserk
+{
+	Powerup.Type "Berserk"
+	Powerup.Duration -25
+	EOA_Item.Red 0.5
+	EOA_Item.Green 0.25
+	EOA_Item.Blue 0
+	EOA_Item.ActiveSound "Berserk/Loop"
+	EOA_Item.WarningSound "Berserk/Warn"
+	EOA_Item.ExpireSound "Berserk/End"
+	Inventory.PickupSound "Berserk/Pickup"
+	Inventory.PickupMessage "Berserk"
+	Tag "Berserk"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_PlaySound("Item/Glow", 0, 1.0, 1);
+			A_SpawnItemEx("BerserkFlame", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_NOCHECKPOSITION);
+		}
+	SpawnLoop:
+		BSRK ABCDEFGHIJ 3 Light("BerserkGlow")
+		Loop
+	Pickup:
+		TNT1 A 0 
+		{
+			A_SpawnItemEx("BerserkFX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_SETTARGET|SXF_NOCHECKPOSITION);
+			ACS_NamedExecuteAlways("BerserkWeaponStorage", 0);
+			//A_PlaySound("Berserk/Pickup", 0);
+			//A_PlaySound("Berserk/Add", 0);
+			A_GiveInventory("EOA_BerserkFist");
+			A_SelectWeapon("EOA_BerserkFist");
+			A_GiveInventory("PowerupEffectiveness"); //Praetor Suit Menu prerequisite...
+			If (CountInv("PowerBerserk") && CountInv("PowerSurge"))
+			{
+				A_GiveInventory("PowerSurgeBlastItem");
+			}
+			If (CountInv("HealingPower"))
+			{
+				A_GiveInventory("MegaTempStim");
+			}
+			If (CountInv("PowerExtender"))
+			{
+				A_GiveInventory("ExtendedBerserkStrength");
+			}
+			Else
+			{
+				A_GiveInventory("BerserkStrength");
+			}
+		}
+		Stop
+	}
+}*/
+
+ACTOR BerserkFlame
+{
+	Scale 0.5
+	RenderStyle Add
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	States
+	{
+	Spawn:
+		BZFL ABCDEFGHIJKLM 1 Bright 
+		{
+			If (!Target)
+			{
+				Return State ("Null");
+			}
+			Else
+			{
+				A_Warp(AAPTR_TARGET, 0, 0, 30, 0, WARPF_NOCHECKPOSITION|WARPF_BOB);
+				Return State ("");
+			}
+		}
+		Loop
+	}
+}
+
+/*ACTOR BerserkFX : EOA_PowerupFXBase
+{
+	ReactionTime 70
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("BerserkActive", 1, "Null")
+		TNT1 A 1 //Light("BerserkGlow")
+		{
+			If (CountInv("PowerBerserk", AAPTR_TARGET))
+			{
+				A_GiveToTarget("BerserkActive");
+				A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, 0, 0.5);
+				If (CallACS("GetBerserkTics") / 35 <= 5 && CallACS("GetBerserkTics") / 35 >= 1 && CallACS("GetBerserkTics") % 35 == 0)
+				{
+					A_PlaySound("Berserk/Warn");
+				}
+				Return State ("");
+			}
+			Else
+			{
+				A_PlaySound("Berserk/End", 1);
+				//A_TakeFromTarget("BerserkActive");
+				If (CountInv("PowerSurge", AAPTR_TARGET))
+				{
+					A_GiveToTarget("PowerSurgeBlastItem");
+				}
+				Return State ("Death");
+			}
+		}
+		Wait
+	}
+}*/
+
+/*ACTOR BerserkStrength : PowerupGiver
+{
+	Powerup.Type "Berserk"
+	Powerup.Duration -30
+	Inventory.MaxAmount 0
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+}
+
+ACTOR ExtendedBerserkStrength : BerserkStrength
+{
+	Powerup.Duration -45
+}*/
+
+/*ACTOR PowerBerserk : EOA_Powerup //[DoomKrakken]: There's no need to define any damage buffs, as the primary effect of Berserk is hardcoded into the weapon itself.  The secondary effect, however, still requires a powerup.  So why not? :D
+{
+	DamageFactor "Normal", 0.2
+	+NOLIGHT
+}*/
+
+//ACTOR BerserkActive : EOA_Token{}
+
+/*ACTOR EOA_QuadDamage : EOA_Item
+{
+	Powerup.Type "QDMG"
+	Powerup.Duration -20
+	EOA_Item.Red 0.25
+	EOA_Item.Green 0
+	EOA_Item.Blue 0.5
+	EOA_Item.ActiveSound "Quad/Loop"
+	EOA_Item.WarningSound "Quad/Warn"
+	EOA_Item.ExpireSound "Quad/End"
+	Inventory.PickupSound "Quad/Pickup"
+	Inventory.PickupMessage "Quad Damage"
+	Tag "Quad Damage"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay 
+		{
+			A_PlaySound("Quad/Idle", 0, 1.0, 1);
+			A_SpawnItemEx("QuadDamageFlame", 0, 0, 0, 0, 0, 0, 0, SXF_SETTARGET|SXF_NOCHECKPOSITION);
+		}
+	SpawnLoop:
+		QDMG ABCDEFGHIJ 3 Light("QuadDamageGlow")
+		Loop
+	Pickup:
+		TNT1 A 0 
+		{
+			A_SpawnItemEx("QuadDamageFX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_SETTARGET|SXF_NOCHECKPOSITION);
+			//A_PlaySound("Quad/Pickup", 0);
+			A_GiveInventory("PowerupEffectiveness"); //Praetor Suit Menu prerequisite...
+			If (CountInv("PowerQDMG") && CountInv("PowerSurge"))
+			{
+				A_GiveInventory("PowerSurgeBlastItem");
+			}
+			If (CountInv("HealingPower"))
+			{
+				A_GiveInventory("MegaTempStim");
+			}
+			If (CountInv("PowerExtender"))
+			{
+				A_GiveInventory("ExtendedQDMG");
+			}
+			Else
+			{
+				A_GiveInventory("QDMG");
+			}
+		}
+		Stop
+	}
+}*/
+
+ACTOR QuadDamageFlame
+{
+	Scale 0.5
+	RenderStyle Add
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	States
+	{
+	Spawn:
+		QDFL ABCDEFGHIJKLM 1 Bright 
+		{
+			If(!Target)
+			{
+				Return State ("Null");
+			}
+			Else
+			{
+				A_Warp(AAPTR_TARGET, 0, 0, 30, 0, WARPF_NOCHECKPOSITION|WARPF_BOB);
+				Return State ("");
+			}
+		}
+		Loop
+	}
+}
+
+ACTOR QuadDamageFX : EOA_PowerupFXBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("QuadDamageActive", 1, "Null")
+		TNT1 A 1 Light("QuadDamageGlow")
+		{
+			If (CountInv("PowerQDMG", AAPTR_TARGET))
+			{
+				A_GiveToTarget("QuadDamageActive");
+				A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, 0, 0.5);
+				A_PlaySound("Quad/Loop", 1, 1.0, 1);
+				A_PlaySound("Quad/Voice", 2, 1.0, 1);
+				If (CallACS("GetQuadDamageTics") / 35 <= 5 && CallACS("GetQuadDamageTics") / 35 >= 1 && CallACS("GetQuadDamageTics") % 35 == 0)
+				{
+					A_PlaySound("Quad/Warn");
+				}
+				Return State ("");
+			}
+			Else
+			{
+				A_PlaySound("Quad/End", 1);
+				A_StopSound(2);
+				//A_TakeFromTarget("QuadDamageActive");
+				If (CountInv("PowerSurge", AAPTR_TARGET))
+				{
+					A_GiveToTarget("PowerSurgeBlastItem");
+				}
+				Return State ("Death");
+			}
+		}
+		Wait
+	}
+}
+
+ACTOR QuadDamageFX2 : QuadDamageFX
+{
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+		"####" "#" 1 NoDelay Bright Light("QuadDamageGlow")
+		{
+			If (CountInv("PowerQDMG", AAPTR_TARGET) && !(Target || A_JumpIfHealthLower(2, "Null", AAPTR_TRACER)))
+			{
+				A_SetTranslation("Purple");
+				A_CopySpriteFrame(AAPTR_TRACER, AAPTR_DEFAULT);
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				Return State ("");
+			}
+			Else
+			{
+				Return State ("Null");
+			}
+		}
+		Wait
+	}
+}
+
+//ACTOR QuadDamageActive : EOA_Token{}
+
+ACTOR QuadDamageShot : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_SpawnItemEx("QuadDamageSound", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_NOCHECKPOSITION|SXF_SETTARGET)
+		Stop
+	}
+}
+
+ACTOR QuadDamageSound : EOA_PowerupFXBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("QuadDamage/Shot")
+		Goto Death
+	}
+}
+
+/*ACTOR QDMG : PowerupGiver
+{
+	Powerup.Type "QDMG"
+	Powerup.Duration -30
+	Inventory.MaxAmount 0
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+}
+
+ACTOR ExtendedQDMG : QDMG
+{
+	Powerup.Duration -45
+}*/
+
+ACTOR EOA_QuadHasteSpawner /*: RandomSpawner*/ replaces Blursphere{}
+/*
+{
+	DropItem "EOA_Haste"
+	DropItem "EOA_QuadDamage"
+}
+*/
+/*ACTOR EOA_Invulnerability : EOA_Item replaces InvulnerabilitySphere
+{
+	Powerup.Type "Invulnerability"
+	Powerup.Duration -15
+	EOA_Item.Red 0
+	EOA_Item.Green 1.0
+	EOA_Item.Blue 0
+	EOA_Item.ActiveSound "Invul/Loop"
+	EOA_Item.WarningSound "Invul/Warn"
+	EOA_Item.ExpireSound "Invul/End"
+	Inventory.PickupSound "Invul/Pickup"
+	Inventory.PickupMessage "Invulnerability"
+	Tag "Invulnerability"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_PlaySound("Invul/Hum", 0, 1.0, 1)
+	SpawnLoop:
+		INVL ABCDEFGHIJ 3 Light("InvulnerabilityGlow")
+		Loop
+	Pickup:
+		TNT1 A 0 
+		{
+			A_SpawnItemEx("InvulnerabilityFX", 0, 0, 0, 0, 0, 0, 0, SXF_TRANSFERPOINTERS|SXF_SETTARGET|SXF_NOCHECKPOSITION);
+			//A_PlaySound("Invul/Pickup", 0);
+			A_GiveInventory("PowerupEffectiveness"); //Praetor Suit Menu prerequisite...
+			If (CountInv("PowerInvulnerability") && CountInv("PowerSurge"))
+			{
+				A_GiveInventory("PowerSurgeBlastItem");
+			}
+			If (CountInv("HealingPower"))
+			{
+				A_GiveInventory("MegaTempStim");
+			}
+			If (CountInv("PowerExtender"))
+			{
+				A_GiveInventory("ExtendedInvulnerability");
+			}
+			Else
+			{
+				A_GiveInventory("Invulnerability");
+			}
+		}
+		Stop
+	}
+}*/
+
+/*ACTOR InvulnerabilityFX : EOA_PowerupFXBase
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_JumpIfInTargetInventory("InvulnerabilityActive", 1, "Null")
+		TNT1 A 1 Light("InvulnerabilityGlow")
+		{
+			If (CountInv("PowerInvulnerability", AAPTR_TARGET))
+			{
+				A_GiveToTarget("InvulnerabilityActive");
+				A_Warp(AAPTR_TARGET, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP, 0, 0.5);
+				A_PlaySound("Invul/Loop", 1, 1.0, 1);
+				If (CallACS("GetInvulnerabilityTics") / 35 <= (15 * (1 + 0.5 * CountInv("PowerExtender", AAPTR_TARGET)) / 8) && CallACS("GetInvulnerabilityTics") / 35 >= 1 && CallACS("GetInvulnerabilityTics") % 35 == 0)
+				{
+					A_PlaySound("Invul/Warn");
+				}
+				Return State ("");
+			}
+			Else
+			{
+				A_StopSound(1);
+				//A_TakeFromTarget("InvulnerabilityActive");
+				If (CountInv("PowerSurge", AAPTR_TARGET))
+				{
+					A_GiveToTarget("PowerSurgeBlastItem");
+				}
+				Return State ("Death");
+			}
+		}
+		Wait
+	}
+}
+
+//ACTOR InvulnerabilityActive : EOA_Token{}
+
+ACTOR Invulnerability : PowerupGiver
+{
+	Powerup.Type "Invulnerability"
+	Powerup.Duration -15
+	Inventory.MaxAmount 0
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+}
+
+ACTOR ExtendedInvulnerability : Invulnerability
+{
+	Powerup.Duration 788 //About 22.5 seconds
+}
+
+ACTOR PowerInvulnerability : EOA_Powerup{}*/
+
+ACTOR EOA_RadsuitReplacer /*: RandomSpawner*/ replaces Radsuit
+{
+	//DropItem "EOA_Invulnerability"
+}
+
+//Rune-Based Powerups...
+ACTOR BloodFueledSpeed : EOA_TempToken
+{
+	Powerup.Type "BloodFueledSpeed"
+	Powerup.Duration -6
+}
+
+ACTOR ExtendedBloodFueledSpeed : BloodFueledSpeed
+{
+	Powerup.Duration -6
+}
+
+ACTOR PowerBloodFueledSpeed : PowerSpeed
+{
+	Speed 2.2
+	+NOTRAIL
+}
+
+ACTOR RichGetRicherActive : EOA_TempToken
+{
+	Powerup.Type "RichGetRicherActive"
+	Powerup.Duration 0x7FFFFFFF
+}
+
+//[DoomKrakken]: Ported to ZScript for added effects.
+//ACTOR PowerRichGetRicherActive : PowerInfiniteAmmo{}

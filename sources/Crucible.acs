@@ -1,0 +1,408 @@
+#library "Crucible"
+#include "zcommon.acs"
+Script "CrucibleFlash" (void) 
+{
+	faderange ( 255, 255, 255, 1.0, 0, 0, 0, 0.0, 1.0);
+	delay(35);
+	terminate;
+}
+
+script "stickybombsreloader" (void)
+{
+	if(CheckInventory("explosiveshets") < 3)
+	{
+		delay(175);
+		GiveInventory("explosiveshets", 1);
+		PlaySound(0, "ChargedBurst/Attach", 4, 5);
+	}
+}
+
+script "ContDownTokens" ENTER
+{
+	TakeInventory("FlameThrowerCooldownString", 1);
+	TakeInventory("FlameThrowerCooldownToken", 25);
+	TakeInventory("ShieldCooldowntoken", 100);
+	TakeInventory("ShieldTimerToken", 100);
+	TakeInventory("IceBombCooldownString", 1);
+	TakeInventory("IceBombCooldownToken", 40);
+	TakeInventory("GrenadeCooldownString", 1);
+	TakeInventory("GrenadeCooldownToken", 40);
+	GiveInventory("EOA_Fuelammo", 1);
+	If(CheckInventory("StockUp"));
+	{
+		GiveInventory("ExtraNade", 1);
+	}
+	TakeInventory("ChainsawCooldownToken", 20);
+}
+
+Script "TeleportToGate" (Void)
+{
+	Teleport_NewMap(2, 0, 0);
+	//ChangeLevel("NEXTLEVEL", 0, CHANGELEVEL_PRERAISEWEAPON);
+}
+
+Script "ShoulderTaker" (void)
+{
+	TakeInventory("ShoulderInv",1);
+}	
+
+
+Script "FlameBelch" (void) //StrongBelly: If ShoulderInv exists, it will not trigger.
+{
+	If (CheckInventory("ShoulderInv"))
+	{
+		TakeInventory("ShoulderInv",1);
+		Terminate;
+	}	
+	if(CheckInventory("FlameThrowerCooldownToken")==0)
+	{
+		If (CheckInventory("ShoulderInv"))
+		Terminate;
+		GiveInventory("FlameTrigger",1);
+	}
+	else
+	{
+		PlaySound(0,"Cannon/ReCharge",10);
+		//HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,8,CR_UNTRANSLATED, 0.5, 0, 0.5, 0.1, 1.7);
+	}
+}
+
+Script "SawTaker" (void)
+{
+	TakeInventory("SawInv",1);
+}	
+
+
+Script "Quicksaw" (void) //StrongBelly: If ShoulderInv exists, it will not trigger.
+{
+		If (CheckInventory("SawInv"))
+		Terminate;
+		GiveInventory("SawTrigger",1);
+}
+
+Script "IceBomb" (void) //StrongBelly: If ShoulderInv exists, it will not trigger.
+{
+	If (CheckInventory("ShoulderInv"))
+	{
+		TakeInventory("ShoulderInv",1);
+		Terminate;
+	}
+	if(!CheckInventory("grenadeCooldownToken") && Checkinventory("Grenadeselected"))
+	{
+		If (CheckInventory("ShoulderInv"))
+		Terminate;
+		GiveInventory("grenadeTrigger",1);
+	}
+	else
+	{
+		PlaySound(0,"Cannon/ReCharge",10);
+		//HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.02, 0.5, 0.1, 1.7);
+	}
+	if(!CheckInventory("IceBombCooldownToken") && !Checkinventory("Grenadeselected"))
+	{
+		If (CheckInventory("ShoulderInv"))
+		Terminate;
+		GiveInventory("IceTrigger",1);
+	}
+	else
+	{
+		PlaySound(0,"Cannon/ReCharge",10);
+		//HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.02, 0.5, 0.1, 1.7);
+	}
+
+}
+
+Script "GrenadeThrow" (void)
+{
+	If (CheckInventory("ShoulderInv"))
+	{
+		TakeInventory("ShoulderInv",1);
+		Terminate;
+	}
+	if(!CheckInventory("StockUp"))
+	{
+		if(CheckInventory("GrenadeCooldownToken")==0)
+		{
+			If (CheckInventory("ShoulderInv"))
+			Terminate;
+			GiveInventory("GrenadeTrigger",1);
+		}
+		else
+		{
+			PlaySound(0,"Cannon/ReCharge",10);
+			//HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.02, 0.5, 0.1, 1.7);
+		}
+	}
+	else if(CheckInventory("StockUp"))
+	{
+		if(CheckInventory("GrenadeCooldownToken")==0)
+		{
+			If (CheckInventory("ShoulderInv"))
+			Terminate;
+			GiveInventory("GrenadeTrigger",1);
+		}
+		else
+		{
+			PlaySound(0,"Cannon/ReCharge",10);
+			//HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.02, 0.5, 0.1, 1.7);
+		}
+	}
+}
+
+Script "ChainsawCooldown" (void)
+{
+	while(CheckInventory("ChainsawCooldownToken")>0)
+	{
+		If(CheckInventory("EOA_FuelAmmo")>0) Terminate;
+		delay(35);
+		TakeInventory("ChainsawCooldownToken", 1);
+	}
+	GiveInventory("EOA_FuelAmmo",1);
+	PlaySound(0,"Pickup/Fuel",10);
+	ACS_NamedExecute("DrawReadyAnim", 0, -40, 40, 9);
+}
+
+Script "ShieldTimer" (void)
+{
+	while(CheckInventory("ShieldTimerToken")>0)
+	{
+		If(CheckInventory("ShieldTimerToken") == 2)
+		{
+			PlaySound(0, "Shield/AlmostBroke", 5, 2.0, 1);
+		}
+		delay(35);
+		TakeInventory("ShieldTimerToken", 1);
+	}
+	if(CheckInventory("ShieldTimerToken") == 0)
+	{
+		TakeInventory("UsingShield", 1);
+		SetActorFlag(0,"bDONTTHRUST", 0);
+		SetActorFlag(0,"INVULNERABLE", 0);
+		if(CheckInventory("IncendiaryRounds"))
+		{
+			GiveInventory("ThrowShield", 1);
+		}
+		TakeInventory("DamageCounter", 400);
+		PlaySound(0, "Shield/Break", 4);
+		ACS_NamedExecute("ShieldCooldown", 0);
+	}
+}
+
+Script "ShieldCooldown" (void)
+{
+	StopSound(0, 5);
+	while(CheckInventory("ShieldCoolDownToken")>0)
+	{
+		delay(35);
+		PlaySound(0,"Shield/ReChargeClick",20);
+		TakeInventory("ShieldCoolDownToken", 1);
+	}
+}
+
+Script "FlameCooldown"(void)  //Strongbelly: made some minor edits
+{
+
+	while(CheckInventory("FlameThrowerCooldownToken")>0)
+	{
+		delay(35);
+		TakeInventory("FlameThrowerCooldownToken", 1);
+		//HudMessage(s:"FLAME RECHARGING: ",d:CheckInventory("FlameThrowerCooldownToken");HUDMSG_FADEINOUT,8,CR_ORANGE, 0.5, 0, 0.5, 0.1, 1.7);
+	
+	}
+	TakeInventory("ShoulderInv", 10);
+	PlaySound(0,"FlameReadySFX",10);
+	ACS_NamedExecute("DrawReadyAnim", 0, -250, 40, 9);
+	//delay(16);
+	//TakeInventory("FlameThrowerCooldownToken", 1);
+}
+
+Script "IceCooldown"(void) //Strongbelly: made some minor edits
+{
+	
+	while(CheckInventory("IceBombCooldownToken")>0)
+	{
+		delay(35);
+		TakeInventory("IceBombCooldownToken", 1);
+		//HudMessage(s:"ICE RECHARGING: ",d:CheckInventory("IceBombCooldownToken");HUDMSG_FADEINOUT,9,CR_CYAN, 0.5, 0.02, 0.5, 0.1, 1.7);
+	
+	}
+	TakeInventory("ShoulderInv", 10);
+	PlaySound(0,"IceReadySFX",10);
+	ACS_NamedExecute("DrawReadyAnim", 0, -110, 40, 9);
+	//delay(16);
+	//TakeInventory("IceBombCooldownToken", 1);
+}
+
+Script "GrenadeCooldown"(void) //Strongbelly: made some minor edits
+{
+	
+	while(CheckInventory("GrenadeCooldownToken")>0)
+	{
+		delay(35);
+		TakeInventory("GrenadeCooldownToken", 1);
+		//HudMessage(s:"ICE RECHARGING: ",d:CheckInventory("IceBombCooldownToken");HUDMSG_FADEINOUT,9,CR_CYAN, 0.5, 0.02, 0.5, 0.1, 1.7);
+	
+	}
+	If(CheckInventory("ExtraGrenadeCoolDownToken"))
+	{
+		ACS_NamedExecute("ExtranadeCooldown", 0);
+	}
+	TakeInventory("ShoulderInv", 10);
+	PlaySound(0,"IceReadySFX",10);
+	ACS_NamedExecute("DrawReadyAnim", 0, -180, 40, 9);
+	//delay(16);
+	//TakeInventory("IceBombCooldownToken", 1);
+}
+
+Script "ExtranadeCooldown"(void) //Strongbelly: made some minor edits
+{
+	
+	while(CheckInventory("ExtraGrenadeCooldownToken")>0 && CheckInventory("GrenadeCooldownToken") == 0)
+	{
+		delay(35);
+		TakeInventory("ExtraGrenadeCooldownToken", 1);
+		//HudMessage(s:"ICE RECHARGING: ",d:CheckInventory("IceBombCooldownToken");HUDMSG_FADEINOUT,9,CR_CYAN, 0.5, 0.02, 0.5, 0.1, 1.7);
+	
+	}
+	if(CheckInventory("ExtraGrenadeCoolDownToken") == 0 && CheckInventory("GrenadeCooldownToken") == 0)
+	{
+		GiveInventory("StockUp", 1);
+		GiveInventory("ExtraNade", 1);
+		TakeInventory("ShoulderInv", 10);
+		PlaySound(0,"IceReadySFX",10);
+		ACS_NamedExecute("DrawReadyAnim", 0, -180, 40, 9);
+	}
+	//delay(16);
+	//TakeInventory("IceBombCooldownToken", 1);
+}
+
+Script "Dashcooldown"(void) //Strongbelly: made some minor edits
+{
+	if (CheckInventory("B5_DDash")==0)
+	{
+		delay(80);
+		giveInventory("B5_DDash", 2);
+		PlaySound(0, "b5.drestock2", 1);
+	}
+	delay(35);
+	if (checkinventory("B5_DDash")==1)
+	{
+		giveInventory("B5_DDash", 1);
+		Playsound(0, "b5.drestock1", 1);
+	}
+}
+
+script "PlayCooldownSound"(void)
+{
+	PlaySound(0,"Cannon/ReCharge",10);
+	HudMessage(s:"RECHARGING";HUDMSG_FADEINOUT,8,CR_UNTRANSLATED, 0.5, 0, 0.5, 0.1, 1.7);
+
+}
+
+Script "crucable" (void)
+{
+	If(CheckInventory("CrucibleAmmo") > 1 && !CheckInventory("HammerSmashing"))
+	{
+		GiveInventory("DEHellBreakerSmash", 1);
+		//SetWeapon("DEHellBreaker");
+	}	
+	Else If (CheckInventory("CrucibleAmmo") <= 1)
+	{
+		LocalAmbientSound("CrucibleNoAmmo",127);
+		SetFont("SmallFont");
+	    HudMessage(s:"NOT ENOUGH ENERGY";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, 1.5, 0.64, 0.2, 0.005, 0.2);
+		Delay(12);
+		HudMessage(s:"NOT ENOUGH ENERGY";HUDMSG_FADEINOUT|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0,CR_GOLD, 1.5, 0.64, 1.0, 0.005, 0.2);
+	}
+}
+
+Script "TokenChange" (void)
+{
+	PlaySound(0,"Cannon/SWITCH",1);
+	if(CheckInventory("FlameToken"))
+	{
+		GiveInventory("IceToken", 1);
+		TakeInventory("FlameToken", 1);		
+		TakeInventory("FlameString", 1);	
+		GiveInventory("IceString", 1);	
+		
+		//HudMessage(s:"ICE";HUDMSG_PLAIN, 0, 0, 0.5, 0.1, 1.7);
+	terminate;
+	}
+
+	if(CheckInventory("IceToken"))
+	{
+		GiveInventory("FlameToken", 1);
+		TakeInventory("IceToken", 1);	
+		TakeInventory("IceString", 1);	
+		GiveInventory("FlameString", 1);	
+		//	HudMessage(s:"Cannon";HUDMSG_PLAIN, 0, 0, 0.5, 0.1, 1.7);
+	terminate;
+	}
+}
+
+Script "ShowFlame"(void)
+{
+	HudMessage(s:"Flame";HUDMSG_FADEINOUT,8,CR_UNTRANSLATED, 0.5, 0, 0.5, 0.1, 1.7);
+	//SetHudSize(1920,1080,0);
+
+	SetFont("Fire");
+	HudMessage(s:"A";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.1, 0.5, 0.1, 1.7);
+
+}
+Script "ShowIce"(void)
+{
+	HudMessage(s:"ICE";HUDMSG_FADEINOUT,8,CR_UNTRANSLATED, 0.5, 0, 0.5, 0.1, 1.7);
+	//SetHudSize(1920,1080,0);
+
+	SetFont("Ice");
+	HudMessage(s:"A";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.1, 0.5, 0.1, 1.7);
+
+}
+Script "ShowRocket"(void)
+{
+
+	HudMessage(s:"Cannon";HUDMSG_FADEINOUT,8,CR_UNTRANSLATED, 0.5, 0, 0.5, 0.1, 1.7);
+	//SetHudSize(1920,1080,0);
+	
+	SetFont("Cannon");
+	HudMessage(s:"A";HUDMSG_FADEINOUT,9,CR_UNTRANSLATED, 0.5, 0.1, 0.5, 0.1, 1.7);
+
+}
+
+script "ChangeSecondaryToken"(void)
+{
+PlaySound(0,"Cannon/SECSWITCH",1);
+if(CheckInventory("SecondaryAttackToken"))
+{
+	TakeInventory("SecondaryAttackToken", 1);	
+	if(CheckInventory("FlameToken"))
+	{
+		HudMessage(s:"Fuel Flame";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+	if(CheckInventory("IceToken"))
+	{
+		HudMessage(s:"Ice Flame";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+	if(CheckInventory("RocketToken"))
+	{
+		HudMessage(s:"Single Cannon Shot";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+}
+else
+{
+GiveInventory("SecondaryAttackToken", 1);	
+	if(CheckInventory("FlameToken"))
+	{
+		HudMessage(s:"Flame Ball";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+	if(CheckInventory("IceToken"))
+	{
+		HudMessage(s:"Ice Ball";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+	if(CheckInventory("RocketToken"))
+	{
+		HudMessage(s:"Tripple Cannon Shot";HUDMSG_PLAIN, 11, 0, 1, 0.1, 1.7);
+	}
+}
+}

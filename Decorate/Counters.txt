@@ -1,0 +1,437 @@
+// Token Base Classes
+ACTOR ClimbHand : EOA_Token{}
+ACTOR ThrowShield : EOA_Token{}
+ACTOR SSGUsingHook : EOA_Token{}
+
+ACTOR EOA_TempToken : PowerupGiver
+{
+	Inventory.MaxAmount 0
+	Powerup.Type "EOA_TempToken"
+	Powerup.Duration -1
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+}
+
+ACTOR PowerEOA_TempToken : Powerup
+{
+	Powerup.Duration -1
+}
+
+ACTOR EOA_Manipulator : CustomInventory
+{
+	Inventory.MaxAmount 0
+	+ALWAYSPICKUP
+	+AUTOACTIVATE
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		Stop
+	Pickup:
+		TNT1 A 0
+		Stop
+	}
+}
+
+// Commonly used counters.
+ACTOR AlreadyHit : EOA_TempToken
+{
+	Powerup.Type "AlreadyHit"
+	Powerup.Duration 18
+}
+
+ACTOR PowerAlreadyHit : PowerEOA_TempToken{}
+
+ACTOR MasteryTicker : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 ACS_NamedExecuteAlways("MasteryChallengeCounter", 0)
+		Stop
+	}
+}
+
+ACTOR SecretFinderTicker : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 ACS_NamedExecuteAlways("SecretFinderBlip", 0)
+		Stop
+	}
+}
+
+ACTOR HeadShot : EOA_Token{}
+
+//ignore these two
+ACTOR BossFound : EOA_Token{}
+ACTOR AllBossesDead : EOA_Token{}
+
+//ChronoStrike cool down
+ACTOR ChronostrikeTimer : EOA_Token{Inventory.MaxAmount 105}
+ACTOR ChronostrikeCooldown : EOA_Token{Inventory.MaxAmount 105}
+
+ACTOR HeadshotDeathSound : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_PlaySound("Death/Headshot")
+		Stop
+	}
+}
+
+ACTOR SoundCounter : EOA_Token {Inventory.MaxAmount 4}
+ACTOR DoubleJumpCounter : EOA_Token{}
+
+//Equipment...
+ACTOR EOA_FragGrenade : EOA_Token{}
+ACTOR EOA_Hologram : EOA_Token{}
+ACTOR EOA_SiphonGrenade : EOA_Token{}
+
+ACTOR FragGrenadeSelected : EOA_Token{}
+ACTOR HologramSelected : EOA_Token{}
+ACTOR SiphonGrenadeSelected : EOA_Token{}
+
+//Generic Inventory Tokens
+ACTOR WeaponUpgradePoint : EOA_Token{Inventory.MaxAmount 0x7FFFFFFF}
+ACTOR WeaponUpgradePoints : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("WeaponUpgradePoint", 0x7FFFFFFF)
+		Stop
+	}
+}
+ACTOR PraetorToken : EOA_Token{Inventory.MaxAmount 0x7FFFFFFF}
+ACTOR PraetorTokens : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 A_GiveInventory("PraetorToken", 0x7FFFFFFF)
+		Stop
+	}
+}
+
+//Ammo
+ACTOR BulletsLowAmmo : EOA_Token{}
+ACTOR ShellsLowAmmo : EOA_Token{}
+ACTOR RocketsLowAmmo : EOA_Token{}
+ACTOR CellsLowAmmo : EOA_Token{}
+ACTOR FuelLowAmmo : EOA_Token{}
+ACTOR BFGLowAmmo : EOA_Token{}
+
+//Praetor Suit Upgrades...
+
+//Environmental Resistance - Find the Praetor Suit.
+ACTOR EnvironmentalResistance : EOA_Token{}
+ACTOR HazardProtection : EOA_Token{} //Decrease Explosive Barrel and Environmental damage taken. - 1
+ACTOR SelfPreservation : EOA_Token{} //Your own weapons deal less damage to you. - 2
+ACTOR BarrelsOFun : EOA_Token{} 	 //Immunity to Explosive Barrel Damage. - 3
+
+//blood punch related upgrades
+ACTOR Bloodpunchefficiency : EOA_Token{}
+ACTOR BloodierPunch : EOA_Token{} //blood punch does more damage
+ACTOR BigBloodyTrouble : EOA_Token{} //heavy demons give a full blood punch charge
+ACTOR ExtraPunch : EOA_Token{} //you can now store 2 blood punches instead of 1
+
+//Area-Scanning Technology - Pick up an Automap.
+ACTOR AreaScanningTechnology : EOA_Token{}
+ACTOR ItemAwareness : EOA_Token{}	 //Items show up in a larger radius around you in the Automap - 1
+ACTOR SecretFinder : EOA_Token{}	 //Your HUD will indicate whether you're near a secret. - 2
+ACTOR FullView : EOA_Token{}		 //Full scanner. - 3
+
+//Equipment System - Pick up an Equipment Item.
+ACTOR EquipmentSystem : EOA_Token{}
+ACTOR QuickCharge : EOA_Token{}		 //Decrease Equipment Recharge. - 2
+ACTOR RapidCharge : EOA_Token{}		 //Further Decrease Equipment Recharge. - 4
+
+//new equipment system
+ACTOR FasterFragCoolDown : EOA_Token{}
+ACTOR StockUp : EOA_Token{}
+ACTOR IcebombEquipment : EOA_Token{}
+ACTOR FasterIceCooldown : EOA_Token{}
+ACTOR Permafrost : EOA_Token{}
+
+//Powerup Effectiveness - Pick up a powerup.
+ACTOR PowerupEffectiveness : EOA_Token{}
+ACTOR PowerSurge : EOA_Token{}		 //When a powerup ends, release a powerful blast wave of energy. - 1
+ACTOR HealingPower : EOA_Token{}	 //Full health upon picking up a powerup. - 2
+ACTOR PowerExtender : EOA_Token{}	 //Increase the duration of a powerup. - 3
+
+//Dexterity - Have possession of 4 or more weapons.
+ACTOR Dexterity : EOA_Token{}
+ACTOR Adept : EOA_Token{}			 //Faster Weapon Switch - 2
+ACTOR QuickHands : EOA_Token{}		 //Faster Ledge Mantling - 3
+ACTOR HitAndRun : EOA_Token{} //dash refills on glorykill
+ACTOR FasterDasher : EOA_Token{} //dash refills quicker
+
+
+//unused shit
+ACTOR HotSwap : EOA_Token{}			 //Faster Mod Swapping - 4
+
+
+
+//Runes...
+
+//Vacuum
+ACTOR Vacuum : EOA_RuneToken{} //Increases pickup radius for dropped items.
+ACTOR VacuumII : EOA_RuneToken{} //Further increases pickup radius for dropped items.
+
+//Dazed And Confused
+ACTOR DazedAndConfused : EOA_RuneToken{} //Increases enemy stagger state duration.
+ACTOR DazedAndConfusedII : EOA_RuneToken{} //Further increases enemy stagger state duration.
+
+//Ammo Boost
+ACTOR AmmoBoost : EOA_RuneToken{} //Increases the value of standard ammo pickups yielded by enemies and items.
+ACTOR AmmoBoostII : EOA_RuneToken{} //BFG ammo has a chance to drop from enemies.
+
+//Equipment Power
+ACTOR EquipmentPower : EOA_RuneToken{} //Increases the effectiveness of equipment.
+ACTOR EquipmentPowerII : EOA_RuneToken{} //Further increases the effectiveness of equipment.
+
+//Savagery
+ACTOR Savagery : EOA_RuneToken{} //Perform Glory Kills faster.
+ACTOR SavageryII : EOA_RuneToken{} //Perform Glory Kills even faster.
+
+//Seek And Destroy
+ACTOR SeekAndDestroy : EOA_RuneToken{} //Launch into a Glory Kill from much further away.
+ACTOR SeekAndDestroyII : EOA_RuneToken{} //Increases the distance "Seek And Destroy" can be initiated.
+
+//In-Flight Mobility
+ACTOR InFlightMobility : EOA_RuneToken{} //Provides a significant increase in control over in-air movement after a double jump.
+ACTOR InFlightMobilityII : EOA_RuneToken{} //Applies air control to a single jump.
+
+//Chrono Strike
+ACTOR ChronoStrike : EOA_RuneToken{}
+
+
+//Armored Offensive
+ACTOR ArmoredOffensive : EOA_RuneToken{} //Enemies drop armor upon being Glory Killed.
+ACTOR ArmoredOffensiveII : EOA_RuneToken{} //Enemies drop more armor upon being Glory Killed.
+
+
+//Blood Fueled
+ACTOR BloodFueled : EOA_RuneToken{} //Gain a significant boost in speed for a short time after performing a Glory Kill.
+ACTOR BloodFueledII : EOA_RuneToken{} //Extends the speed boost's duration.
+
+
+//Intimacy Is Best
+ACTOR IntimacyIsBest : EOA_RuneToken{} //While staggered, enemies gain a high damage resistance.  As a result, they become more Glory Kill-friendly.
+ACTOR IntimacyIsBestII : EOA_RuneToken{} //Enemies stagger off of less damage.
+
+
+//Rich Get Richer [DoomKrakken]: Best Rune EVER. :D
+ACTOR RichGetRicher : EOA_RuneToken{} //Your standard weapons do not consume ammo while you have 100 or more armor.
+ACTOR RichGetRicherII : EOA_RuneToken{} //"Rich Get Richer" is applied at 75 or more armor.
+
+
+//Saving Throw
+ACTOR SavingThrow : EOA_RuneToken{} //Get one chance to survive a death blow and recover health.  This resets on death.
+ACTOR SavingThrowII : EOA_RuneToken{} //Get an additional saving throw per life.
+
+//Rune Menu Items...
+ACTOR VacuumSelected : EOA_RuneSelectedToken{}
+ACTOR DazedAndConfusedSelected : EOA_RuneSelectedToken{} 
+ACTOR AmmoBoostSelected : EOA_RuneSelectedToken{}
+ACTOR EquipmentPowerSelected : EOA_RuneSelectedToken{}
+ACTOR SavagerySelected : EOA_RuneSelectedToken{}
+ACTOR SeekAndDestroySelected : EOA_RuneSelectedToken{}
+ACTOR InFlightMobilitySelected : EOA_RuneSelectedToken{}
+ACTOR ChronoStrikeSelected : EOA_RuneSelectedToken{}
+ACTOR ArmoredOffensiveSelected : EOA_RuneSelectedToken{}
+ACTOR BloodFueledSelected : EOA_RuneSelectedToken{}
+ACTOR IntimacyIsBestSelected : EOA_RuneSelectedToken{} 
+ACTOR RichGetRicherSelected : EOA_RuneSelectedToken{}
+ACTOR SavingThrowSelected : EOA_RuneSelectedToken{}
+
+//Rune Upgrade Counters...
+
+//Vacuum - Absorb 300 dropped items.
+ACTOR VacuumChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 300}
+
+//Dazed And Confused - Perform 25 "Death From Above" Glory Kills.
+ACTOR DazedAndConfusedChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 25}
+
+//Ammo Boost - Pick up 500 ammo items.
+ACTOR AmmoBoostChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 500}
+
+//Equipment Power - Use equipment 30 times.
+ACTOR EquipmentPowerChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAMount 30}
+
+//Savagery - Perform 25 unique Glory Kills on enemies.
+ACTOR SavageryChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 25}
+
+//Seek And Destroy - Perform 75 Glory Kills.
+ACTOR SeekAndDestroyChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 75}
+
+//In-Flight Mobility - Kill 30 enemies while midair ("Death From Above" Glory Kills count too).
+ACTOR InFlightMobilityChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 30}
+
+//Armored Offensive - Earn 2500 points of armor (siphoned armor doesn't count).
+ACTOR ArmoredOffensiveChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 2500}
+
+//Blood Fueled - Kill 50 monsters while Blood Fueled is active.
+ACTOR BloodFueledChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 50}
+
+//Intimacy Is Best - Stagger enemies 100 times.
+ACTOR IntimacyIsBestChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 100}
+
+//Rich Get Richer - Fill your armor capacity to its maximum 12 times.
+ACTOR RichGetRicherChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 12}
+
+//Saving Throw - Kill 10 monsters while Saving Throw is active.
+ACTOR SavingThrowChallengeCounter : EOA_RuneChallengeCounter{Inventory.MaxAmount 10}
+
+//Equipment Stuff...
+ACTOR EquipmentTriggerer : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 A_GiveInventory("EquipmentTrigger")
+		Fail
+	}
+}
+
+ACTOR EquipmentUnTriggerer : EquipmentTriggerer
+{
+	States
+	{
+	Use:
+		TNT1 A 0 A_TakeInventory("EquipmentTrigger")
+		Fail
+	}
+}
+
+ACTOR EquipmentTrigger : EOA_Token{}
+ACTOR PowerEquipmentTrigger : PowerEOA_TempToken{Powerup.Duration 10}
+
+ACTOR CycleEquipmentRight : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 
+		{
+			If (CountInv("EOA_FragGrenade") && CountInv("FragGrenadeSelected") && CountInv("EOA_SiphonGrenade") && !CountInv("SiphonGrenadeSelected"))
+			{
+				A_GiveInventory("SiphonGrenadeSelected");
+				A_TakeInventory("FragGrenadeSelected");
+			}
+			Else If (CountInv("EOA_FragGrenade") && CountInv("FragGrenadeSelected") && !CountInv("EOA_SiphonGrenade") && CountInv("EOA_Hologram") && !CountInv("HologramSelected"))
+			{
+				A_GiveInventory("HologramSelected");
+				A_TakeInventory("FragGrenadeSelected");
+			}
+			Else If (CountInv("EOA_SiphonGrenade") && CountInv("SiphonGrenadeSelected") && CountInv("EOA_Hologram") && !CountInv("HologramSelected"))
+			{
+				A_GiveInventory("HologramSelected");
+				A_TakeInventory("SiphonGrenadeSelected");
+			}
+			Else If (CountInv("EOA_SiphonGrenade") && CountInv("SiphonGrenadeSelected") && !CountInv("EOA_Hologram") && CountInv("EOA_FragGrenade") && !CountInv("FragGrenadeSelected"))
+			{
+				A_GiveInventory("FragGrenadeSelected");
+				A_TakeInventory("SiphonGrenadeSelected");
+			}
+			Else If (CountInv("EOA_Hologram") && CountInv("HologramSelected") && CountInv("EOA_FragGrenade") && !CountInv("FragGrenadeSelected"))
+			{
+				A_GiveInventory("FragGrenadeSelected");
+				A_TakeInventory("HologramSelected");
+			}
+			Else If (CountInv("EOA_Hologram") && CountInv("HologramSelected") && !CountInv("EOA_FragGrenade") && CountInv("EOA_SiphonGrenade") && !CountInv("SiphonGrenadeSelected"))
+			{
+				A_GiveInventory("SiphonGrenadeSelected");
+				A_TakeInventory("HologramSelected");
+			}
+			Else If (!(CountInv("FragGrenadeSelected") || CountInv("HologramSelected") || CountInv("SiphonGrenadeSelected")))
+			{
+				If (CountInv("EOA_FragGrenade"))
+				{
+					A_GiveInventory("FragGrenadeSelected");
+				}
+				Else If (CountInv("EOA_Hologram"))
+				{
+					A_GiveInventory("HologramSelected");
+				}
+				Else If (CountInv("EOA_SiphonGrenade"))
+				{
+					A_GiveInventory("SiphonGrenadeSelected");
+				}
+			}
+		}
+		Fail
+	}
+}
+
+ACTOR CycleEquipmentLeft : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 
+		{
+			If (CountInv("EOA_FragGrenade") && CountInv("FragGrenadeSelected") && CountInv("EOA_Hologram") && !CountInv("HologramSelected"))
+			{
+				A_GiveInventory("HologramSelected");
+				A_TakeInventory("FragGrenadeSelected");
+			}
+			Else If (CountInv("EOA_FragGrenade") && CountInv("FragGrenadeSelected") && !CountInv("EOA_Hologram") && CountInv("EOA_SiphonGrenade") && !CountInv("SiphonGrenadeSelected"))
+			{
+				A_GiveInventory("SiphonGrenadeSelected");
+				A_TakeInventory("FragGrenadeSelected");
+			}
+			Else If (CountInv("EOA_Hologram") && CountInv("HologramSelected") && CountInv("EOA_SiphonGrenade") && !CountInv("SiphonGrenadeSelected"))
+			{
+				A_GiveInventory("SiphonGrenadeSelected");
+				A_TakeInventory("HologramSelected");
+			}
+			Else If (CountInv("EOA_Hologram") && CountInv("HologramSelected") && !CountInv("EOA_SiphonGrenade") && CountInv("EOA_FragGrenade") && !CountInv("FragGrenadeSelected"))
+			{
+				A_GiveInventory("FragGrenadeSelected");
+				A_TakeInventory("HologramSelected");
+			}
+			Else If (CountInv("EOA_SiphonGrenade") && CountInv("SiphonGrenadeSelected") && CountInv("EOA_FragGrenade") && !CountInv("FragGrenadeSelected"))
+			{
+				A_GiveInventory("FragGrenadeSelected");
+				A_TakeInventory("SiphonGrenadeSelected");
+			}
+			Else If (CountInv("EOA_SiphonGrenade") && CountInv("SiphonGrenadeSelected") && !CountInv("EOA_FragGrenade") && CountInv("EOA_Hologram") && !CountInv("HologramSelected"))
+			{
+				A_GiveInventory("HologramSelected");
+				A_TakeInventory("SiphonGrenadeSelected");
+			}
+			Else If (!(CountInv("FragGrenadeSelected") || CountInv("HologramSelected") || CountInv("SiphonGrenadeSelected")))
+			{
+				If (CountInv("EOA_FragGrenade"))
+				{
+					A_GiveInventory("FragGrenadeSelected");
+				}
+				Else If (CountInv("EOA_Hologram"))
+				{
+					A_GiveInventory("HologramSelected");
+				}
+				Else If (CountInv("EOA_SiphonGrenade"))
+				{
+					A_GiveInventory("SiphonGrenadeSelected");
+				}
+			}
+		}
+		Fail
+	}
+}

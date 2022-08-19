@@ -1,0 +1,203 @@
+Class EOAE_FlameBelchStart : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_FlameStart"))
+			{
+				A_GiveInventory("FlameBelch");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_IceBombStart : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_IceStart"))
+			{
+				A_GiveInventory("IceBomb");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_FragGrenadeStart : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_FragStart"))
+			{
+				A_GiveInventory("FragGrenade");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_InfiniteExtraLives : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_InfiniteExtraLives"))
+			{
+				A_GiveInventory("ExtraLive", 99999);
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_IDKFA : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_IDKFA"))
+			{
+				A_GiveInventory("EOAWeapons");
+				A_GiveInventory("EOAMods");
+				A_GiveInventory("EOAUpgrades");
+				A_GiveInventory("EOAMastery");
+				A_GiveInventory("EOA_ArgentAmmoBonusCounter", 4);
+				A_GiveInventory("EOA_ArgentAmmoBonusMax");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_UpgradedSuit : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_FullyUpgradedSuit"))
+			{
+				A_GiveInventory("PraetorSuitUpgrades");
+				A_GiveInventory("EOARunes");
+				A_GiveInventory("EOARunesII");
+				A_GiveInventory("ArgentCellBonuses");
+				A_GiveInventory("PraetorSuitUpgrades");
+				A_GiveInventory("EOA_ThrustBoots");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_ActivateAllCheats : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_ActivateAllCheats"))
+			{
+				A_GiveInventory("EOAAll");
+				A_GiveInventory("ExtraLive", 99999);
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_CrucibleStart : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_CrucibleStart"))
+			{
+				A_GiveInventory("DEHellBreaker");
+				A_GiveInventory("PowerCrucible");
+			}
+		}
+		Stop;
+	}
+}
+
+Class EOAE_InfiniteBerserk : CustomInventory
+{
+	Default
+	{
+		+INVENTORY.ALWAYSPICKUP
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			If (GetCVar("EOAE_InfiniteBerserk"))
+			{
+				A_TakeInventory("EOA_Chainsaw");
+				A_TakeInventory("EOA_HAPistol"); //Stupid rat shit pistol
+				A_TakeInventory("EOA_CombatShotgun");
+				A_TakeInventory("EOA_SuperShotgun");
+				A_TakeInventory("EOA_HeavyAssaultRifle");
+				A_TakeInventory("EOA_RocketLauncher");
+				A_TakeInventory("EOA_PlasmaRifle");
+				A_TakeInventory("EOA_GaussCannon");
+				A_TakeInventory("EOA_Chaingun");
+				A_TakeInventory("EOA_BFG");
+				A_TakeInventory("EOA_Unmaykr");
+				A_TakeInventory("DEHellBreaker");
+				A_GiveInventory("EOA_InfiniteBerserkFist");
+				A_SelectWeapon("EOA_InfiniteBerserkFist");
+			}
+		}
+	}
+}

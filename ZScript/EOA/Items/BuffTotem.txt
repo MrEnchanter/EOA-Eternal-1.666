@@ -1,0 +1,305 @@
+Class EOA_BuffTotem : Actor //[DoomKrakken]: Written by strongbelly, converted to ZScript and edited much further by me.
+{
+	PlayerPawn Opener;
+	Bool Opened;
+	Bool Grabbed;
+	Bool Taken;
+	Int TicDelay;
+	Double Angle1;
+	Default
+	{
+		Radius 20;
+		Height 40;
+		Scale 0.2;
+		+DONTBLAST
+		+DONTGIB
+		+DONTTHRUST
+		+FLOORCLIP
+		+NOBLOOD
+		+NODAMAGE
+	}
+	Override Bool Used(Actor User)
+	{
+			PlayerInfo Player = Players[ConsolePlayer];
+			If (Player == User.Player && Player && Player.Mo && Player.Mo == User && Distance3D(User) <= Player.Mo.UseRange + 350 && Distance3D(User) >= Radius) 
+			{
+				A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+				Opener = PlayerPawn(User);
+				If (User.FindInventory("EOA_InteractWeapon", True))
+				{
+					Return False;
+				}
+				Else If (Opener)
+				{
+					For (Int i = 0; i < MAXPLAYERS; i++)
+					{
+						PlayerInfo Player = Players[i];
+						If (Player && Player.Mo && Player.Mo == Opener)
+						{
+							Player.Mo.GiveInventory("EOA_TotemWeapon", 1);
+							Let TotHand = EOA_InteractWeapon(Player.Mo.FindInventory("EOA_TotemWeapon"));
+							If (TotHand)
+							{
+								TotHand.ReselectWeapon = Player.ReadyWeapon.GetClass();
+								TotHand.Giver = Self;
+								TotHand.Totem = Self;
+								Player.Mo.A_Face(Self, Max_Pitch: 90, Flags: FAF_MIDDLE);
+								Player.PendingWeapon = TotHand;
+								Player.ReadyWeapon = Null;
+							}
+							Break;
+						}
+					}
+					Grabbed = True;
+					Return True;
+				}
+			}
+			Return False;
+	}
+	Override Void Tick()
+	{
+		If (Grabbed)
+		{
+			TicDelay++;
+			If (TicDelay >= 6)
+			{
+				Taken = True;
+			}
+		}
+		ThinkerIterator it = ThinkerIterator.Create("Actor");
+		Actor Mo;
+		While (Mo = Actor(it.Next()))
+		{
+			//Check for the Heat Blast Wave
+			If (Mo == Self || !Mo.bSHOOTABLE || !Mo.bIsMonster || Distance3D(Mo) > 1024)
+            {
+                Continue;
+            }
+			Mo.A_GiveInventory("PowerTotemBuff");
+		}
+		Super.Tick();
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0
+		{
+			Angle1 = 1;
+		}
+	SpawnLoop:
+		TOTM A 1
+		{
+			Angle1 += 18;
+			A_StartSound("Totem/Hum", 5, CHANF_LOOPING|CHANF_OVERLAP);
+			Actor Ring = Spawn("RWave", Pos + (0, 0, Height - 1 * 5));
+			If(Ring)
+			{
+				Ring.SetShade("FF5030"); 
+				Ring.A_SetRenderStyle(1.00,STYLE_AddShaded);
+				Ring.A_SetRoll(Angle1);
+				Ring.Scale.X = 0.045;
+			}
+			Actor Ring2 = Spawn("RWave", Pos + (0, 0, Height - 2 * 5));
+			If(Ring2)
+			{
+				Ring2.SetShade("FF5030"); 
+				Ring2.A_SetRenderStyle(1.00,STYLE_AddShaded);
+				Ring2.A_SetRoll(25 + Angle1);
+				Ring2.Scale.X = 0.065;
+			}
+			Actor Ring3 = Spawn("RWave", Pos + (0, 0, Height - 3 * 5));
+			If(Ring3)
+			{
+				Ring3.SetShade("FF5030"); 
+				Ring3.A_SetRenderStyle(1.00,STYLE_AddShaded);
+				Ring3.A_SetRoll(45 + Angle1);
+				Ring3.Scale.X = 0.04;
+			}
+			Actor Ring4 = Spawn("RWave", Pos + (0, 0, Height - 4 * 5));
+			If(Ring4)
+			{
+				Ring4.SetShade("FF5030"); 
+				Ring4.A_SetRenderStyle(1.00,STYLE_AddShaded);
+				Ring4.A_SetRoll(75 + Angle1);
+				Ring4.Scale.X = 0.02;
+			}
+			A_SpawnItemEx("StunBombLightning", 0, 0, Height - fRandom(1, 25));
+			EOA_ActorExtensions.SpawnCustomDynamicLight(Self, Self.GetClassName(), DynamicLight.PointLight, (150, 0, 0), 32, 0, DYNAMICLIGHT.LF_ATTENUATE, -1, (0, 0, Height / 1.3));
+		}
+		Wait;
+	Die:
+		TNT1 A 0 A_SpawnItemEx("MeatDeath", 0, 0, Height/2);
+		Stop;
+	}
+}
+
+Class PowerTotemBuff : EOA_Powerup
+{
+	Default
+	{
+		Powerup.Duration 10;
+		+EOA_POWERUP.NOLIGHT //[DoomKrakken]: Only done so that the powerlight in the base class doesn't spawn in the first place. ;)
+	}
+	Override Void AttachToOwner(Actor Other)
+	{
+		Super.AttachToOwner(Other);
+		Red = 1.0;
+		Green = 0.2;
+		Blue = 0.1;
+		Int R, G, B;
+		R = Red * 255;
+		G = Green * 255;
+		B = Blue * 255;
+		EOA_ActorExtensions.SpawnCustomDynamicLight(Other, Self.GetClassName(), DynamicLight.PointLight, (R, G, B), 32, 0, DYNAMICLIGHT.LF_ATTENUATE, -1, (0, 0, Owner.Height / 2));
+	}
+	Override Void DoEffect()
+	{
+		If (EffectTics < 0)
+		{
+			Destroy();
+			Return;
+		}
+		If (!(GetAge() % 5))
+		{
+			Owner.A_SpawnItemEx("StunBombLightning", ZOfs: Owner.Height / 2, XVel: frandom(-3, 3), YVel: frandom(-3, 3), ZVel: frandom(-3, 3), Flags: SXF_NOCHECKPOSITION);
+		}
+		Owner.bALWAYSFAST = True;
+		Owner.Speed = Owner.Default.Speed * 2;
+		Powerup.DoEffect();
+	}
+	Override Void ModifyDamage(Int Damage, Name DamageType, Out Int NewDamage, Bool Passive)
+	{
+		If (!Passive && Damage > 0)
+		{
+			NewDamage = max(1, ApplyDamageFactors(GetClass(), DamageType, Damage, Damage * 3));
+		}
+	}
+	Override Bool HandlePickup(Inventory Item)
+	{
+		If (Item.GetClass() == GetClass())
+		{
+			Let Power = EOA_Powerup(Item);
+			If (!Power.EffectTics)
+			{
+				Power.bPICKUPGOOD = True;
+				Return True;
+			}
+			If (Power.bADDITIVETIME) 
+			{
+				EffectTics += Power.EffectTics / (1 + (Owner.Default.Health >= 1000)); //[DoomKrakken]: Tanky monsters such as Barons burn through this stuff twice as fast... so the effect tics will be halved.
+				BlendColor = Power.BlendColor;
+			}
+			Else If (EffectTics > BLINKTHRESHOLD && !Power.bALWAYSPICKUP)
+			{
+				Return True;
+			}
+			Else If (Power.EffectTics > EffectTics)
+			{
+				EffectTics = Power.EffectTics / (1 + (Owner.Default.Health >= 1000));
+				BlendColor = Power.BlendColor;
+			}
+			Power.bPICKUPGOOD = True;
+			Return True;
+		}
+		Return False;
+	}
+	Override Void EndEffect()
+	{
+		If (Owner)
+		{
+			Owner.bALWAYSFAST = Owner.Default.bALWAYSFAST;
+			Owner.A_SetSpeed(Owner.Default.Speed);
+		}
+		Super.EndEffect();
+	}
+}
+
+Class EOA_TotemWeapon : EOA_InteractWeapon
+{
+	Int Timer;
+	Override Void PostBeginPlay()
+	{
+		PlayerInfo Player = Owner.Player;
+		If (Giver && Player && Player.Mo && Player.Mo == Owner)
+		{
+			Owner.A_Face(Giver, Max_Pitch: 90, Flags: FAF_MIDDLE);
+		}
+		Super.PostBeginPlay();
+	}
+	States
+	{
+	Ready:
+		TNT1 A 0
+		{
+			if(CountInv("HitAndRun"))
+			{
+				A_GiveInventory("B5_DDash", 2);
+			}
+			If(CountInv("BloodPunch"))
+			{
+				if(countinv("extrabloodpunchcounter") == 1)
+				{
+					EOA_spawnnoisemaker("BloodPunchCharged", 0);
+					ACS_NamedExecute("DrawReadyAnimR", 0, -140 - (100 * !CountInv("DoubleDash")), 45, 9);
+				}
+				if(countinv("ArmoredOffensiveSelected") && countinv("Bloodpunchcounter") == 2)
+				{
+					A_giveinventory("Extrabloodpunchcounter");
+				}
+				if(countinv("bloodpunchcounter") == 1)
+				{
+					EOA_spawnnoisemaker("BloodPunchCharged", 0);
+					ACS_NamedExecute("DrawReadyAnimR", 0, -140 - (100 * !CountInv("DoubleDash")), 45, 9);
+				}
+				EOA_spawnnoisemaker("GloryKillDing", 0);
+				if(CountInv("ArmoredOffensiveSelected"))
+				{
+					A_CustomPunch(0, 0, CPF_NOTURN, "EnemyHealthChecker", 192);
+				}
+				if(!CountInv("ArmoredOffensiveSelected"))
+				{
+					A_giveinventory("bloodpunchcounter", 1);
+				}	
+				if(Countinv("ArmoredOffensiveSelected") && CountInv("bloodpunchcounter") > 1)
+				{
+					EOA_spawnnoisemaker("BloodPunchCharged", 0);
+				}
+			}
+		}
+		TNT1 A 0
+		{
+			bNOTARGET = bNOPAIN = bNODAMAGE = True;
+			EOA_SpawnNoiseMaker("Totem/Destroy");
+			EOA_SpawnNoiseMaker("Punch/GloryKill");
+			EOA_SpawnNoiseMaker("Punch/Bass");
+			EOA_SpawnNoiseMaker("Punch/GloryKill");
+			EOA_SpawnNoiseMaker("Punch/Bass");
+		}
+		MFST AC 1 EOA_SetGKRecoilOffset(-5, 3, 3, True);
+		TNT1 A 0 
+		{
+			A_GiveInventory("StyleCounter", 5 - CountInv("SwitchStyleDelay")/5);
+			Invoker.Giver.SetStateLabel("Die");
+		}
+		MFST DEFHIKL 1;
+		TNT1 A 0
+		{
+			If (CountInv("BloodFueledSelected"))
+			{
+				EOA_SpawnNoiseMaker("Rune/BloodFueled");
+				If (CountInv("BloodFueledII"))
+				{
+					A_GiveInventory("PowerBloodfueledEFX");
+					A_GiveInventory("ExtendedBloodFueledSpeed");
+				}
+				Else
+				{
+					A_GiveInventory("PowerBloodfueledEFX");
+					A_GiveInventory("BloodFueledSpeed");
+				}
+			}
+			bNOTARGET = bNOPAIN = bNODAMAGE = False;
+		}
+		Goto Deselect;
+	}
+}

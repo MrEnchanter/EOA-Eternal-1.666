@@ -1,0 +1,31 @@
+/*-----------------------\
+   Hitmarkers by Tekish
+\-----------------------*/
+
+class hitmarkerhandler : eventhandler
+{
+	override void worldthingdamaged(worldevent e)
+	{
+		playerinfo player = players[consoleplayer];
+		bool enabled = True;
+		int type = 0;
+		if (enabled && e.damagesource is "PlayerPawn" && e.damagesource.playernumber() == consoleplayer && ((!deathmatch && e.thing.bISMONSTER) || (e.thing is "PlayerPawn" && e.thing.playernumber() != consoleplayer && !e.thing.isteammate(player.mo))))
+		{
+			type = 1;
+			cvar.getcvar("hm_bridge_hitmarker", player).setint(type);
+		}
+	}
+}
+
+class hitmarkerstatusbar ui
+{	
+	ui private static int getconsoleplayer()
+	{
+		return consoleplayer;
+	}
+	
+	private static int gettop()
+	{
+		return statusbar.gettopofstatusbar();
+	}
+}

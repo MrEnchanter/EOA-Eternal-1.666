@@ -1,0 +1,382 @@
+//Teleport fog effect borrowed from Zion
+Actor NewTeleFog : TeleportFog Replaces Teleportfog
+{
+	States
+	{
+	Spawn:
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+        TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+		TNT1 AAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx(TeleportFX,Random(0,16),0,Random(0,52),FRandom(0,1),0,FRandom(-1,1),Random(1,360),SXF_CLIENTSIDE)
+		Stop
+	}
+}
+
+Actor TeleportFX
+{
+	RenderStyle Add
+	+NOINTERACTION
+	+CLIENTSIDEONLY
+	+FORCEXYBILLBOARD
+	+NOBLOCKMAP
+	+DONTSPLASH
+	+THRUACTORS
+	+NOTRIGGER
+	+NOBLOCKMONST
+	+CANNOTPUSH
+	Radius 0.5
+	Height 1
+	Gravity 0.66
+	Scale 0.066
+	Alpha 0.8
+	Translation "0:255=%[0,0,0]:[3.0,0.0,0.0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SetScale(ScaleX-0.003)
+		TNT1 A 0 A_ChangeVelocity(FRandom(-0.5,0.5),FRandom(-0.5,0.5),FRandom(-0.5,0.5),CVF_RELATIVE)
+		SPK1 C 1 Bright A_JumpIf(ScaleX<0,"Null")
+		Loop
+	}
+}
+
+
+Actor NewFog //replaces TeleportFog
+{
+	+CLIENTSIDEONLY
+	+FORCEYBILLBOARD
+	+BRIGHT
+	Renderstyle Add
+	Scale 0.75
+	+NOINTERACTION
+	SeeSound ""
+	Translation "0:255=%[0,0,0]:[3.0,0.0,0.0]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Playsound("Doom4/Other/Teleport",CHAN_AUTO,1.0,false,1.2)
+		TNT1 A 0 A_JumpIf(waterlevel == 3, "Air")
+		TNT1 A 0 A_CheckCeiling("Australia")
+		TNT1 A 0 A_CheckFloor("Idle")
+		Goto Air
+	Australia:
+		TFOY AB	 1
+		TFOY C 	 1 Light("RedBigPoint3")
+		TFOY D 	 1 Light("RedBigPoint2")
+		TFOY E 	 1 Light("RedBigPoint1")
+		TFOY FGH 1 Light("RedBigPoint2")
+		TFOY IJ	 1 Light("RedBigPoint3")
+		TFOY KL	 1 Light("RedMediumPoint1")
+		TFOY MN	 1 Light("RedMediumPoint2")
+		TFOY OP	 1 Light("RedMediumPoint3")
+		TFOY QR	 1 Light("RedSmallPoint1")
+		TFOY ST	 1 Light("RedSmallPoint2")
+		TFOY UVW 1 Light("RedSmallPoint3")
+		TFOY XYZ 1 
+		Stop
+	Idle:
+		TFOG AB	 1
+		TFOG C 	 1 Light("RedBigPoint3")
+		TFOG D 	 1 Light("RedBigPoint2")
+		TFOG E 	 1 Light("RedBigPoint1")
+		TFOG FGH 1 Light("RedBigPoint2")
+		TFOG IJ	 1 Light("RedBigPoint3")
+		TFOG KL	 1 Light("RedMediumPoint1")
+		TFOG MN	 1 Light("RedMediumPoint2")
+		TFOG OP	 1 Light("RedMediumPoint3")
+		TFOG QR	 1 Light("RedSmallPoint1")
+		TFOG ST	 1 Light("RedSmallPoint2")
+		TFOG UVW 1 Light("RedSmallPoint3")
+		TFOG XYZ 1 
+		Stop
+	Air:
+		TNT1 A 0 A_SpawnItemEx("NewFoy", 0,0,0, 0,0,0, 0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_ChangeFlag("FORCEYBILLBOARD",0)
+		TNT1 A 0 A_ChangeFlag("FORCEXYBILLBOARD",1)
+		TNT1 A 0 A_SetTranslucent(0.5)
+		TFOG E 	 1 Light("RedBigPoint1")
+		TFOG FGH 1 Light("RedBigPoint2")
+		TFOG IJ	 1 Light("RedBigPoint3")
+		TFOG KL	 1 Light("RedMediumPoint1")
+		TFOG MN	 1 Light("RedMediumPoint2")
+		TFOG OP	 1 Light("RedMediumPoint3")
+		TFOG QR	 1 Light("RedSmallPoint1")
+		TFOG ST	 1 Light("RedSmallPoint2")
+		TFOG UVW 1 Light("RedSmallPoint3")
+		TFOG XYZ 1 
+		Stop
+	}
+}
+
+Actor NewFoy : NewFog
+{
+	-FORCEYBILLBOARD
+	+FORCEXYBILLBOARD
+	Alpha .5
+	States
+	{
+	Spawn:
+		TFOY EFGHIJKLMNOPQRSTUVWXYZ 1
+		Stop
+	}
+}
+
+// Foy, in British jargon, is what them islanders call fog that goes up instead of down.
+// JK
+
+Actor NewItemFog : NewFog replaces ItemFog
+{
+	Scale 0.4
+	Translation "0:255=%[0,0,0]:[0,1,2]"
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Idle
+	Idle:
+		TFOG AB 1
+		TFOG C 1 Light("BlueCyanSmallPoint3")
+		TFOG D 1 Light("BlueCyanSmallPoint1")
+		TFOG E 1 Light("BlueCyanMediumPoint3")
+		TFOG FGHIJ 1 Light("BlueCyanMediumPoint1")
+		TFOG KLMN 1 Light("BlueCyanMediumPoint2")
+		TFOG OP 1 Light("BlueCyanMediumPoint3")
+		TFOG QR 1 Light("BlueCyanSmallPoint1")
+		TFOG ST 1 Light("BlueCyanSmallPoint2")
+		TFOG UVW 1 Light("BlueCyanSmallPoint3")
+		TFOG XYZ 1 
+		Stop
+	}
+}
+
+Actor SmokeFog1 : NewFoy
+{
+	RenderStyle "Add"
+	Alpha 0.7
+	Scale 2
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Idle
+	Idle:
+		WPXS TUVW 1 
+		WPXS XYZ 1 
+		Stop
+	}
+}
+
+Actor SmokeFog2 : SmokeFog1
+{
+	RenderStyle "Add"
+	Alpha 0.6
+	Scale 3
+	States
+	{
+	Spawn:
+		TNT1 A 0 
+		Goto Idle
+	Idle:
+		WPXS MNOP 1 
+		WPXS QRS 1 
+		Stop
+	}
+}
+
+//=============================================================================
+//=============================================================================
+/*
+ACTOR D4ExplosiveBarrel : ExplosiveBarrel replaces ExplosiveBarrel
+{
+	Health 20
+	Radius 10
+	Height 42
+	+SOLID
+	+SHOOTABLE
+	+NOBLOOD
+	+DONTGIB
+	+NOICEDEATH
+	DeathSound "Doom4/Weapon/RocketLauncher/DetonateExplo"
+	Scale 0.9
+	States
+	{
+	Spawn:
+		D4BR A 6
+		Loop
+	Death:
+		TNT1 A 0  A_PlaySound("Doom4/Other/BarrelDebris",7,1,false,0.9)
+		TNT1 A 0 A_SpawnItemEx("GenericExplosionLight",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION)
+		TNT1 A 2 Bright A_SpawnItemEx("BarrelExplosionFX",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER|SXF_TRANSFERPOINTERS)
+		TNT1 A 3 
+		TNT1 A 0 A_Explode(170,170,XF_NOTMISSILE)
+		TNT1 B 3 Bright A_Scream
+		TNT1 CR 3 Bright
+		TNT1 SSSTTTUUU 1 Bright A_FadeOut(0.11) //down to 0.01
+		TNT1 A 1050 Bright A_BarrelDestroy
+		TNT1 A 5 A_Respawn
+		Wait
+	}
+}
+
+Actor BarrelExplosionFX
+{
+	+NOINTERACTION
+	+BRIGHT
+	Scale 1.5
+	Obituary "$OB_BARREL" // "%o went boom."
+	DamageType "Barrel"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_Jump(128,"Type2")
+	Type1:
+		DB27 ABCDEFGHI 1
+		//TNT1 A 0 A_Explode(160,160,XF_NOTMISSILE)
+		DB27 JKKLLMMNNOOPPQQRRSSTTUU 1
+		DB27 WWXXYYZZ 1 A_FadeOut(0.05)
+		Wait
+
+	Type2:
+		DB28 ABCDEFGHI 1
+		//TNT1 A 0 A_Explode(160,160,XF_NOTMISSILE)
+		DB28 JKKLLMMNNOOPPQQRRSSTTUU 1
+		DB28 WWXXYYZZ 1 A_FadeOut(0.05)
+		Wait
+	}
+}
+*/
+Actor GenericExplosionLight
+{
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		TNT1 A 2 Light("OrangeMediumPoint3")
+		TNT1 A 2 Light("OrangeMediumPoint2")
+		TNT1 AA 2 Light("OrangeMediumPoint1")
+		TNT1 A 2 Light("OrangeMediumPoint2")
+		TNT1 A 2 Light("OrangeMediumPoint3")
+		TNT1 A 2 Light("OrangeSmallPoint1")
+		TNT1 A 2 Light("OrangeSmallPoint2")
+		TNT1 A 2 Light("OrangeSmallPoint3")
+		Stop
+	}
+}
+
+Actor D4TDeadMarineSpawner : RandomSpawner replaces DeadMarine
+{
+	DropItem "D4TDeadMarine", 255, 7
+	DropItem "D4TDeadElite", 255, 1
+}
+
+ACTOR D4TDeadMarine : DeadMarine 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+	SkipUnwilling:
+		PSMC B -1
+		Stop
+	}
+}
+ACTOR D4TDeadElite : DeadMarine 
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY 
+	Ender:
+		EGDB A -1 
+		Stop
+	}
+}
+
+ACTOR D4TGibbedMarine replaces GibbedMarine
+{
+	States
+	{
+	Spawn:
+		D4EL C -1
+		Stop
+	}
+}
+
+
+ACTOR D4TGibbedMarineExtra : D4TGibbedMarine replaces GibbedMarineExtra
+{}
+
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+//		Map placed monster corpses
+//---------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------
+Actor D4DeadZombieMan replaces DeadZombieMan
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY
+	SkipUnwilling:
+		RFTR L -1 
+		Stop
+	}
+}
+
+Actor D4DeadShotgunGuy replaces DeadShotgunGuy
+{
+	Scale 0.93
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY 
+	SkipUnwilling:
+		RPZM N -1
+		Stop
+	}
+}
+
+Actor D4DeadDoomImp replaces DeadDoomImp
+{
+	Skip_Super
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY 
+	SkipUnwilling:
+		ROAC M -1 
+		Stop
+	}
+}
+
+Actor D4DeadDemon replaces DeadDemon
+{
+	Scale 1.16 //slightly smaller than regular d4 demon, for visibility 
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY 
+	SkipUnwilling:
+		D4DG N -1 
+		Stop
+	}
+}
+
+Actor D4DeadCacodemon replaces DeadCacodemon
+{
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY 
+	SkipUnwilling:
+		CAC2 L -1 A_SetFloorClip
+		Stop
+	}
+}
+
+Actor D4TJunk : Junk replaces Junk
+{
+	Scale 0.65
+}

@@ -1,0 +1,68 @@
+//D16Cyberdemon
+CYBIEACCUMULATOR "Sounds/Monsters/Cyber/CYBATOSS.ogg"
+CYBIEPreDeath "Sounds/Monsters/Cyber/CYBRAPUL.ogg"
+CYBIEDeath1 "Sounds/Monsters/Cyber/CYBRFALL.ogg"
+CYBIERes "Sounds/Monsters/Cyber/CYBRREVV.ogg"
+CYBIEWake "sounds/NewCybieSounds/cybiewake.ogg"
+CYBIERise "sounds/NewCybieSounds/cybierising.ogg"
+CYBIEPunch "Sounds/Monsters/Cyber/CYBRFIST.ogg"
+
+$random Cybie/Attack { CYBRATK1 CYBRATK2 CYBRATK3 }
+CYBRATK1 "sounds/NewCybieSounds/CYBRATK1"
+CYBRATK2 "sounds/NewCybieSounds/CYBRATK2"
+CYBRATK3 "sounds/NewCybieSounds/CYBRATK3"
+$random Cybie/FireRocket { ROCKET1 ROCKET2 ROCKET3 }
+ROCKET1 "sounds/NewCybieSounds/ROCKET1"
+ROCKET2 "sounds/NewCybieSounds/ROCKET2"
+ROCKET3 "sounds/NewCybieSounds/ROCKET3"
+$random Cybie/Idle { CYBRIDL1 CYBRIDL2 CYBRIDL3 }
+CYBRIDL1 "sounds/NewCybieSounds/CYBRIDL1"
+CYBRIDL2 "sounds/NewCybieSounds/CYBRIDL2"
+CYBRIDL3 "sounds/NewCybieSounds/CYBRIDL3"
+$random Cybie/Pain { CYBRPN1 CYBRPN2 CYBRPN3 }
+CYBRPN1 "sounds/NewCybieSounds/CYBRPN1"
+CYBRPN2 "sounds/NewCybieSounds/CYBRPN2"
+CYBRPN3 "sounds/NewCybieSounds/CYBRPN3"
+$random Cybie/Sight { CYBRSGHT }
+CYBRSGHT "sounds/NewCybieSounds/CYBRSGHT"
+$random Cybie/RocketRain { RAIN1 RAIN2 RAIN3 }
+RAIN1 "sounds/NewCybieSounds/RAIN1"
+RAIN2 "sounds/NewCybieSounds/RAIN2"
+RAIN3 "sounds/NewCybieSounds/RAIN3"
+$random Cybie/FlameWave { WAVESTART WAVEEND }
+WAVESTART "sounds/NewCybieSounds/WAVESTART"
+WAVEEND "sounds/NewCybieSounds/WAVEEND"
+$random Cybie/FootStep { CYBRSTP1 CYBRSTP2 CYBRSTP3 CYBRSTP4 }
+CYBRSTP1 "sounds/NewCybieSounds/CYBRSTP1"
+CYBRSTP2 "sounds/NewCybieSounds/CYBRSTP2"
+CYBRSTP3 "sounds/NewCybieSounds/CYBRSTP3"
+CYBRSTP4 "sounds/NewCybieSounds/CYBRSTP4"
+$random Cybie/MechStep { CYBRMCH1 CYBRMCH2 CYBRMCH3 CYBRMCH4 }
+CYBRMCH1 "sounds/NewCybieSounds/CYBRMCH1"
+CYBRMCH2 "sounds/NewCybieSounds/CYBRMCH2"
+CYBRMCH3 "sounds/NewCybieSounds/CYBRMCH3"
+CYBRMCH4 "sounds/NewCybieSounds/CYBRMCH4"
+$random Cybie/RocketRainExplosion { SMLEXP1 SMLEXP2 SMLEXP3 }
+SMLEXP1 "sounds/NewCybieSounds/SMLEXP1"
+SMLEXP2 "sounds/NewCybieSounds/SMLEXP2"
+SMLEXP3 "sounds/NewCybieSounds/SMLEXP3"
+$random Cybie/RocketExplosion { EXPLOS1 EXPLOS2 EXPLOS3 }
+EXPLOS1 "sounds/NewCybieSounds/EXPLOS1"
+EXPLOS2 "sounds/NewCybieSounds/EXPLOS2"
+EXPLOS3 "sounds/NewCybieSounds/EXPLOS3"
+$random Cybie/ChargeStartup { BIGSTART }
+BIGSTART "sounds/NewCybieSounds/BIGSTART"
+$random Cybie/ChargeShotReady { BIGCHARG }
+BIGCHARG "sounds/NewCybieSounds/BIGCHARG"
+$random Cybie/ChargeReady { BIGREADY }
+BIGREADY "sounds/NewCybieSounds/BIGREADY"
+$random Cybie/ChargeShot { BIGSHOT }
+BIGSHOT "sounds/NewCybieSounds/BIGSHOT"
+$random Cybie/RockWall { ROCKWALL }
+ROCKWALL "sounds/NewCybieSounds/ROCKWALL"
+$random Cybie/BigExplosion { BIGEXPLS }
+BIGEXPLS "sounds/NewCybieSounds/BIGEXPLS"
+$random Cybie/Gore{ GOREBIG1 GOREBIG2 GOREBIG3 }
+GOREBIG1 "sounds/NewCybieSounds/GOREBIG1"
+GOREBIG2 "sounds/NewCybieSounds/GOREBIG2"
+GOREBIG3 "sounds/NewCybieSounds/GOREBIG3"

@@ -1,0 +1,653 @@
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+/////////// DECORATE FILE FOR MAPPER ENEMIES ///////////////////////////
+/////////////////////////////////////// ////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+//Mapping enemies have their DE health values, divided by 2, and their pain chances lowred////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+
+/////					/////////
+/////	 FODDER ENEMIES
+/////					//////////
+
+
+Actor NewZombieFodder : DEZombie 1000
+{
+	//$Category "mapping monsters(fodder)"
+	//$Color 9
+	-COUNTKILL
+	+ACTIVATEMCROSS
+	+CANUSEWALLS
+	+CANPUSHWALLS
+	Health 100
+	//Health 200
+	DropItem "FodderHealthDrop"
+	
+}
+ACTOR NewDoomImp : DEDoomImp 1001
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 200
+	Health 100
+	-COUNTKILL
+	DropItem "FodderHealthDrop"
+}
+Actor NewZombieman : DEZombieman 1002
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 400
+	Health 200
+	-COUNTKILL
+	DropItem "FodderHealthDrop"
+}
+Actor NewShieldGuy : DEShieldGuy 1003
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 500
+	Health 250
+	-COUNTKILL
+	DropItem "FodderHealthDrop"
+}
+ACTOR NewGargoyle : DEGargoyle 1004
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 300
+	Health 250
+	-CountKill
+	DropItem "FodderHealthDrop"
+	
+}
+Actor NewLostSoul : DELostSoul 1005
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	DropItem "FodderHealthDrop"
+	Health 5
+}
+Actor NewMechaZombie : DEMechaZombie 1006
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 500
+	Health 250
+	-CountKill
+	DropItem "FodderHealthDrop"
+}
+Actor NewMaykrDrone : DEMaykrdrone 1027
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 500
+	Health 250
+	-CountKill
+	DropItem "FodderHealthDrop"
+	States
+	{
+	Spawn:
+		MAKR A 0 
+		MAKR A 0
+		TNT1 A 0 A_SpawnItemEx("MaykrHeadHB",0,0,128,0,0,0, 0,SXF_NOCHECKPOSITION|SXF_SETMASTER)
+		MAKR A 4
+		Goto Idle
+	}
+}
+Actor MaykrHeadHB : MaykrHead
+{
+
+	States
+	{
+	Death:
+		TNT1 A 0 A_DamageMaster(900)
+		TNT1 AAAA 0 A_SpawnItemEX("TempStimHB",0,0,0,0,0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempStimHB",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempStimHB",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempChainsawBulletAmmo",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempChainsawCelllAmmo",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempChainsawRocketAmmo",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 AAAA 0 A_SpawnItemEX("TempChainsawShellAmmo",0,0,0,Random(1,-1),0,0,Random(-256,256),SXF_NOCHECKPOSITION,0,0)
+		TNT1 A 0
+		Stop
+	Death.Removed:	
+		TNT1 A 10 
+		Stop
+	}
+}
+ACTOR NewStoneImp : DEStoneImp 1150
+{
+	//$Category "mapping Monsters(fodder)"
+	//$Color 9
+	//Health 200
+	Health 500
+	-COUNTKILL
+	DropItem "FodderHealthDrop"
+}
+
+///////////					///////////////////
+///////////	 HEAVY ENEMIES
+///////////					//////////////////
+
+
+Actor NewArachnotron : DEArachnotron 1007
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 3000
+	Health 1500
+	DropItem "HeavyMediumDrop"
+}
+Actor NewCacodemon : DECacodemon 1008
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 2500
+	Health 1000
+	DropItem "HeavyMediumDrop"
+}
+Actor newCarcass : DECarcass 1009
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 1200
+	Health 600
+	Dropitem "HeavyMediumDrop"
+}
+Actor NewCyberFatso : DEFatsoTech 1010
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 6000
+	Health 3000
+	DropItem "HeavyMediumDrop"
+}
+Actor NewDreadKnight : DEDreadKnight 1011
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 3000
+	Health 1500
+	DropItem "HeavyMediumDrop"
+}
+Actor NewHellKnight : DEHellKnight 1012
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 2500
+	Health 1250
+	DropItem "HeavyMediumDrop"
+}
+Actor NewFatsoHell : DEFatsoHell 1013
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 3500
+	Health 1750
+	DropItem "HeavyMediumDrop"
+}
+ACTOR NewPainElemental : DEPainElemental 1014
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 5000
+	Health 2500
+	DropItem ""
+}
+Actor NewDemon : DEDemon 1015
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 1000
+	Health 350
+	DropItem "HeavyMediumDrop"
+}
+Actor NewProwler : DeProwler 1016
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 1000
+	Health 400
+	DropItem "HeavyMediumDrop"
+}
+Actor NewRevenant : DERevenant 1017
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 2000
+	Health 1000
+	DropItem "HeavyMediumDrop"
+}
+ACTOR NewSpectre : DESpectre 1018
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 2000
+	Health 500
+	DropItem "HeavyMediumDrop"
+}
+Actor NewWhiplash : DEWhiplash 1019
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	//Health 2000
+	Health 1000
+	DropItem "HeavyMediumDrop"
+}
+Actor NewSpectreWhiplash : DEWhiplash 1026
+{
+	//$Category "mapping Monsters(Heavy)"
+	//$Color 9
+	Health 1000
+	+SHADOW
+	RenderStyle OptFuzzy
+	Alpha 0.9
+	Obituary "%o was whipped"
+	Height 56
+	//Health 2000
+	Tag "Spectre Whiplash"
+	DropItem "HeavyMediumDrop"
+}
+
+
+///////////							///////////////////
+///////////	  SUPER HEAVY ENEMIES
+///////////							//////////////////
+
+
+Actor NewArchvile : DEArchvile 1020
+{
+	//$Category "mapping Monsters(Super Heavy)"
+	//$Color 9
+	//Health 6000
+	Speed 32
+	Health 3000
+	DropItem "HeavySuperDrop"
+	States
+	{
+	SummonDecide:
+		TNT1 A 0
+		TNT1 A 0 A_Jumpifcloser(960,"NotinLOS")
+		Goto TeleportTowards+1
+	NotinLOS:
+		TNT1 A 0 A_jump(128,"Summon")
+		Goto FlamePool
+	Summon:
+		D4DW A 0 A_JumpIf(user_SummonTime>1,"Missile")
+		D4DN A 0 A_SetUserVar(user_SummonTime,3)
+		TNT1 A 0 A_JumpifCloser(220,"FlamePool")
+		VILE A 0 A_FaceTarget
+		VILE A 0 A_SpawnItemEx("ArchWallSpawner",0,0,0,0,0,0,0,SXF_TRANSFERPOINTERS|SXF_SETMASTER)
+		VILE AAAA 0 A_SpawnItemEx("ArchDemonSpawn",Random(320,121),Random(256,-256),0,0,0,0,Random(-256,256),SXF_TRANSFERPOINTERS|SXF_SETMASTER,0)
+		VILE A 0 A_PlaySound("Arch/Shieldup",6,1.0,False,ATTN_NONE,0)
+		VILE "\" 130
+		VILE "\" 10
+		D4DN A 0 A_SetUserVar(user_SummonTime,6)
+		VILE A 0 A_KillChildren(0,0,"ArchWallSpawner")
+		Goto See
+	
+	}
+}
+ACTOR NewBaronOfHell : DEBaronOfHell 1021
+{
+	//$Category "mapping Monsters(Super Heavy)"
+	//$Color 9
+	Height 112
+	Scale 1.5
+	Health 3500
+	//Health 7000
+	DropItem "HeavySuperDrop"
+	States
+	{
+	FireBallBig:	//This is done so that the puffs match his size
+		BOS4 M 2 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_PlaySound("Doom4/Monsters/Baron/Charge1",6,0.4,False,ATTN_NONE,0)
+		TNT1 A 0 A_PlaySound("Doom4/Monsters/Baron/Charge2",5,1.0,False,ATTN_NORM,0)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		TNT1 A 0 A_SpawnItemEx("BaronFlarePrepare",8,-46,96,0,0,frandom(0.4,1.0),0,SXF_NOCHECKPOSITION)
+		BOS4 M 6 Light(OrangeMediumFlicker1) A_FaceTarget
+		BOS4 NO 3 Light(OrangeMediumFlicker1)
+		BOS4 P 5 Light(OrangeMediumFlicker1) A_CustomMissile("D4BaronBallBig",48,0,ACS_NamedExecuteWithResult("PredictAim", 1, 50, 32) * 360 / 65536, CMF_AIMDIRECTION, ACS_NamedExecuteWithResult("PredictAim", 0, 50, 32) * 360 / 65536)
+		Goto See
+	}
+}
+Actor NewDoomHunter 1022
+{
+	//$Category "mapping Monsters(Super Heavy)"
+	//$Color 9
+	DropItem ""
+	Tag "Placeholder Doomhunter(ignore)"
+}
+Actor NewMarauder : DEMarauder 1023
+{
+	//$Category "mapping Monsters(Super Heavy)"
+	//$Color 9
+	//Health 4000
+	Health 2500
+	DropItem "HeavySuperDrop"
+	Speed 28
+}
+Actor NewTyrant : DETyrant 1024
+{
+	//$Category "mapping Monsters(Super Heavy)"
+	//$Color 9
+	//Health 10000
+	Health 5000
+	DropItem "HeavySuperDrop"
+}
+
+
+Actor HBShells 780
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 4
+	//$Title "Shells"
+	Scale 0.77
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_ShellAmmo")
+		Stop
+	}
+}
+
+Actor HBBullets 781
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 4
+	//$Title "Bullets"
+	Scale 0.8
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_BulletAmmo")
+		Stop
+	}
+}
+
+
+Actor HBCells 782
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 4
+	//$Title "Cells"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_CellAmmo")
+		Stop
+	}
+}
+
+Actor HBRockets 783
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 4
+	//$Title "Rockets"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_RocketAmmo")
+		Stop
+	}
+}
+
+
+Actor HBBFGAmmo 792
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 4
+	//$Title "BFG Ammo"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_BFGAmmo")
+		Stop
+	}
+}
+Actor HBFuelAmmo 789
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 12
+	//$Title "Fuel
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_FuelAmmo")
+		Stop
+	}
+}
+Actor HBCruciblePickup 793
+{
+	//$NotAngled
+	//$Category "Hellbreaker Ammo"
+	//$Color 12
+	//$Title "Crucible Pickup"
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("CrucibleAmmo")
+		Stop
+	}
+}
+Actor HBMedikit 784
+{
+	//$NotAngled
+	//$Category "Hellbreaker Health & Armor"
+	//$Color 12
+	//$Title "MedKit"
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("EOA_MediPack")
+		Stop
+	}
+}
+Actor HBStimpack 785
+{
+	//$NotAngled
+	//$Category "Hellbreaker Health & Armor"
+	//$Color 12
+	//$Title "Stimpack"
+	Scale 0.65
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("EOA_MediKit")
+		Stop
+	}
+}
+Actor HBGreenArmor 786
+{
+	//$NotAngled
+	//$Category "Hellbreaker Health & Armor"
+	//$Color 12
+	//$Title "Green Armor(25)"
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("EOA_MediumArmor")
+		Stop
+	}
+}
+
+Actor HBBlueArmor 787
+{
+	//$NotAngled
+	//$Category "Hellbreaker Health & Armor"
+	//$Color 12
+	//$Title "Blue Armor(50)"
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("EOA_LargeArmor")
+		Stop
+	}
+}
+
+Actor HBArmorBonus 788
+{
+	//$NotAngled
+	//$Category "Hellbreaker Health & Armor"
+	//$Color 12
+	//$Title "Armor Shard(5)" EOA_SmallArmor
+	States
+	{
+	Spawn:
+		FUEL A 5
+		TNT1 A 0 A_SpawnItem("EOA_SmallArmor")
+		Stop
+	}
+}
+Actor HBHasteSpawner 790
+{
+	//$NotAngled
+	//$Category "Hellbreaker Powerup Spawn"
+	//$Color 12
+	//$Title "Haste Spawner"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_Haste")
+		Stop
+	}
+}
+Actor HBQuadSpawner 791
+{
+	//$NotAngled
+	//$Category "Hellbreaker Powerup Spawn"
+	//$Color 12
+	//$Title "Quad Spawner"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_QuadDamage")
+		Stop
+	}
+}
+
+Actor HBmodbotSpawner 20101
+{
+	//$NotAngled
+	//$Category "Hellbreaker EOA Spawners"
+	//$Color 12
+	//$Title "Mod Bot"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_FieldDrone")
+		Stop
+	}
+}
+Actor HBSuitPointSpawner 20100
+{
+	//$NotAngled
+	//$Category "Hellbreaker EOA Spawners"
+	//$Color 12
+	//$Title "Suit Point"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_EliteGuardCorpse")
+		Stop
+	}
+}
+Actor HBSentCrystal 20102
+{
+	//$NotAngled
+	//$Category "Hellbreaker EOA Spawners"
+	//$Color 12
+	//$Title "Sentinel Crystal"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_ArgentCell")
+		Stop
+	}
+}
+Actor HBRuneSpawner 20103
+{
+	//$NotAngled
+	//$Category "Hellbreaker EOA Spawners"
+	//$Color 12
+	//$Title "Rune"
+	States
+	{
+	Spawn:
+		TNT1 A 5
+		TNT1 A 0 A_SpawnItem("EOA_RuneTrialStone")
+		Stop
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

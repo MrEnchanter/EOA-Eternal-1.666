@@ -1,0 +1,1912 @@
+//======================================================================
+//======================================================================
+//
+//	New Blood splats and smears (that doesnt drip BTW)
+//
+//======================================================================
+//======================================================================
+
+//-------------------------------------------------------------
+// Animators for varying fade time
+//-------------------------------------------------------------
+colorchanger ToBlackFaster
+{
+	FadeStart	0.5
+	FadeTime	0.5
+}
+colorchanger ToBlackFastest
+{
+	FadeStart	0.1
+	FadeTime	0.4
+}
+colorchanger ToBlackSlower
+{
+	FadeStart	0.8
+	FadeTime	1.0
+}
+colorchanger ToBlackSlowest
+{
+	FadeStart	0.5
+	FadeTime	2.5
+}
+
+//-------------------------------------------------------------
+//	Big blood decals from SuperDoom3: Take II by DBT
+decal SD3TIISplat1
+{
+	pic D3BLSM01
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+decal SD3TIISplat2
+{
+	pic D3BLSM02
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat3
+{
+	pic D3BLSM03
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat4
+{
+	pic D3BLSM04
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat5
+{
+	pic D3BLSM05
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat6
+{
+	pic D3BLSM06
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat7
+{
+	pic D3BLSM07
+	shade "BloodDefault"
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplat8
+{
+	pic D3BLSM08
+	shade "BloodDefault"
+	x-scale 0.66
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+
+//-------------------------------------------------------------
+//	Big blood decals from SuperDoom3: Take II by DBT
+decal SD3TIISplatBigger1
+{
+	pic D3BLBG01
+	shade "BloodDefault"
+	x-scale 0.7
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+decal SD3TIISplatBigger2
+{
+	pic D3BLBG02
+	shade "BloodDefault"
+	x-scale 0.7
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+decal SD3TIISplatBigger3
+{
+	pic D3BLBG03
+	shade "BloodDefault"
+	x-scale 0.7
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+decal SD3TIISplatBigger4
+{
+	pic D3BLBG04
+	shade "BloodDefault"
+	x-scale 0.7
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+decal SD3TIISplatBigger5
+{
+	pic D3BLBG05
+	shade "BloodDefault"
+	x-scale 0.7
+	y-scale 0.6
+	randomflipx
+	randomflipy
+}
+
+
+//-------------------------------------------------------------
+//	Smal blood decals newly added for AEoD6
+//	From the Source engine. Ripped by Major Cooke
+//	Conversion for Zdoom by DBT
+//-------------------------------------------------------------
+decal BloodSmall01
+{
+	pic wblood1
+	shade "BloodDefault"
+	x-scale 0.48
+	y-scale 0.48
+	randomflipx
+	randomflipy
+}
+decal BloodSmall02
+{
+	pic wblood2
+	shade "BloodDefault"
+	x-scale 0.48
+	y-scale 0.48
+	randomflipx
+	randomflipy
+}
+decal BloodSmall03
+{
+	pic wblood3
+	shade "BloodDefault"
+	x-scale 0.48
+	y-scale 0.48
+	randomflipx
+	randomflipy
+}
+decal BloodSmall04
+{
+	pic wblood4
+	shade "BloodDefault"
+	x-scale 0.48
+	y-scale 0.48
+	randomflipx
+	randomflipy
+}
+decal BloodSmall05
+{
+	pic wblood5
+	shade "BloodDefault"
+	x-scale 0.48
+	y-scale 0.48
+	randomflipx
+	randomflipy
+}
+
+//-------------------------------------------------------------
+//	Big blood decals newly added for AEoD6
+//	From GameBanana.com (see credits)
+//	Ripping and Conversion for Zdoom by DBT
+//-------------------------------------------------------------
+decal BloodBig01
+{
+	pic wblood6
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig02
+{
+	pic wblood7
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig03
+{
+	pic wblood8
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig04
+{
+	pic wblood9
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig05
+{
+	pic wblood10
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig06
+{
+	pic wblood11
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig07
+{
+	pic wblood12
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig08
+{
+	pic wblood13
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig09
+{
+	pic wblood14
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig10
+{
+	pic wblood15
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig11
+{
+	pic wblood16
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig12
+{
+	pic wblood17
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig13
+{
+	pic wblood18
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+decal BloodBig14
+{
+	pic wblood19
+	shade "BloodDefault"
+	x-scale 0.72
+	y-scale 0.72
+	randomflipx
+	randomflipy
+}
+
+decalgroup BloodSplat
+{
+	//Small blood from SD3TII
+	SD3TIISplat1			5
+	SD3TIISplat2			5
+	SD3TIISplat3			5
+	SD3TIISplat4			5
+	SD3TIISplat5			5
+	SD3TIISplat6			5
+	SD3TIISplat7			5
+	SD3TIISplat8			5
+	//Small blood new from AEoD6
+	BloodSmall01			5
+	BloodSmall02			5
+	BloodSmall03			5
+	BloodSmall04			5
+	BloodSmall05			5
+	
+	//big blood from SD3TII
+	SD3TIISplatBigger1		1
+	SD3TIISplatBigger2		1
+	SD3TIISplatBigger3		1
+	SD3TIISplatBigger4		1
+	SD3TIISplatBigger5		1
+	//big blood new from AEoD6
+	BloodBig01				1
+	BloodBig02				1
+	BloodBig03				1
+	BloodBig04				1
+	BloodBig05				1
+	BloodBig06				1
+	BloodBig07				1
+	BloodBig08				1
+	BloodBig09				1
+	BloodBig10				1
+	BloodBig11				1
+	BloodBig12				1
+	BloodBig13				1
+	BloodBig14				1
+}
+
+decalgroup BloodSmear
+{
+	//Small blood from SD3TII
+	SD3TIISplat1			5
+	SD3TIISplat2			5
+	SD3TIISplat3			5
+	SD3TIISplat4			5
+	SD3TIISplat5			5
+	SD3TIISplat6			5
+	SD3TIISplat7			5
+	SD3TIISplat8			5
+	//Small blood new from AEoD6
+	BloodSmall01			5
+	BloodSmall02			5
+	BloodSmall03			5
+	BloodSmall04			5
+	BloodSmall05			5
+	
+	//big blood from SD3TII
+	SD3TIISplatBigger1		1
+	SD3TIISplatBigger2		1
+	SD3TIISplatBigger3		1
+	SD3TIISplatBigger4		1
+	SD3TIISplatBigger5		1
+	//big blood new from AEoD6
+	BloodBig01				1
+	BloodBig02				1
+	BloodBig03				1
+	BloodBig04				1
+	BloodBig05				1
+	BloodBig06				1
+	BloodBig07				1
+	BloodBig08				1
+	BloodBig09				1
+	BloodBig10				1
+	BloodBig11				1
+	BloodBig12				1
+	BloodBig13				1
+	BloodBig14				1
+}
+
+//======================================================================================
+//======================================================================================
+//		Bullet decals
+//======================================================================================
+//======================================================================================
+fader GoAwayBulletGlow
+{
+	DecayStart	0.5
+	DecayTime	1.0
+}
+
+decal NewBulletChip1
+{
+	pic Bullet1
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	translucent 0.85
+	shade "00 00 00"
+}
+
+decal NewBulletChip2
+{
+	pic Bullet2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	translucent 0.85
+	shade "00 00 00"
+}
+decal NewBulletChip3
+{
+	pic Bullet3
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	translucent 0.85
+	shade "00 00 00"
+}
+decal NewBulletChip4
+{
+	pic Bullet4
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	translucent 0.85
+	shade "00 00 00"
+}
+decal NewBulletChip5
+{
+	pic Bullet5
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	translucent 0.85
+	shade "00 00 00"
+}
+
+decal NewBulletChip1Glow	//Glowing spot
+{
+	pic FX01D0
+	x-scale 0.051
+	y-scale 0.051
+	randomflipx
+	randomflipy
+	shade "ff4e00"
+	Fullbright
+	animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip1"
+}
+decal NewBulletChip2Glow
+{
+	pic FX01D0
+	x-scale 0.051
+	y-scale 0.051
+	randomflipx
+	randomflipy
+	shade "ff4e00"
+	Fullbright
+	animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip2"
+}
+decal NewBulletChip3Glow
+{
+	pic FX01D0
+	x-scale 0.051
+	y-scale 0.051
+	randomflipx
+	randomflipy
+	shade "ff4e00"
+	Fullbright
+	animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip3"
+}
+decal NewBulletChip4Glow
+{
+	pic FX01D0
+	x-scale 0.051
+	y-scale 0.051
+	randomflipx
+	randomflipy
+	shade "ff4e00"
+	Fullbright
+	animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip4"
+}
+decal NewBulletChip5Glow
+{
+	pic FX01D0
+	x-scale 0.051
+	y-scale 0.051
+	randomflipx
+	randomflipy
+	shade "ff4e00"
+	Fullbright
+	animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip5"
+}
+
+/*decalgroup BulletChip //only the black part
+{
+	NewBulletChip1	1
+	NewBulletChip2	1
+	NewBulletChip3	1
+	NewBulletChip4	1
+	NewBulletChip5	1
+}*/
+decalgroup BulletChip //with glowy stuff
+{
+	NewBulletChip1Glow	1
+	NewBulletChip2Glow	1
+	NewBulletChip3Glow	1
+	NewBulletChip4Glow	1
+	NewBulletChip5Glow	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Chainsaw decals
+//======================================================================================
+//======================================================================================
+Fader ChainsawDiagonalFade
+{
+	DecayStart 3.0
+	DecayTime 2.0
+}
+
+decal ChainsawDiagonal
+{
+	pic SLASH0
+	x-scale 0.1
+	y-scale 0.1
+	translucent 0.85
+	shade "00 00 00"
+	Animator "ChainsawDiagonalFade"
+}
+
+decal ChainsawVertical
+{
+	pic BAL1A0
+	x-scale 0.05
+	y-scale 0.4
+	translucent 0.85
+	shade "00 00 00"
+	Animator "ChainsawDiagonalFade"
+}
+//======================================================================================
+//======================================================================================
+//		Pistol decal
+//======================================================================================
+//======================================================================================
+
+decal D4Pistol	//dark background
+{
+	pic PLSDECAL
+	x-scale 0.05
+	y-scale 0.05
+	randomflipx
+	randomflipy
+	shade "96C2FF"
+	Fullbright
+	animator ToBlackFaster
+}
+decal D4PistolRed	//dark background
+{
+	pic PLSDECAL
+	x-scale 0.075
+	y-scale 0.075
+	randomflipx
+	randomflipy
+	shade "FF0000"
+	Fullbright
+	animator ToBlackSlower
+}
+
+
+//======================================================================================
+//======================================================================================
+//		Hellshot decal
+//======================================================================================
+//======================================================================================
+
+decal D4HellshotDecalSmall1
+{
+	pic HSDCL1
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	shade "FF0000"
+	Fullbright
+	animator ToBlackSlower
+}
+decal D4HellshotDecalSmall2	
+{
+	pic HSDCL2
+	x-scale 0.1
+	y-scale 0.1
+	randomflipx
+	randomflipy
+	shade "FF0000"
+	Fullbright
+	animator ToBlackSlower
+}
+
+
+decalgroup D4HellshotDecalSmall 
+{
+	D4HellshotDecalSmall1	1
+	D4HellshotDecalSmall2	1
+}
+
+
+
+
+
+
+decal D4HellshotDecalBig1
+{
+	pic HSDCL1
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "FF0000"
+	Fullbright
+	animator ToBlackSlower
+}
+decal D4HellshotDecalBig2	
+{
+	pic HSDCL2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "FF0000"
+	Fullbright
+	animator ToBlackSlower
+}
+
+
+decalgroup D4HellshotDecalBig
+{
+	D4HellshotDecalBig1	1
+	D4HellshotDecalBig2	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Lightning gun decal
+//======================================================================================
+//======================================================================================
+colorchanger ToBlackLG
+{
+	FadeStart	0.3
+	FadeTime	0.4
+}
+decal D4LGDecal1
+{
+	pic LGDECAL1
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal D4LGDecal2
+{
+	pic LGDECAL2
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal D4LGDecal3
+{
+	pic LGDECAL3
+	shade "FF FF FF"
+	Animator ToBlackLG
+	x-scale 0.35
+	y-scale 0.35
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decalgroup D4LGDecal
+{
+	D4LGDecal1	1
+	D4LGDecal2	1
+	D4LGDecal3	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Static rifle decal
+//======================================================================================
+//======================================================================================
+
+decal VortexDecal
+{
+	pic PLSDECAL
+	shade "BB BB FF"
+	Animator ToBlack
+	x-scale 0.07
+	y-scale 0.07
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+//======================================================================================
+//======================================================================================
+//		Static rifle decal
+//======================================================================================
+//======================================================================================
+
+decal D4RailgunOrange
+{
+	pic RGDECL1
+	shade "FF 88 15"
+	Animator ToBlack
+	x-scale 0.18
+	y-scale 0.18
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+//======================================================================================
+//======================================================================================
+//		BFG decals
+//======================================================================================
+//======================================================================================
+decal D4BFGScorch1
+{
+	pic BFGDEC1
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+}
+decal D4BFGScorch2
+{
+	pic BFGDEC2
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+}
+decalgroup D4BFGScorch
+{
+	D4BFGScorch1	1
+	D4BFGScorch2	1
+}
+
+decal DBTBFGLightning1
+{
+	pic BFGLGT1
+	shade "80 ff 80"
+	fullbright
+	randomflipx
+	randomflipY
+	x-scale 0.5
+	y-scale 0.5
+	animator GoAway2
+	lowerdecal D4BFGScorch
+}
+decal DBTBFGLightning2
+{
+	pic BFGLGT2
+	shade "80 ff 80"
+	fullbright
+	randomflipx
+	randomflipY
+	x-scale 0.5
+	y-scale 0.5
+	animator GoAway2
+	lowerdecal D4BFGScorch
+}
+
+decalgroup D4BFGLightning
+{
+	DBTBFGLightning1	1
+	DBTBFGLightning2	1
+}
+
+//=============================================
+//		BFG small decals
+
+decal D4BFGScorchSmall1
+{
+	pic BFGDEC1
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+decal D4BFGScorchSmall2
+{
+	pic BFGDEC2
+	shade "00 00 00"
+	randomflipx
+	randomflipy
+	x-scale 0.5
+	y-scale 0.5
+}
+decalgroup D4BFGScorchSmall
+{
+	D4BFGScorchSmall1	1
+	D4BFGScorchSmall2	1
+}
+//======================================================================================
+//======================================================================================
+//		Gauss decal
+//======================================================================================
+//======================================================================================
+
+decal D4GaussBlack
+{
+	pic RGDECL2
+	shade "00 00 00"
+	Animator ToBlack
+	x-scale 0.2
+	y-scale 0.2
+	randomflipx
+	randomflipy
+}
+
+decal D4GaussPrimary
+{
+	pic RGDECL1
+	shade "70 C8 FF"
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	Fullbright
+	Animator ToBlackSlowest
+	LowerDecal "D4GaussBlack"
+}
+
+
+//======================================================================================
+//======================================================================================
+//		Explosion decals medium size
+//======================================================================================
+//======================================================================================
+decal D4ExploScorchBlack
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+}
+
+fader GoAwayRocketSchorch
+{
+	DecayStart	0.5
+	DecayTime	2.0
+}
+
+decal D4ExploScorch
+{
+	pic ROCKBUR2
+	x-scale 0.28
+	y-scale 0.28
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "D4ExploScorchBlack"
+}
+//======================================================================================
+//======================================================================================
+//		Explosion decals medium-small size
+//======================================================================================
+//======================================================================================
+decal D4ExploScorchBlackMediumSmall
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.55
+	y-scale 0.55
+	randomflipx
+	randomflipy
+}
+
+
+decal D4ExploScorchMediumSmall
+{
+	pic ROCKBUR2
+	x-scale 0.23
+	y-scale 0.23
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "D4ExploScorchBlackMediumSmall"
+}
+//======================================================================================
+//======================================================================================
+//		Explosion decals small size
+//======================================================================================
+//======================================================================================
+decal D4ExploScorchBlackSmall
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.5
+	y-scale 0.5
+	randomflipx
+	randomflipy
+}
+
+
+decal D4ExploScorchSmall
+{
+	pic ROCKBUR2
+	x-scale 0.18
+	y-scale 0.18
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "D4ExploScorchBlackSmall"
+}
+
+
+//======================================================================================
+//======================================================================================
+//		Explosion decals smallest size
+//======================================================================================
+//======================================================================================
+decal D4ExploScorchBlackSmallest
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+
+decal D4ExploScorchSmallest
+{
+	pic ROCKBUR2
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "D4ExploScorchBlackSmallest"
+}
+
+//======================================================================================
+//======================================================================================
+//		For Reaper
+//======================================================================================
+//======================================================================================
+//Normal shot
+decal ReaperPrimaryNormal
+{
+	pic ROCKBUR2
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator ToBlackFaster
+}
+
+
+decal ReaperSecondaryNormal
+{
+	pic ROCKBUR2
+	x-scale 0.23
+	y-scale 0.23
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator ToBlackFaster
+}
+
+
+//explosive shot
+decal ReaperPrimaryScorchBlack
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+}
+
+decal ReaperPrimaryExplosive
+{
+	pic ROCKBUR2
+	x-scale 0.08
+	y-scale 0.08
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "ReaperPrimaryScorchBlack"
+}
+//secondary shot uses "D4ExploScorchBlackMediumSmall", no need to define more
+
+
+//======================================================================================
+//======================================================================================
+//		Explosion decals chaingun rotator
+//======================================================================================
+//======================================================================================
+decal D4ExploScorchBlackChaingun
+{
+	//pic EXPSCRCH
+	pic ROCKBUR2
+	shade "00 00 00"
+	x-scale 0.17
+	y-scale 0.17
+	randomflipx
+	randomflipy
+}
+
+
+decal D4ExploScorchChaingun
+{
+	pic ROCKBUR2
+	x-scale 0.04
+	y-scale 0.04
+	randomflipx
+	randomflipy
+	Fullbright
+	shade "FF 55 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "D4ExploScorchBlackChaingun"
+}
+
+
+
+//======================================================================================
+//======================================================================================
+//		Chaingunner decal
+//======================================================================================
+//======================================================================================
+colorchanger ToBlackElectricBig
+{
+	FadeStart	0.6
+	FadeTime	0.7
+}
+decal RedElectricDecal1
+{
+	pic LGDECAL1
+	shade "FF 00 00"
+	Animator ToBlackElectricBig
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal RedElectricDecal2
+{
+	pic LGDECAL2
+	shade "FF 00 00"
+	Animator ToBlackElectricBig
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal RedElectricDecal3
+{
+	pic LGDECAL3
+	shade "FF 00 00"
+	Animator ToBlackElectricBig
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decalgroup RedElectricDecal
+{
+	RedElectricDecal1	1
+	RedElectricDecal2	1
+	RedElectricDecal3	1
+}
+//======================================================================================
+//======================================================================================
+//		Mastermind red laser decal
+//======================================================================================
+//======================================================================================
+decal RedElectricDecalBig1
+{
+	pic LGDECAL1
+	shade "FF 00 00"
+	Animator ToBlackSlower
+	x-scale 1.5
+	y-scale 1.5
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal RedElectricDecalBig2
+{
+	pic LGDECAL2
+	shade "FF 00 00"
+	Animator ToBlackSlower
+	x-scale 1.5
+	y-scale 1.5
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal RedElectricDecalBig3
+{
+	pic LGDECAL3
+	shade "FF 00 00"
+	Animator ToBlackSlower
+	x-scale 1.5
+	y-scale 1.5
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decalgroup RedElectricDecalBig
+{
+	RedElectricDecalBig1	1
+	RedElectricDecalBig2	1
+	RedElectricDecalBig3	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Mastermind yellow laser decal
+//======================================================================================
+//======================================================================================
+decal OrangeElectricDecal1
+{
+	pic LGDECAL1
+	shade "FF 88 00"
+	Animator ToBlackFaster
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal OrangeElectricDecal2
+{
+	pic LGDECAL2
+	shade "FF 88 00"
+	Animator ToBlackFaster
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+decal OrangeElectricDecal3
+{
+	pic LGDECAL3
+	shade "FF 88 00"
+	Animator ToBlackFaster
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	Fullbright
+}
+
+decalgroup OrangeElectricDecal
+{
+	OrangeElectricDecal1	1
+	OrangeElectricDecal2	1
+	OrangeElectricDecal3	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Player stun bomb decals
+//======================================================================================
+//======================================================================================
+
+decal D4StunBombBlack	//dark background
+{
+	pic PLSDECAL
+	x-scale 0.7
+	y-scale 0.7
+	randomflipx
+	randomflipy
+	shade "000000"
+	animator ToBlackElectricBig
+}
+
+
+decal StunBombLightning1
+{
+	pic BFGLGT1
+	shade "96C2FF"
+	fullbright
+	randomflipx
+	randomflipY
+	x-scale 0.1
+	y-scale 0.1
+	animator GoAway2
+	lowerdecal D4StunBombBlack
+}
+decal StunBombLightning2
+{
+	pic BFGLGT2
+	shade "96C2FF"
+	fullbright
+	randomflipx
+	randomflipY
+	x-scale 0.1
+	y-scale 0.1
+	animator GoAway2
+	lowerdecal D4StunBombBlack
+}
+
+decalgroup StunBombDecal
+{
+	StunBombLightning1	1
+	StunBombLightning2	1
+}
+//======================================================================================
+//======================================================================================
+//		Player plasma decals
+//======================================================================================
+//======================================================================================
+
+//----------------------------------------------
+// Black scorch
+
+decal D4PlasmaBlack1
+{
+	pic PLSCRCH1
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	shade "00 00 00"
+}
+decal D4PlasmaBlack2
+{
+	pic PLSCRCH2
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	shade "00 00 00"
+}
+decal D4PlasmaBlack3
+{
+	pic PLSCRCH3
+	x-scale 0.75
+	y-scale 0.75
+	randomflipx
+	randomflipy
+	shade "00 00 00"
+}
+decalgroup D4PlasmaBlack
+{
+	D4PlasmaBlack1	1
+	D4PlasmaBlack2	1
+	D4PlasmaBlack3	1
+}
+
+//----------------------------------------------
+// Bright part
+decal D4Plasma1
+{
+	pic PLSCRCH1
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "96C2FF"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack1"
+}
+
+decal D4Plasma2
+{
+	pic PLSCRCH2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "96C2FF"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack2"
+}
+decal D4Plasma3
+{
+	pic PLSCRCH3
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "96C2FF"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack3"
+}
+
+
+decalgroup D4Plasma
+{
+	D4Plasma1	1
+	D4Plasma2	1
+	D4Plasma3	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Monster Blaster decals
+//======================================================================================
+//======================================================================================
+decal D4PlasmaMonster		//orange
+{
+	pic PLSCRCH3
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+	shade "FF 33 00"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack"	//see player HB decals
+}
+
+decal PurplePlasmaMonster		//purple
+{
+	pic PLSCRCH3
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+	shade "88 00 FF"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack"	//see player HB decals
+}
+
+decal PurplePlasmaMonsterBig		//purple Big
+{
+	pic PLSCRCH3
+	x-scale 0.6
+	y-scale 0.6
+	randomflipx
+	randomflipy
+	shade "88 00 FF"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4PlasmaBlack"	//see player HB decals
+}
+
+decal D4MonsterPlasmaBlack
+{
+	pic PLSCRCH3
+	x-scale 1.4
+	y-scale 1.4
+	randomflipx
+	randomflipy
+	shade "00 00 00"
+}
+decal D4PlasmaMonsterBig
+{
+	pic PLSCRCH3
+	x-scale 0.7
+	y-scale 0.7
+	randomflipx
+	randomflipy
+	shade "FF 33 00"
+	Fullbright
+	animator GoAway
+	LowerDecal "D4MonsterPlasmaBlack"
+}
+
+//======================================================================================
+//======================================================================================
+//		General fireball scorches
+//======================================================================================
+//======================================================================================
+//-------------------------
+// normal
+decal FireballScorchBlack
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decal FireballScorch
+{
+	pic ROCKBUR2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	shade "FF AA 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "FireballScorchBlack"
+}
+
+//-------------------------
+// Big
+decal FireballScorchBlackBig
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.7
+	y-scale 0.7
+	randomflipx
+	randomflipy
+}
+
+decal FireballScorchBig
+{
+	pic ROCKBUR2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "FF AA 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "FireballScorchBlackBig"
+}
+
+decal FireballScorchSmall
+{
+	pic ROCKBUR2
+	x-scale 0.15
+	y-scale 0.15
+	randomflipx
+	randomflipy
+	shade "FF AA 00"
+	animator ToBlackFastest
+}
+
+//======================================================================================
+//======================================================================================
+//		Baron fireball scorches
+//======================================================================================
+//======================================================================================
+//---------------------
+// normal fireball
+decal BaronScorchBlack
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.55
+	y-scale 0.55
+	randomflipx
+	randomflipy
+}
+decal BaronFireballScorch
+{
+	pic ROCKBUR2
+	x-scale 0.22
+	y-scale 0.22
+	randomflipx
+	randomflipy
+	shade "33 FF 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "BaronScorchBlack"
+}
+
+
+//---------------------
+// big fireball
+decal BaronScorchBlackBig
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.85
+	y-scale 0.85
+	randomflipx
+	randomflipy
+}
+decal BaronFireballScorchBig
+{
+	pic ROCKBUR2
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+	shade "33 FF 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "BaronScorchBlackBig"
+}
+
+//======================================================================================
+//======================================================================================
+//		Hell knight fireball scorches
+//======================================================================================
+//======================================================================================
+//---------------------
+// normal fireball
+decal KnightFireballScorch
+{
+	pic ROCKBUR2
+	x-scale 0.22
+	y-scale 0.22
+	randomflipx
+	randomflipy
+	shade "D7 56 00"
+	animator GoAwayRocketSchorch
+	LowerDecal "BaronScorchBlack"
+}
+
+//======================================================================================
+//======================================================================================
+//		caco decal
+//======================================================================================
+//======================================================================================
+
+decal CacoDecal	//dark background
+{
+	pic PLSDECAL
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "FF00BF"
+	Fullbright
+	animator ToBlackFastest
+}
+
+
+//======================================================================================
+//======================================================================================
+//		Fatso decal
+//======================================================================================
+//======================================================================================
+
+decal FatsoPoisonDecal1	
+{
+	pic wblood15
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "5EAB00"
+	Fullbright
+	animator ToBlackFastest
+}
+decal FatsoPoisonDecal2	
+{
+	pic wblood7
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "5EAB00"
+	Fullbright
+	animator ToBlackFastest
+}
+decal FatsoPoisonDecal3	
+{
+	pic wblood17
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "5EAB00"
+	Fullbright
+	animator ToBlackFastest
+}
+
+decalgroup FatsoPoisonDecal
+{
+	FatsoPoisonDecal1	1
+	FatsoPoisonDecal2	1
+	FatsoPoisonDecal3	1
+}
+
+//======================================================================================
+//======================================================================================
+//		Classic fatso fireball scorch
+//======================================================================================
+//======================================================================================
+/*
+//-------------------------
+// Big
+decal FireballScorchBlackBig
+{
+	pic SCORCH1
+	shade "00 00 00"
+	x-scale 0.7
+	y-scale 0.7
+	randomflipx
+	randomflipy
+}*/
+
+decal OldFatsoScorch
+{
+	pic ROCKBUR2
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+	shade "FF3C00"
+	animator GoAwayRocketSchorch
+	LowerDecal "FireballScorchBlackBig"
+}
+
+
+//======================================================================================
+//======================================================================================
+//		Demonic Presence
+//======================================================================================
+//======================================================================================
+
+fader FadeSlowly
+{
+	DecayStart 1
+	DecayTime 7
+}
+
+decal DemonicPresence1A  {  pic ROONA0N0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1B  {  pic ROONB0O0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1C  {  pic ROONC0P0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1D  {  pic ROOND0Q0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1E  {  pic ROONE0R0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1F  {  pic ROONF0S0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1G  {  pic ROONG0T0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1H  {  pic ROONH0U0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1I  {  pic ROONI0V0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1J  {  pic ROONJ0W0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1K  {  pic ROONK0X0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1L  {  pic ROONL0Y0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence1M  {  pic ROONM0Z0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence2A  {  pic ROOOA0D0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence2B  {  pic ROOOB0E0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+decal DemonicPresence2C  {  pic ROOOC0F0  randomflipx randomflipy  fullbright  add 1  x-scale 0.3  y-scale 0.3  animator "FadeSlowly"  }
+
+
+decalgroup DemonicPresence
+{
+	DemonicPresence1A 1
+	DemonicPresence1B 1
+	DemonicPresence1C 1
+	DemonicPresence1D 1
+	DemonicPresence1E 1
+	DemonicPresence1F 1
+	DemonicPresence1G 1
+	DemonicPresence1H 1
+	DemonicPresence1I 1
+	DemonicPresence1J 1
+	DemonicPresence1K 1
+	DemonicPresence1L 1
+	DemonicPresence1M 1
+	DemonicPresence2A 1
+	DemonicPresence2B 1
+	DemonicPresence2C 1
+}
+
+
+
+
+//======================================================================================
+//======================================================================================
+//		BFG hit FX
+//======================================================================================
+//======================================================================================
+
+stretcher Quadruple
+{
+	GoalX 4.0
+	GoalY 4.0
+	StretchStart 1.0
+	StretchTime 1.0
+}
+
+stretcher Triple
+{
+	GoalX 3.0
+	GoalY 3.0
+	StretchStart 0.0
+	StretchTime 1.0
+}
+
+fader TwoSecondsToMars
+{
+	DecayStart 0.0
+	DecayTime 2.0
+}
+
+Combiner BFGspikes
+{
+	Triple
+	Quadruple
+	TwoSecondsToMars
+}
+
+decal BFGFXdecal
+{
+	pic DB46S0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.2
+	x-scale 0.2
+	y-scale 0.2
+	animator "BFGspikes"  
+}
+
+stretcher QuintupleTriple
+{
+	GoalX 5.0
+	GoalY 3.0
+	StretchStart 0.0
+	StretchTime 1.2
+}
+
+fader OhEightyToMars
+{
+	DecayStart 0.4
+	DecayTime 0.80
+}
+
+Combiner BFGring
+{
+	QuintupleTriple
+	OhEightyToMars
+}
+
+decal BFGFXringo
+{
+	pic DB58K0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.3
+	x-scale 0.2
+	y-scale 0.2
+	animator "BFGring"  
+}
+
+decal BFGFXimpact
+{
+	pic DB49S0
+	randomflipx
+	randomflipy
+	fullbright
+	add 1.0
+	x-scale 0.6
+	y-scale 0.6
+	animator "GoAwayRocketSchorch"  
+}
+
+stretcher BFGringGrow1 { GoalX 5.0 GoalY 5.0 StretchStart 0.0 StretchTime 0.6 }
+stretcher BFGringGrow2 { GoalX 4.5 GoalY 4.5 StretchStart 0.2 StretchTime 0.7 }
+stretcher BFGringGrow3 { GoalX 4.0 GoalY 4.0 StretchStart 0.4 StretchTime 0.8 }
+stretcher BFGringGrow4 { GoalX 3.0 GoalY 3.0 StretchStart 0.6 StretchTime 0.9 }
+
+fader BFGringFade1 { DecayStart 0.30 DecayTime 0.30 }
+fader BFGringFade2 { DecayStart 0.15 DecayTime 0.75 }
+fader BFGringFade3 { DecayStart 0.30 DecayTime 1.09 }
+fader BFGringFade4 { DecayStart 0.45 DecayTime 1.04 }
+
+Combiner BFGring1	{	BFGringFade1	BFGringGrow1	}
+Combiner BFGring2	{	BFGringFade2	BFGringGrow2	}
+Combiner BFGring3	{	BFGringFade3	BFGringGrow3	}
+Combiner BFGring4	{	BFGringFade4	BFGringGrow4	}
+
+decal BFGFXring1
+{
+	pic X060A0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.3
+	x-scale 0.23
+	y-scale 0.23
+	animator "BFGring1"  
+}
+
+decal BFGFXring2
+{
+	pic X060B0C0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.3
+	x-scale 0.2
+	y-scale 0.2
+	animator "BFGring2"  
+}
+
+decal BFGFXring3
+{
+	pic X060F0G0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.3
+	x-scale 0.1
+	y-scale 0.1
+	animator "BFGring3"  
+}
+
+decal BFGFXring4
+{
+	pic X072L0M0
+	randomflipx
+	randomflipy
+	fullbright
+	add 0.3
+	x-scale 0.01
+	y-scale 0.01
+	animator "BFGring4"  
+}
+
+//Unmakyr Shit
+Decal UnmakyrScorch //dark background
+{
+	Pic X003B0
+	X-Scale 0.05
+	Y-Scale 0.05
+	RandomFlipX
+	RandomFlipY
+	Shade "ff1809"
+	FullBright
+	Animator GoAwayBulletGlow
+	LowerDecal "NewBulletChip5"
+}

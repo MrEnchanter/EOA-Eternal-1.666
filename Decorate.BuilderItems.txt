@@ -1,0 +1,29 @@
+actor MonkeyPoleA : EOA_MonkeyPoleA 32001
+{
+	//$sprite MONBA0
+	//$Category EOA ETERNAL
+}
+
+actor MonkeyPoleB : EOA_MonkeyPoleB 32002
+{
+	//$sprite MONBB0
+	//$Category EOA ETERNAL
+}
+
+actor MonkeyPoleC : EOA_MonkeyPoleC 32003
+{
+	//$sprite MONBC0
+	//$Category EOA ETERNAL
+}
+
+actor MonkeyPoleD : EOA_MonkeyPoleD 32004
+{
+	//$sprite MONBD0
+	//$Category EOA ETERNAL
+}
+
+actor ClimbableWall : EOA_ClimbableWall 32005
+{
+	//$sprite MONBD0
+	//$Category EOA ETERNAL
+}

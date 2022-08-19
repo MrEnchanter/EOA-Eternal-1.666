@@ -1,0 +1,229 @@
+hitmark
+{
+	A HMXA
+	B HMXKA
+}
+
+
+DEFONT
+{
+	
+	A "Graphics/Font/Upper/A.png"
+	B "Graphics/Font/Upper/B.png"
+	C "Graphics/Font/Upper/C.png"
+	D "Graphics/Font/Upper/D.png"
+	E "Graphics/Font/Upper/E.png"
+	F "Graphics/Font/Upper/F.png"
+	G "Graphics/Font/Upper/G.png"
+	H "Graphics/Font/Upper/H.png"
+	I "Graphics/Font/Upper/I.png"
+	J "Graphics/Font/Upper/J.png"
+	K "Graphics/Font/Upper/K.png"
+	L "Graphics/Font/Upper/L.png"
+	M "Graphics/Font/Upper/M.png"
+	N "Graphics/Font/Upper/N.png"
+	O "Graphics/Font/Upper/O.png"
+	P "Graphics/Font/Upper/P.png"
+	Q "Graphics/Font/Upper/Q.png"
+	R "Graphics/Font/Upper/R.png"
+	S "Graphics/Font/Upper/S.png"
+	T "Graphics/Font/Upper/T.png"
+	U "Graphics/Font/Upper/U.png"
+	V "Graphics/Font/Upper/V.png"
+	W "Graphics/Font/Upper/W.png"
+	X "Graphics/Font/Upper/X.png"
+	Y "Graphics/Font/Upper/Y.png"
+	Z "Graphics/Font/Upper/Z.png"
+	a "Graphics/Font/Lower/a.png"
+	b "Graphics/Font/Lower/b.png"
+	c "Graphics/Font/Lower/c.png"
+	d "Graphics/Font/Lower/d.png"
+	e "Graphics/Font/Lower/e.png"
+	f "Graphics/Font/Lower/f.png"
+	g "Graphics/Font/Lower/g.png"
+	h "Graphics/Font/Lower/h.png"
+	i "Graphics/Font/Lower/i.png"
+	j "Graphics/Font/Lower/j.png"
+	k "Graphics/Font/Lower/k.png"
+	l "Graphics/Font/Lower/l.png"
+	m "Graphics/Font/Lower/m.png"
+	n "Graphics/Font/Lower/n.png"
+	o "Graphics/Font/Lower/o.png"
+	p "Graphics/Font/Lower/p.png"
+	q "Graphics/Font/Lower/q.png"
+	r "Graphics/Font/Lower/r.png"
+	s "Graphics/Font/Lower/s.png"
+	t "Graphics/Font/Lower/t.png"
+	u "Graphics/Font/Lower/u.png"
+	v "Graphics/Font/Lower/v.png"
+	w "Graphics/Font/Lower/w.png"
+	x "Graphics/Font/Lower/x.png"
+	y "Graphics/Font/Lower/y.png"
+	z "Graphics/Font/Lower/z.png"
+}
+
+DEBARFONT
+{
+	1 hlthbar3
+}
+
+crosshairhpbar
+{
+	- CHPBAR0
+	= CHPBAR2
+}
+
+TTSPRMOL
+{
+	0 TTSM0
+	1 TTSM1
+	2 TTSM2
+	3 TTSM3
+	4 TTSM4
+	5 TTSM5
+	6 TTSM6
+	7 TTSM7
+	8 TTSM8
+	9 TTSM9
+}
+
+HUDTOKEN
+{
+	0 AMBOXBO2	//Bottom Box for Collectibles on current map
+	1 AMBOXBO1	//texts for the item box
+	P PRTRGREY	//	Elite Corpses - GREY (not yet acquired)
+	2 PRTRGOLD	//	Elite Corpses - ORANGE (acquired)
+	D DRONGREY	//	Field Drones - GREY (not yet acquired)
+	3 DRONGOLD	//	Field Drones - ORANGE (acquired)
+	R RUNEGREY	//	Rune Trials - GREY (not yet acquired)
+	4 RUNEGOLD	//	Rune Trials - ORANGE (acquired)
+	C CELLGREY	//	Argent Cells - GREY (not yet acquired)
+	5 CELLGOLD	//	Argent Cells - ORANGE (acquired)
+	S SCRTGREY  //  Secret - GREY
+	8 SCRTGOLD  //  Secret - ORANGE
+	B SPACEBAR  // BLANK SPACE
+	//Secret Circular Trackers
+	Y UACICO
+	X UACICO2
+	a CIRCLE25
+	b CIRCLE50
+	c CIRCLE75
+	d CIRCLE66
+	e CIRCLE33
+	f CIRCLE40
+	g CIRCLE80
+	h CIRCLE20
+	i CIRCLE60
+	j CIRCLE28
+	k CIRCLE57
+	l CIRCLE85
+	m CIRCLE14
+	n CIRCLE42
+	o CIRCLE71
+}
+
+SCRETHUD //secret found hud message
+{
+	Y SCRT100
+	X SCRT00
+	a SCRT25
+	b SCRT50
+	c SCRT75
+	d SCRT66
+	e SCRT33
+	f SCRT40
+	g SCRT80
+	h SCRT20
+	i SCRT60
+	j SCRT28
+	k SCRT57
+	l SCRT85
+	m SCRT14
+	n SCRT42
+	o SCRT71
+}
+
+SPRMLT
+{
+	0 SPRMLT0
+	1 SPRMLT1
+	2 SPRMLT2
+	3 SPRMLT3
+	4 SPRMLT4
+	5 SPRMLT5
+	6 SPRMLT6
+	7 SPRMLT7
+	8 SPRMLT8
+	9 SPRMLT9
+}
+
+TTSMALL
+{
+	0 TTSMALL0
+	1 TTSMALL1
+	2 TTSMALL2
+	3 TTSMALL3
+	4 TTSMALL4
+	5 TTSMALL5
+	6 TTSMALL6
+	7 TTSMALL7
+	8 TTSMALL8
+	9 TTSMALL9
+	/ TTSLASH
+}
+
+MICHFONT
+{
+	A MBIG_A
+	B MBIG_B
+	C MBIG_C
+	D MBIG_D
+	E MBIG_E
+	F MBIG_F
+	G MBIG_G
+	H MBIG_H
+	I MBIG_I
+	J MBIG_J
+	K MBIG_K
+	L MBIG_L
+	M MBIG_M
+	N MBIG_N
+	O MBIG_O
+	P MBIG_P
+	Q MBIG_Q
+	R MBIG_R
+	S MBIG_S
+	T MBIG_T
+	U MBIG_U
+	V MBIG_V
+	W MBIG_W
+	X MBIG_X
+	Y MBIG_Y
+	Z MBIG_Z
+	a MBIG_A
+	b MBIG_B
+	c MBIG_C
+	d MBIG_D
+	e MBIG_E
+	f MBIG_F
+	g MBIG_G
+	h MBIG_H
+	i MBIG_I
+	j MBIG_J
+	k MBIG_K
+	l MBIG_L
+	m MBIG_M
+	n MBIG_N
+	o MBIG_O
+	p MBIG_P
+	q MBIG_Q
+	r MBIG_R
+	s MBIG_S
+	t MBIG_T
+	u MBIG_U
+	v MBIG_V
+	w MBIG_W
+	x MBIG_X
+	y MBIG_Y
+	z MBIG_Z
+}

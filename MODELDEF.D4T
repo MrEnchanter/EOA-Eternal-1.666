@@ -1,0 +1,34 @@
+
+Model ShieldGuyTracer
+{ 
+	Path "MD3/Projectiles" 
+	SKIN 0 "tracer1.tga" 
+	MODEL 0 "Tracer.md3"
+	Scale 4.5 4.5 1.5 
+	PITCHFROMMOMENTUM
+	FrameIndex TRAC A 0 0
+}
+
+Model RocketTarget
+{
+	Path "MD3/Projectiles"   
+	Model 0 "Target.md3" 
+	Skin 0 "Target.png"   
+	Skin 1 "Target.png"   
+	Scale 22.0 22.0 22.0      
+	ZOffset 3
+	FrameIndex X060 A 0 0    
+	FrameIndex X060 A 0 1    
+}
+
+Model RocketZoomer
+{
+	Path "MD3/Projectiles"   
+	Model 0 "Target.md3" 
+	Skin 0 "Target2.png"   
+	Skin 1 "Target2.png"   
+	Scale 22.0 22.0 22.0      
+	ZOffset 3
+	FrameIndex X060 A 0 0    
+	FrameIndex X060 A 0 1   
+}

@@ -1,0 +1,11 @@
+#library "SawScipt"
+#include "zcommon.acs"
+
+script "GiveTheFuel" ENTER
+{
+    if (CheckInventory("EOA_FuelAmmo") > 0)
+        delay(1050);
+        GiveInventory("EOA_FuelAmmo", 1);
+		PlaySound(0,"EOA Assets/FuelAmmo/Pickup",CHAN_BODY, 1.0, ATTN_NONE);
+		restart;
+}

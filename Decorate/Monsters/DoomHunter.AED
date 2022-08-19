@@ -1,0 +1,122 @@
+//================================================================================================================
+//================================================================================================================
+//
+//	Place holder
+//================================================================================================================
+//================================================================================================================
+actor DoomHunter : DeadMarine 32767
+{
+	//$Category Monsters
+	xScale 1.125
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:	
+		SKE2 I -1
+		Stop
+	}
+}
+
+actor Davoth : DeadMarine 32766
+{
+	//$Category Monsters
+	+NOINTERACTION
+	yScale 0.8
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		PRME I -1
+		Stop
+	}
+}
+
+actor RiotSoldier : DeadMarine 32765
+{
+	//$Category Monsters
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		RISH I -1
+		Stop
+	}
+}
+
+actor RiotSheild : DeadMarine 32763
+{
+	//$Category Monsters
+	Scale 0.9
+	+NOINTERACTION
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		Q05S H -1
+		Stop
+	}
+}
+
+actor ArmoredBaron : DeadMarine 32764
+{
+	//$Category Monsters
+	yScale 0.8
+	xScale 1.1
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		ABAR I -1
+		Stop
+	}
+}
+
+actor SummonerSpirit : DeadMarine 32762
+{
+	//$Category Monsters
+	Scale 1.125
+	+NOGRAVITY
+	+FLOAT
+	+NOINTERACTION
+	RenderStyle "Add"
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		SPIR A -1
+		Stop
+	}
+}
+
+actor EyeTurret : DeadMarine 32761
+{
+	//$Category Monsters
+	yScale 0.8
+	xScale 1.1
+	+NOINTERACTION
+	States
+	{
+	Spawn:
+		Spawn:
+		TNT1 A 0  
+	SkipUnwilling:
+		TURI A -1
+		Stop
+	}
+}

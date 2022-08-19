@@ -1,0 +1,115 @@
+Class EOA_ReticleRenderer : EventHandler
+{
+	/*Static Void EOA_HUDMessage(Font Font, String Text, Int Flags = 0, Int TextColor = 0, Double X = 0, Double Y = 0, Int HUDScaleX = 1, Int HUDBoundY = 1, Double HoldTime, Double Alpha)
+	{
+		Alpha = (Flags & HUDMSG_ALPHA) ? Alpha : 1;
+		Style = (Flags & HUDMSG_ADDBLEND) ? STYLE_Add : STYLE_Normal;
+		Screen.DrawText(Font, TextColor, X, Y, Text,
+			DTA_VirtualWidth, SCREENWIDTH / HUDBoundX,
+			DTA_VirtualHeight, SCREENHEIGHT / HUDBoundY,
+			DTA_Alpha, Alpha,
+			DTA_RenderStyle, Style,
+			DTA_KeepRatio, True)
+	}*/
+	Const InitZ0Scale = 0;
+	Const InitZ1Alpha = 1.0;
+	Const InitZ1Dist = 0;
+	Const InitZ1Scale = 0;
+	Const InitZ1Tick = 0;
+	Const InitZ2Alpha = 1.0;
+	Const InitZ2Dist = 0.75;
+	Const InitZ2Scale = 0;
+	Const InitZ3Alpha = 1.0;
+	Const InitZ3Scale = 0;
+
+	Const EndZ1Alpha = 0;
+	Const EndZ1Dist = 0.1;
+	Const EndZ1Scale = 2.0;
+	Const EndZ1Tick = 5;
+	Const EndZ2Alpha = 0;
+	Const EndZ2Dist = 0.125;
+	Const EndZ2Scale = 0.75;
+	Const EndZ3Alpha = 0;
+	Const EndZ3Scale = 0.775;
+	
+	Const Z1ASpeed = 0.15;
+	Const Z1SSpeed = 0.15;
+	Const XHairW = 4980;
+	Const XHairH = 3860;
+
+	Const GXHairW = 1364; 
+	Const GXHairH = 1023; 
+	
+	static clearscope Shape2D MakeSquare()
+    {
+        // the shape that will be drawn
+        Shape2D square = new("Shape2D");
+        // texture coordinates of each corner
+        square.PushCoord((0, 0));
+        square.PushCoord((1, 0));
+        square.PushCoord((0, 1));
+        square.PushCoord((1, 1));
+        // two triangles make up the square
+        // the points have to be in counter-clockwise order
+        square.PushTriangle(0, 3, 1);
+        square.PushTriangle(0, 2, 3);
+        return square;
+    }
+
+    // set the positions of an existing square shape's vertices
+    static clearscope void MoveSquare(Shape2D shape, Vector2 size, Vector2 pos, double angle)
+    {
+        // clear any vertices already set
+        shape.Clear(Shape2D.C_Verts);
+        // corners of a square centered on 0,0
+        Vector2 points[4];
+        points[0] = (-0.5 * size.X, -0.5 * size.Y);
+        points[1] = (0.5 * size.X, -0.5 * size.Y);
+        points[2] = (-0.5 * size.X, 0.5 * size.Y);
+        points[3] = (0.5 * size.X, 0.5 * size.Y);
+		
+        // then move the points by the set offset
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 oldpos = points[i];
+            points[i].X = oldpos.X * cos(angle) - oldpos.Y * sin(angle) + pos.X;
+            points[i].Y = oldpos.X * sin(angle) + oldpos.Y * cos(angle) + pos.Y;
+            shape.PushVertex(points[i]);
+        }
+    }
+	
+	static clearscope Void DrawShape2d(String tex, bool animate, Vector2 Pos, Vector2 Scale, double angle, Bool KeepRatio, Float Alpha, int Style)
+	{
+		let Shape = MakeSquare();
+		int virtualW = Screen.GetWidth();
+		int virtualH = Screen.GetHeight();
+		TextureID Texture = TexMan.CheckForTexture(tex, TexMan.TYPE_ANY); //Top Right thing
+		Vector2 ScalePos = TexMan.GetScaledSize(Texture);
+		ScalePos = ((virtualW/10) * Scale.X, (virtualW/10) * Scale.Y);
+		Vector2 RotatedPos = (Cos(Angle*Pos.X) - Sin(Angle*Pos.X) ,Sin(Angle*Pos.X) + Cos(Angle*90));
+		Console.PrintF(String.Format("X:%f, Y:%f", RotatedPos.X, RotatedPos.Y));
+		MoveSquare(Shape, ScalePos, (virtualW/2.0 + RotatedPos.X * -100, virtualH/2.0 + RotatedPos.Y * -100), angle);
+		Screen.DrawShape(Texture, true, Shape, DTA_VirtualWidth, VirtualW, DTA_VirtualHeight, VirtualH, DTA_KeepRatio, KeepRatio, DTA_Alpha, Alpha, DTA_LegacyRenderStyle, Style);
+		
+	}
+	
+	Override Void RenderOverlay(RenderEvent e)
+	{				
+		PlayerInfo Player = Players[ConsolePlayer];
+		If (Player && Player.Mo && Player.Mo == e.Camera && PlayerInGame[ConsolePlayer])
+		{
+			Let Mo = PlayerPawn(e.Camera);
+			Let CSG = Mo ? EOA_CombatShotgun(Mo.Player.ReadyWeapon) : Null;
+			If (CSG)
+			{
+				//If(e.Camera.CountInv("ExplosiveShotSelected"));
+				
+					//for (int i = 0; i < 5; i++)
+					{
+						DrawShape2d("CSGRT_4", True, (45, 0), (1.0, 1.0), 45, True, 1.0, STYLE_Add);	
+					}
+				//}
+			}
+		}
+	}
+}

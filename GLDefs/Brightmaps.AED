@@ -1,0 +1,1349 @@
+//*******************************************************************************************************************
+//*******************************************************************************************************************
+//
+//
+//					B R I G H T M A P    D E F I N I T I O N S
+//
+//
+//*******************************************************************************************************************
+//*******************************************************************************************************************
+//
+//===========================================================================
+//===========================================================================
+//
+//	MONSTERS
+//
+//===========================================================================
+//===========================================================================
+
+// Hellknight by Phobos867
+brightmap sprite VOS2A1C1 { map "Graphics/Brightmaps/Baron/VOS2A1C1.png" }
+brightmap sprite VOS2A2C8 { map "Graphics/Brightmaps/Baron/VOS2A2C8.png" }
+brightmap sprite VOS2A3C7 { map "Graphics/Brightmaps/Baron/VOS2A3C7.png" }
+brightmap sprite VOS2A4C6 { map "Graphics/Brightmaps/Baron/VOS2A4C6.png" }
+brightmap sprite VOS2A5C5 { map "Graphics/Brightmaps/Baron/VOS2A5C5.png" }
+brightmap sprite VOS2b1D1 { map "Graphics/Brightmaps/Baron/VOS2b1D1.png" }
+brightmap sprite VOS2B2D8 { map "Graphics/Brightmaps/Baron/VOS2B2D8.png" }
+brightmap sprite VOS2B3D7 { map "Graphics/Brightmaps/Baron/VOS2B3D7.png" }
+brightmap sprite VOS2B4D6 { map "Graphics/Brightmaps/Baron/VOS2B4D6.png" }
+brightmap sprite VOS2B5D5 { map "Graphics/Brightmaps/Baron/VOS2B5D5.png" }
+brightmap sprite VOS2E1   { map "Graphics/Brightmaps/Baron/VOS2E1.png"   }
+brightmap sprite VOS2E2   { map "Graphics/Brightmaps/Baron/VOS2E2.png"   }
+brightmap sprite VOS2E3   { map "Graphics/Brightmaps/Baron/VOS2E3.png"   }
+brightmap sprite VOS2E4   { map "Graphics/Brightmaps/Baron/VOS2E4.png"   }
+brightmap sprite VOS2E5   { map "Graphics/Brightmaps/Baron/VOS2E5.png"   }
+brightmap sprite VOS2E6   { map "Graphics/Brightmaps/Baron/VOS2E6.png"   }
+brightmap sprite VOS2E7   { map "Graphics/Brightmaps/Baron/VOS2E7.png"   }
+brightmap sprite VOS2E8   { map "Graphics/Brightmaps/Baron/VOS2E8.png"   }
+brightmap sprite VOS2F1   { map "Graphics/Brightmaps/Baron/VOS2F1.png"   }
+brightmap sprite VOS2F2   { map "Graphics/Brightmaps/Baron/VOS2F2.png"   }
+brightmap sprite VOS2F3   { map "Graphics/Brightmaps/Baron/VOS2F3.png"   }
+brightmap sprite VOS2F4   { map "Graphics/Brightmaps/Baron/VOS2F4.png"   }
+brightmap sprite VOS2F5   { map "Graphics/Brightmaps/Baron/VOS2F5.png"   }
+brightmap sprite VOS2F6   { map "Graphics/Brightmaps/Baron/VOS2F6.png"   }
+brightmap sprite VOS2F7   { map "Graphics/Brightmaps/Baron/VOS2F7.png"   }
+brightmap sprite VOS2F8   { map "Graphics/Brightmaps/Baron/VOS2F8.png"   }
+brightmap sprite VOS2G1   { map "Graphics/Brightmaps/Baron/VOS2G1.png"   }
+brightmap sprite VOS2G2   { map "Graphics/Brightmaps/Baron/VOS2G2.png"   }
+brightmap sprite VOS2G3   { map "Graphics/Brightmaps/Baron/VOS2G3.png"   }
+brightmap sprite VOS2G4   { map "Graphics/Brightmaps/Baron/VOS2G4.png"   }
+brightmap sprite VOS2G5   { map "Graphics/Brightmaps/Baron/VOS2G5.png"   }
+brightmap sprite VOS2G6   { map "Graphics/Brightmaps/Baron/VOS2G6.png"   }
+brightmap sprite VOS2G7   { map "Graphics/Brightmaps/Baron/VOS2G7.png"   }
+brightmap sprite VOS2G8   { map "Graphics/Brightmaps/Baron/VOS2G8.png"   }
+brightmap sprite VOS2H1   { map "Graphics/Brightmaps/Baron/VOS2H1.png"   }
+brightmap sprite VOS2H1   { map "Graphics/Brightmaps/Baron/VOS2H1.png"   }
+brightmap sprite VOS2H2   { map "Graphics/Brightmaps/Baron/VOS2H2.png"   }
+brightmap sprite VOS2H3   { map "Graphics/Brightmaps/Baron/VOS2H3.png"   }
+brightmap sprite VOS2H4   { map "Graphics/Brightmaps/Baron/VOS2H4.png"   }
+brightmap sprite VOS2H5   { map "Graphics/Brightmaps/Baron/VOS2H5.png"   }
+brightmap sprite VOS2H6   { map "Graphics/Brightmaps/Baron/VOS2H6.png"   }
+brightmap sprite VOS2H7   { map "Graphics/Brightmaps/Baron/VOS2H7.png"   }
+brightmap sprite VOS2H8   { map "Graphics/Brightmaps/Baron/VOS2H8.png"   }
+brightmap sprite VOS2I0   { map "Graphics/Brightmaps/Baron/VOS2I0.png"   }
+brightmap sprite VOS2J0   { map "Graphics/Brightmaps/Baron/VOS2J0.png"   }
+brightmap sprite VOS2K0   { map "Graphics/Brightmaps/Baron/VOS2K0.png"   }
+brightmap sprite VOS2L0   { map "Graphics/Brightmaps/Baron/VOS2L0.png"   }
+
+
+brightmap sprite VOS2A6C4 { map "Graphics/Brightmaps/Baron/VOS2A6C4.png" }
+brightmap sprite VOS2A7C3 { map "Graphics/Brightmaps/Baron/VOS2A7C3.png" }
+brightmap sprite VOS2A8C2 { map "Graphics/Brightmaps/Baron/VOS2A8C2.png" }
+brightmap sprite VOS2B6D4 { map "Graphics/Brightmaps/Baron/VOS2B6D4.png" }
+brightmap sprite VOS2B7D3 { map "Graphics/Brightmaps/Baron/VOS2B7D3.png" }
+brightmap sprite VOS2B8D2 { map "Graphics/Brightmaps/Baron/VOS2B8D2.png" }
+brightmap sprite BOS3A1   { map "Graphics/Brightmaps/Baron/BOS3A1.png"   }
+brightmap sprite BOS3B1   { map "Graphics/Brightmaps/Baron/BOS3B1.png"   }
+brightmap sprite BOS3C1   { map "Graphics/Brightmaps/Baron/BOS3C1.png"   }
+brightmap sprite BOZ2E1   { map "Graphics/Brightmaps/Baron/BOZ2E1.png"   }
+brightmap sprite BOZ2F1   { map "Graphics/Brightmaps/Baron/BOZ2F1.png"   }
+brightmap sprite BOZ2G1   { map "Graphics/Brightmaps/Baron/BOZ2G1.png"   }
+brightmap sprite BOZ3A1   { map "Graphics/Brightmaps/Baron/BOZ3A1.png"   }
+brightmap sprite BOZ3B1   { map "Graphics/Brightmaps/Baron/BOZ3B1.png"   }
+brightmap sprite BOZ3C1   { map "Graphics/Brightmaps/Baron/BOZ3C1.png"   }
+/*
+brightmap sprite E02PX1		{ map "Graphics/Brightmaps/Monsters/HellKnight/E02PX1.png"	}
+brightmap sprite E02PX2X8	{ map "Graphics/Brightmaps/Monsters/HellKnight/E02PX2X8.png"}
+brightmap sprite E02PX3X7	{ map "Graphics/Brightmaps/Monsters/HellKnight/E02PX3X7.png"}
+brightmap sprite E02PX4X6	{ map "Graphics/Brightmaps/Monsters/HellKnight/E02PX4X6.png"}
+brightmap sprite E02PX5		{ map "Graphics/Brightmaps/Monsters/HellKnight/E02PX5.png"	}
+*/
+
+
+
+
+
+//Shotgunguy (repeater zombie) brightmaps made and implemented by DBThanatos
+/*
+brightmap sprite RPZMA1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA1.png"			}
+brightmap sprite RPZMA2A8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA2A8.png"		}
+brightmap sprite RPZMA3A7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA3A7.png"		}
+brightmap sprite RPZMB1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMB1.png"			}
+brightmap sprite RPZMB2B8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMB2B8.png"		}
+brightmap sprite RPZMB3B7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMB3B7.png"		}
+brightmap sprite RPZMC1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMC1.png"			}
+brightmap sprite RPZMC2C8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMC2C8.png"		}
+brightmap sprite RPZMC3C7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMC3C7.png"		}
+brightmap sprite RPZMD1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMD1.png"			}
+brightmap sprite RPZMD2D8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMD2D8.png"		}
+brightmap sprite RPZMD3D7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMD3D7.png"		}
+brightmap sprite RPZME1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZME1.png"			}
+brightmap sprite RPZME2E8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZME2E8.png"		}
+brightmap sprite RPZME3E7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZME3E7.png"		}
+
+brightmap sprite RPZMG1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMG1.png"		DisableFullBright	}
+brightmap sprite RPZMG2G8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMG2G8.png"	DisableFullBright	}
+brightmap sprite RPZMG3G7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMG3G7.png"	DisableFullBright	}
+brightmap sprite RPZMG4G6  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMG4G6.png"	DisableFullBright	}
+brightmap sprite RPZMG5  	{ map "Graphics/Brightmaps/Monsters/None.png" 				DisableFullBright	}
+brightmap sprite RPZMI1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI1.png"			}
+brightmap sprite RPZMI2I8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI2I8.png"		}
+brightmap sprite RPZMI3I7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI3I7.png"		}
+
+brightmap sprite RPZMX1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMX1.png"		}
+brightmap sprite RPZMX2X8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMX2X8.png"	 }
+brightmap sprite RPZMX3X7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMX3X7.png"	 }
+brightmap sprite RPZMX4X6  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMX4X6.png"	 }
+brightmap sprite RPZMX5  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMX5.png"		 }
+
+brightmap sprite RPZMY1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA1.png"			}
+brightmap sprite RPZMY2Y8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA2A8.png"		}
+brightmap sprite RPZMY3Y7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMA3A7.png"		}
+brightmap sprite RPZMZ1  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI1.png"			}
+brightmap sprite RPZMZ2Z8  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI2I8.png"		}
+brightmap sprite RPZMZ3Z7  	{ map "Graphics/Brightmaps/Monsters/Shotguy/RPZMI3I7.png"		} 
+*/
+
+
+
+
+//Imp brightmaps made and implemented by DBThanatos
+brightmap sprite ROACA1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACA1.png"		}
+brightmap sprite ROACA2A8   { map "Graphics/Brightmaps/Monsters/Imp/ROACA2A8.png"	}
+brightmap sprite ROACA3A7   { map "Graphics/Brightmaps/Monsters/Imp/ROACA3A7.png"	}
+brightmap sprite ROACB1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACB1.png"		}
+brightmap sprite ROACB2B8   { map "Graphics/Brightmaps/Monsters/Imp/ROACB2B8.png"	}
+brightmap sprite ROACB3B7   { map "Graphics/Brightmaps/Monsters/Imp/ROACB3B7.png"	}
+brightmap sprite ROACC1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACC1.png"		}
+brightmap sprite ROACC2C8   { map "Graphics/Brightmaps/Monsters/Imp/ROACC2C8.png"	}
+brightmap sprite ROACC3C7   { map "Graphics/Brightmaps/Monsters/Imp/ROACC3C7.png"	}
+brightmap sprite ROACD1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACD1.png"		}
+brightmap sprite ROACD2D8   { map "Graphics/Brightmaps/Monsters/Imp/ROACD2D8.png"	}
+brightmap sprite ROACD3D7   { map "Graphics/Brightmaps/Monsters/Imp/ROACD3D7.png"	}
+brightmap sprite ROACE1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACE1.png"		}
+brightmap sprite ROACE2E8   { map "Graphics/Brightmaps/Monsters/Imp/ROACE2E8.png"	}
+brightmap sprite ROACE3E7   { map "Graphics/Brightmaps/Monsters/Imp/ROACE3E7.png"	}
+brightmap sprite ROACF1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACF1.png"		}
+brightmap sprite ROACF2F8   { map "Graphics/Brightmaps/Monsters/Imp/ROACF2F8.png"	}
+brightmap sprite ROACF3F7   { map "Graphics/Brightmaps/Monsters/Imp/ROACF3F7.png"	}
+brightmap sprite ROACG1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACG1.png"		}
+brightmap sprite ROACG2G8   { map "Graphics/Brightmaps/Monsters/Imp/ROACG2G8.png"	}
+brightmap sprite ROACG3G7   { map "Graphics/Brightmaps/Monsters/Imp/ROACG3G7.png"	}
+brightmap sprite ROACI0   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACI0.png"		}
+brightmap sprite ROACN0   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACN0.png"		}
+brightmap sprite ROACY1   	{ map "Graphics/Brightmaps/Monsters/Imp/ROACY1.png"		}
+brightmap sprite ROACY2Y8   { map "Graphics/Brightmaps/Monsters/Imp/ROACY2Y8.png"	}
+brightmap sprite ROACY3Y7   { map "Graphics/Brightmaps/Monsters/Imp/ROACY3Y7.png"	}
+/*
+brightmap sprite ROACX1   	{  map "Graphics/Brightmaps/Monsters/Imp/ROACX1.png"		}
+brightmap sprite ROACX2X8   {  map "Graphics/Brightmaps/Monsters/Imp/ROACX2X8.png"	}
+brightmap sprite ROACX3X7   {  map "Graphics/Brightmaps/Monsters/Imp/ROACX3X7.png"	}
+brightmap sprite ROACX4X6   {  map "Graphics/Brightmaps/Monsters/Imp/ROACX4X6.png"	}
+brightmap sprite ROACX5   	{  map "Graphics/Brightmaps/Monsters/Imp/ROACX5.png"		}
+*/
+
+
+
+
+
+//Baron brightmaps made and implemented by DBThanatos
+brightmap sprite BOS4A1C1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A1C1.png"	}
+brightmap sprite BOS4A2C8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A2C8.png"	}
+brightmap sprite BOS4A3C7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A3C7.png"	}
+brightmap sprite BOS4A4C6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A4C6.png"	}
+brightmap sprite BOS4A5C5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A5C5.png"	}
+brightmap sprite BOS4A6C4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A6C4.png"	}
+brightmap sprite BOS4A7C3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A7C3.png"	}
+brightmap sprite BOS4A8C2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A8C2.png"	}
+brightmap sprite BOS4B1D1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B1D1.png"	}
+brightmap sprite BOS4B2D8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B2D8.png"	}
+brightmap sprite BOS4B3D7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B3D7.png"	}
+brightmap sprite BOS4B4D6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B4D6.png"	}
+brightmap sprite BOS4B5D5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B5D5.png"	}
+brightmap sprite BOS4B6D4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B6D4.png"	}
+brightmap sprite BOS4B7D3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B7D3.png"	}
+brightmap sprite BOS4B8D2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4B8D2.png"	}
+brightmap sprite BOS4E1I1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E1I1.png"	}
+brightmap sprite BOS4E2I8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E2I8.png"	}
+brightmap sprite BOS4E3I7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E3I7.png"	}
+brightmap sprite BOS4E4I6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E4I6.png"	}
+brightmap sprite BOS4E5I5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E5I5.png"	}
+brightmap sprite BOS4E6I4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E6I4.png"	}
+brightmap sprite BOS4E7I3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E7I3.png"	}
+brightmap sprite BOS4E8I2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4E8I2.png"	}
+brightmap sprite BOS4F1J1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F1J1.png"	}
+brightmap sprite BOS4F2J8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F2J8.png"	}
+brightmap sprite BOS4F3J7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F3J7.png"	}
+brightmap sprite BOS4F4J6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F4J6.png"	}
+brightmap sprite BOS4F5J5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F5J5.png"	}
+brightmap sprite BOS4F6J4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F6J4.png"	}
+brightmap sprite BOS4F7J3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F7J3.png"	}
+brightmap sprite BOS4F8J2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4F8J2.png"	}
+brightmap sprite BOS4G1K1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G1K1.png"	}
+brightmap sprite BOS4G2K8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G2K8.png"	}
+brightmap sprite BOS4G3K7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G3K7.png"	}
+brightmap sprite BOS4G4K6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G4K6.png"	}
+brightmap sprite BOS4G5K5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G5K5.png"	}
+brightmap sprite BOS4G6K4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G6K4.png"	}
+brightmap sprite BOS4G7K3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G7K3.png"	}
+brightmap sprite BOS4G8K2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4G8K2.png"	}
+brightmap sprite BOS4H1L1	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H1L1.png"	}
+brightmap sprite BOS4H2L8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H2L8.png"	}
+brightmap sprite BOS4H3L7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H3L7.png"	}
+brightmap sprite BOS4H4L6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H4L6.png"	}
+brightmap sprite BOS4H5L5	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H5L5.png"	}
+brightmap sprite BOS4H6L4	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H6L4.png"	}
+brightmap sprite BOS4H7L3	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H7L3.png"	}
+brightmap sprite BOS4H8L2	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4H8L2.png"	}
+brightmap sprite BOS4M1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4M1.png"	}
+brightmap sprite BOS4M2M8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4M2M8.png"	}
+brightmap sprite BOS4M3M7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4M3M7.png"	}
+brightmap sprite BOS4M4M6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4M4M6.png"	}
+brightmap sprite BOS4M5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4M5.png"	}
+brightmap sprite BOS4N1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4N1.png"	}
+brightmap sprite BOS4N2N8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4N2N8.png"	}
+brightmap sprite BOS4N3N7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4N3N7.png"	}
+brightmap sprite BOS4N4N6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4N4N6.png"	}
+brightmap sprite BOS4N5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4N5.png"	}
+brightmap sprite BOS4O1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4O1.png"	}
+brightmap sprite BOS4O2O8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4O2O8.png"	}
+brightmap sprite BOS4O3O7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4O3O7.png"	}
+brightmap sprite BOS4O4O6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4O4O6.png"	}
+brightmap sprite BOS4O5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4O5.png"	}
+brightmap sprite BOS4P1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4P1.png"	}
+brightmap sprite BOS4P2P8	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4P2P8.png"	}
+brightmap sprite BOS4P3P7	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4P3P7.png"	}
+brightmap sprite BOS4P4P6	{ map "Graphics/Brightmaps/Monsters/Baron/BOS4P4P6.png"	}
+brightmap sprite BOS4P5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4P5.png"	}
+brightmap sprite BOS4Q1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q1.png"	}
+brightmap sprite BOS4Q2		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q2.png"	}
+brightmap sprite BOS4Q3		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q3.png"	}
+brightmap sprite BOS4Q4		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q4.png"	}
+brightmap sprite BOS4Q5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q5.png"	}
+brightmap sprite BOS4Q6		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q6.png"	}
+brightmap sprite BOS4Q7		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q7.png"	}
+brightmap sprite BOS4Q8		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q8.png"	}
+brightmap sprite BOS4Y1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A1C1.png"	}
+brightmap sprite BOS4Y2		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A2C8.png"	}
+brightmap sprite BOS4Y3		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A3C7.png"	}
+brightmap sprite BOS4Y4		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A4C6.png"	}
+brightmap sprite BOS4Y5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A5C5.png"	}
+brightmap sprite BOS4Y6		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A6C4.png"	}
+brightmap sprite BOS4Y7		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A7C3.png"	}
+brightmap sprite BOS4Y8		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4A8C2.png"	}
+brightmap sprite BOS4Z1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q1.png"	}
+brightmap sprite BOS4Z2		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q2.png"	}
+brightmap sprite BOS4Z3		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q3.png"	}
+brightmap sprite BOS4Z4		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q4.png"	}
+brightmap sprite BOS4Z5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q5.png"	}
+brightmap sprite BOS4Z6		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q6.png"	}
+brightmap sprite BOS4Z7		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q7.png"	}
+brightmap sprite BOS4Z8		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4Q8.png"	}
+/*
+brightmap sprite BOS4X1		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X1.png" }
+brightmap sprite BOS4X2		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X2.png" 	}
+brightmap sprite BOS4X3		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X3.png" 	}
+brightmap sprite BOS4X4		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X4.png" 	}
+brightmap sprite BOS4X5		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X5.png" 	}
+brightmap sprite BOS4X6		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X6.png" 	}
+brightmap sprite BOS4X7		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X7.png" 	}
+brightmap sprite BOS4X8		{ map "Graphics/Brightmaps/Monsters/Baron/BOS4X8.png" 	}
+*/
+
+
+//New Zombieman brightmaps made and implemented by DBThanatos
+/*
+brightmap sprite RFTRA1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA1.png"	}
+brightmap sprite RFTRA2A8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA2A8.png"	}
+brightmap sprite RFTRA3A7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA3A7.png"	}
+brightmap sprite RFTRB1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRB1.png"	}
+brightmap sprite RFTRB2B8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRB2B8.png"	}
+brightmap sprite RFTRB3B7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRB3B7.png"	}
+brightmap sprite RFTRC1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRC1.png"	}
+brightmap sprite RFTRC2C8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRC2C8.png"	}
+brightmap sprite RFTRC3C7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRC3C7.png"	}
+brightmap sprite RFTRD1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRD1.png"	}
+brightmap sprite RFTRD2D8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRD2D8.png"	}
+brightmap sprite RFTRD3D7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRD3D7.png"	}
+brightmap sprite RFTRE1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRE1.png"	}
+brightmap sprite RFTRE2E8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRE2E8.png"	}
+brightmap sprite RFTRE3E7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRE3E7.png"	}
+brightmap sprite RFTRF1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRF1.png"	DisableFullBright }
+brightmap sprite RFTRF2F8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRF2F8.png"	DisableFullBright }
+brightmap sprite RFTRF3F7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRF3F7.png"	DisableFullBright }
+brightmap sprite RFTRF4F6		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRF4F6.png"	DisableFullBright }
+brightmap sprite RFTRF5			{ map "Graphics/Brightmaps/Monsters/None.png"				DisableFullBright }
+brightmap sprite RFTRH0			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRH0.png"	}
+brightmap sprite RFTRX1			{ DisableFullBright map "Graphics/Brightmaps/Monsters/Zombieman/PO_SX1.png"	}
+brightmap sprite RFTRX2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Zombieman/PO_SX2X8.png"	}
+brightmap sprite RFTRX3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Zombieman/PO_SX3X7.png"	}
+brightmap sprite RFTRX4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Zombieman/PO_SX4X6.png"	}
+brightmap sprite RFTRX5			{ DisableFullBright map "Graphics/Brightmaps/Monsters/Zombieman/PO_SX5.png"	}
+brightmap sprite RFTRY1			{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA1.png"	}
+brightmap sprite RFTRY2Y8		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA2A8.png"	}
+brightmap sprite RFTRY3Y7		{ map "Graphics/Brightmaps/Monsters/Zombieman/RFTRA3A7.png"	}
+*/
+
+//Pinky brightmaps made and implemented by DBThanatos
+brightmap sprite D4DMA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA1.png"	}
+brightmap sprite D4DMA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA2A8.png"	}
+brightmap sprite D4DMA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA3A7.png"	}
+brightmap sprite D4DMB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB1.png"	}
+brightmap sprite D4DMB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB2B8.png"	}
+brightmap sprite D4DMB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB3B7.png"	}
+brightmap sprite D4DMC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC1.png"	}
+brightmap sprite D4DMC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC2C8.png"	}
+brightmap sprite D4DMC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC3C7.png"	}
+brightmap sprite D4DNA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA1.png"	}
+brightmap sprite D4DNA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA2A8.png"	}
+brightmap sprite D4DNA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA3A7.png"	}
+brightmap sprite D4DNB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB1.png"	}
+brightmap sprite D4DNB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB2B8.png"	}
+brightmap sprite D4DNB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB3B7.png"	}
+brightmap sprite D4DNC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC1.png"	}
+brightmap sprite D4DNC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC2C8.png"	}
+brightmap sprite D4DNC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC3C7.png"	}
+brightmap sprite D4DPA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA1.png"	}
+brightmap sprite D4DPA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA2A8.png"	}
+brightmap sprite D4DPA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA3A7.png"	}
+brightmap sprite D4DRA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA1.png"	}
+brightmap sprite D4DRA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA2A8.png"	}
+brightmap sprite D4DRA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA3A7.png"	}
+brightmap sprite D4DRB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB1.png"	}
+brightmap sprite D4DRB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB2B8.png"	}
+brightmap sprite D4DRB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB3B7.png"	}
+brightmap sprite D4DRC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC1.png"	}
+brightmap sprite D4DRC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC2C8.png"	}
+brightmap sprite D4DRC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC3C7.png"	}
+brightmap sprite D4DRD1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD1.png"	}
+brightmap sprite D4DRD2D8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD2D8.png"	}
+brightmap sprite D4DRD3D7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD3D7.png"	}
+brightmap sprite D4DWA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA1.png"	}
+brightmap sprite D4DWA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA2A8.png"	}
+brightmap sprite D4DWA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA3A7.png"	}
+brightmap sprite D4DWB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB1.png"	}
+brightmap sprite D4DWB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB2B8.png"	}
+brightmap sprite D4DWB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB3B7.png"	}
+brightmap sprite D4DWC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC1.png"	}
+brightmap sprite D4DWC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC2C8.png"	}
+brightmap sprite D4DWC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC3C7.png"	}
+brightmap sprite D4DWD1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD1.png"	}
+brightmap sprite D4DWD2D8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD2D8.png"	}
+brightmap sprite D4DWD3D7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD3D7.png"	}
+brightmap sprite D4DGI0			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DGI0.png"	}
+brightmap sprite D4DEY1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA1.png"	}
+brightmap sprite D4DEY2Y8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA2A8.png"	}
+brightmap sprite D4DEY3Y7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA3A7.png"	}
+brightmap sprite D4DEZ1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA1.png"	}
+brightmap sprite D4DEZ2Z8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA2A8.png"	}
+brightmap sprite D4DEZ3Z7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA3A7.png"	}
+/*
+brightmap sprite D4DEX1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DEX1.png" 		}
+brightmap sprite D4DEX2X8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DEX2X8.png"		}
+brightmap sprite D4DEX3X7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DEX3X7.png"		}
+brightmap sprite D4DEX4X6		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DEX4X6.png"		}
+brightmap sprite D4DEX5			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DEX5.png"		}
+*/
+
+//Spectre
+brightmap sprite D4SMA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA1.png"	}
+brightmap sprite D4SMA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA2A8.png"	}
+brightmap sprite D4SMA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMA3A7.png"	}
+brightmap sprite D4SMB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB1.png"	}
+brightmap sprite D4SMB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB2B8.png"	}
+brightmap sprite D4SMB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMB3B7.png"	}
+brightmap sprite D4SMC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC1.png"	}
+brightmap sprite D4SMC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC2C8.png"	}
+brightmap sprite D4SMC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DMC3C7.png"	}
+brightmap sprite D4SNA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA1.png"	}
+brightmap sprite D4SNA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA2A8.png"	}
+brightmap sprite D4SNA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNA3A7.png"	}
+brightmap sprite D4SNB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB1.png"	}
+brightmap sprite D4SNB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB2B8.png"	}
+brightmap sprite D4SNB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNB3B7.png"	}
+brightmap sprite D4SNC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC1.png"	}
+brightmap sprite D4SNC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC2C8.png"	}
+brightmap sprite D4SNC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DNC3C7.png"	}
+brightmap sprite D4SPA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA1.png"	}
+brightmap sprite D4SPA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA2A8.png"	}
+brightmap sprite D4SPA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA3A7.png"	}
+brightmap sprite D4SRA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA1.png"	}
+brightmap sprite D4SRA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA2A8.png"	}
+brightmap sprite D4SRA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRA3A7.png"	}
+brightmap sprite D4SRB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB1.png"	}
+brightmap sprite D4SRB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB2B8.png"	}
+brightmap sprite D4SRB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRB3B7.png"	}
+brightmap sprite D4SRC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC1.png"	}
+brightmap sprite D4SRC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC2C8.png"	}
+brightmap sprite D4SRC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRC3C7.png"	}
+brightmap sprite D4SRD1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD1.png"	}
+brightmap sprite D4SRD2D8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD2D8.png"	}
+brightmap sprite D4SRD3D7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DRD3D7.png"	}
+brightmap sprite D4SWA1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA1.png"	}
+brightmap sprite D4SWA2A8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA2A8.png"	}
+brightmap sprite D4SWA3A7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA3A7.png"	}
+brightmap sprite D4SWB1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB1.png"	}
+brightmap sprite D4SWB2B8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB2B8.png"	}
+brightmap sprite D4SWB3B7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWB3B7.png"	}
+brightmap sprite D4SWC1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC1.png"	}
+brightmap sprite D4SWC2C8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC2C8.png"	}
+brightmap sprite D4SWC3C7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWC3C7.png"	}
+brightmap sprite D4SWD1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD1.png"	}
+brightmap sprite D4SWD2D8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD2D8.png"	}
+brightmap sprite D4SWD3D7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWD3D7.png"	}
+brightmap sprite D4SGI0			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DGI0.png"	}
+brightmap sprite D4SEY1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA1.png"	}
+brightmap sprite D4SEY2Y8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA2A8.png"	}
+brightmap sprite D4SEY3Y7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DWA3A7.png"	}
+brightmap sprite D4SEZ1			{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA1.png"	}
+brightmap sprite D4SEZ2Z8		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA2A8.png"	}
+brightmap sprite D4SEZ3Z7		{ map "Graphics/Brightmaps/Monsters/Pinky/D4DPA3A7.png"	}
+
+
+//Harvester (Vulgar) brightmaps by DBThanatos
+brightmap sprite VULGA1C1		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA1C1.png"	}
+brightmap sprite VULGA2C8		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA2C8.png"	}
+brightmap sprite VULGA3C7		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA3C7.png"	}
+brightmap sprite VULGA7C3		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA7C3.png"	}
+brightmap sprite VULGA8C2		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA8C2.png"	}
+brightmap sprite VULGB1D1		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGB1D1.png"	}
+brightmap sprite VULGB2D8		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGB2D8.png"	}
+brightmap sprite VULGB3D7		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGB3D7.png"	}
+brightmap sprite VULGB7D3		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGB7D3.png"	}
+brightmap sprite VULGB8D2		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGB8D2.png"	}
+//Attack frames
+brightmap sprite VULGE1			{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGE1.png"	}
+brightmap sprite VULGE2E8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGE2E8.png"	}
+brightmap sprite VULGE3E7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGE3E7.png"	}
+brightmap sprite VULGE4E6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite VULGE5			{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite VULGF1			{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGF1.png"	}
+brightmap sprite VULGF2F8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGF2F8.png"	}
+brightmap sprite VULGF3F7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGF3F7.png"	}
+brightmap sprite VULGF4F6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite VULGF5			{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite VULGG1			{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGG1.png"	}
+brightmap sprite VULGG2G8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGG2G8.png"	}
+brightmap sprite VULGG3G7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Harvester/VULGF3F7.png"	}
+brightmap sprite VULGG4G6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite VULGG5			{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+
+brightmap sprite VULGH1			{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH1.png"	}
+brightmap sprite VULGH2H8		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH2H8.png"	}
+brightmap sprite VULGH3H7		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH3H7.png"	}
+brightmap sprite VULGH4H6		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH4H6.png"	}
+/*
+brightmap sprite VULGX1			{  map "Graphics/Brightmaps/Monsters/Harvester/VULGX1.png"	}
+brightmap sprite VULGX2X8		{  map "Graphics/Brightmaps/Monsters/Harvester/VULGX2X8.png"	}
+brightmap sprite VULGX3X7		{  map "Graphics/Brightmaps/Monsters/Harvester/VULGX3X7.png"	}
+brightmap sprite VULGX4X6		{  map "Graphics/Brightmaps/Monsters/Harvester/VULGX4X6.png"	}
+brightmap sprite VULGX5			{ map "Graphics/Brightmaps/Monsters/Harvester/VULGX5.png"	}
+*/
+brightmap sprite VULGY1			{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA1C1.png"	}
+brightmap sprite VULGY2Y8		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA2C8.png"	}
+brightmap sprite VULGY3Y7		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGA3C7.png"	}
+brightmap sprite VULGZ1			{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH1.png"	}
+brightmap sprite VULGZ2Z8		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH2H8.png"	}
+brightmap sprite VULGZ3Z7		{ map "Graphics/Brightmaps/Monsters/Harvester/VULGH3H7.png"	}
+
+
+
+//Prowler (Shadow) brightmaps by Sandypaper, extra frames by DBThanatos
+brightmap sprite SHDWA1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA1.png"	}
+brightmap sprite SHDWA2A8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA2.png"	}
+brightmap sprite SHDWA3A7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA3.png"	}
+brightmap sprite SHDWB1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWB1.png"	}
+brightmap sprite SHDWB2B8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWB2.png"	}
+brightmap sprite SHDWB3B7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWB3.png"	}
+brightmap sprite SHDWB4B6		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWB4.png"	}
+brightmap sprite SHDWC1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWC1.png"	}
+brightmap sprite SHDWC2C8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWC2.png"	}
+brightmap sprite SHDWC3C7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWC3.png"	}
+brightmap sprite SHDWD1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWD1.png"	}
+brightmap sprite SHDWD2D8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWD2.png"	}
+brightmap sprite SHDWD3D7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWD3.png"	}
+brightmap sprite SHDWE1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWE1.png"	}
+brightmap sprite SHDWE2E8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWE2.png"	}
+brightmap sprite SHDWE3E7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWE3.png"	}
+brightmap sprite SHDWF1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWF1.png"	}
+brightmap sprite SHDWF2F8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWF2.png"	}
+brightmap sprite SHDWF3F7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWF3.png"	}
+brightmap sprite SHDWG1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWG1.png"	}
+brightmap sprite SHDWG2G8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWG2.png"	}
+brightmap sprite SHDWG3G7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWG3.png"	}
+brightmap sprite SHDWG4G6		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWG4.png"	}
+brightmap sprite SHDWG5			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWG5.png"	}
+brightmap sprite SHDWI0			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWI0.png"	}
+brightmap sprite SHDWJ0			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWJ0.png"	}
+brightmap sprite SHDXA0			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDXA0.png"	}
+brightmap sprite SHDXB0			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDXB0.png"	}
+/*
+brightmap sprite SHDWX1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWX1.png"	}
+brightmap sprite SHDWX2X8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWX2X8.png"	}
+brightmap sprite SHDWX3X7		{  map "Graphics/Brightmaps/Monsters/Prowler/SHDWX3X7.png"	}
+brightmap sprite SHDWX4X6		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWX4X6.png"	}
+brightmap sprite SHDWX5			{  map "Graphics/Brightmaps/Monsters/Prowler/SHDWX5.png"	}
+*/
+brightmap sprite SHDWY1			{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA1.png"	}
+brightmap sprite SHDWY2Y8		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA2.png"	}
+brightmap sprite SHDWY3Y7		{ map "Graphics/Brightmaps/Monsters/Prowler/SHDWA3.png"	}
+
+
+
+
+//Diabloist brightmaps by Sandypaper
+//Fixed bad frames and re-arranged them for D4T by DBThanatos
+/*
+brightmap sprite DIABA1D1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABA1D1.PNG"	}
+brightmap sprite DIABA2D8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABA2D8.PNG"	}
+brightmap sprite DIABA7D3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABA7D3.PNG"	}
+brightmap sprite DIABA8D2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABA8D2.PNG"	}
+brightmap sprite DIABB1E1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABB1E1.PNG"	}
+brightmap sprite DIABB2E8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABB2E8.PNG"	}
+brightmap sprite DIABB8E2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABB8E2.PNG"	}
+brightmap sprite DIABC1F1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABC1F1.PNG"	}
+brightmap sprite DIABC2F8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABC2F8.PNG"	}
+brightmap sprite DIABC8F2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABC8F2.PNG"	}
+brightmap sprite DIABG1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG1.PNG"	}
+brightmap sprite DIABG2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG2.PNG"	}
+brightmap sprite DIABG3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG3.PNG"	}
+brightmap sprite DIABG4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG4.PNG"	}
+brightmap sprite DIABG5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG5.PNG"	}
+brightmap sprite DIABG6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG6.PNG"	}
+brightmap sprite DIABG7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG7.PNG"	}
+brightmap sprite DIABG8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABG8.PNG"	}
+brightmap sprite DIABH1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH1.PNG"	}
+brightmap sprite DIABH2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH2.PNG"	}
+brightmap sprite DIABH3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH3.PNG"	}
+brightmap sprite DIABH4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH4.PNG"	}
+brightmap sprite DIABH5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH5.PNG"	}
+brightmap sprite DIABH6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH6.PNG"	}
+brightmap sprite DIABH7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH7.PNG"	}
+brightmap sprite DIABH8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABH8.PNG"	}
+brightmap sprite DIABI1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI1.PNG"	}
+brightmap sprite DIABI2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI2.PNG"	}
+brightmap sprite DIABI3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI3.PNG"	}
+brightmap sprite DIABI4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI4.PNG"	}
+brightmap sprite DIABI5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI5.PNG"	}
+brightmap sprite DIABI6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI6.PNG"	}
+brightmap sprite DIABI7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI7.PNG"	}
+brightmap sprite DIABI8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABI8.PNG"	}
+brightmap sprite DIABJ1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ1.PNG"	}
+brightmap sprite DIABJ2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ2.PNG"	}
+brightmap sprite DIABJ3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ3.PNG"	}
+brightmap sprite DIABJ4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ4.PNG"	}
+brightmap sprite DIABJ5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ5.PNG"	}
+brightmap sprite DIABJ6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ6.PNG"	}
+brightmap sprite DIABJ7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ7.PNG"	}
+brightmap sprite DIABJ8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABJ8.PNG"	}
+brightmap sprite DIABK1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK1.PNG"	}
+brightmap sprite DIABK2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK2.PNG"	}
+brightmap sprite DIABK3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK3.PNG"	}
+brightmap sprite DIABK4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK4.PNG"	}
+brightmap sprite DIABK5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK5.PNG"	}
+brightmap sprite DIABK6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK6.PNG"	}
+brightmap sprite DIABK7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK7.PNG"	}
+brightmap sprite DIABK8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABK8.PNG"	}
+brightmap sprite DIABL1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL1.PNG"	}
+brightmap sprite DIABL2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL2.PNG"	}
+brightmap sprite DIABL3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL3.PNG"	}
+brightmap sprite DIABL4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL4.PNG"	}
+brightmap sprite DIABL5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL5.PNG"	}
+brightmap sprite DIABL6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL6.PNG"	}
+brightmap sprite DIABL7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL7.PNG"	}
+brightmap sprite DIABL8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABL8.PNG"	}
+brightmap sprite DIABM1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM1.PNG"	}
+brightmap sprite DIABM2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM2.PNG"	}
+brightmap sprite DIABM3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM3.PNG"	}
+brightmap sprite DIABM4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM4.PNG"	}
+brightmap sprite DIABM5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM5.PNG"	}
+brightmap sprite DIABM6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM6.PNG"	}
+brightmap sprite DIABM7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM7.PNG"	}
+brightmap sprite DIABM8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABM8.PNG"	}
+brightmap sprite DIABN1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN1.PNG"	}
+brightmap sprite DIABN2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN2.PNG"	}
+brightmap sprite DIABN3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN3.PNG"	}
+brightmap sprite DIABN4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN4.PNG"	}
+brightmap sprite DIABN5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN5.PNG"	}
+brightmap sprite DIABN6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN6.PNG"	}
+brightmap sprite DIABN7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN7.PNG"	}
+brightmap sprite DIABN8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABN8.PNG"	}
+brightmap sprite DIABO1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO1.PNG"	}
+brightmap sprite DIABO2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO2.PNG"	}
+brightmap sprite DIABO3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO3.PNG"	}
+brightmap sprite DIABO4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO4.PNG"	}
+brightmap sprite DIABO5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO5.PNG"	}
+brightmap sprite DIABO6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO6.PNG"	}
+brightmap sprite DIABO7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO7.PNG"	}
+brightmap sprite DIABO8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABO8.PNG"	}
+brightmap sprite DIABP1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP1.PNG"	}
+brightmap sprite DIABP2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP2.PNG"	}
+brightmap sprite DIABP3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP3.PNG"	}
+brightmap sprite DIABP4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP4.PNG"	}
+brightmap sprite DIABP5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP5.PNG"	}
+brightmap sprite DIABP6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP6.PNG"	}
+brightmap sprite DIABP7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP7.PNG"	}
+brightmap sprite DIABP8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABP8.PNG"	}
+brightmap sprite DIABQ1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABQ1.PNG"	}
+brightmap sprite DIABQ2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABQ2.PNG"	}
+brightmap sprite DIABQ3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABQ3.PNG"	}
+brightmap sprite DIABQ4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIABQ4.PNG"	}
+brightmap sprite DIAB[1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A1.PNG"	}
+brightmap sprite DIAB[2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A2.PNG"	}
+brightmap sprite DIAB[3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A3.PNG"	}
+brightmap sprite DIAB[4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A4.PNG"	}
+brightmap sprite DIAB[5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A5.PNG"	}
+brightmap sprite DIAB[6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A6.PNG"	}
+brightmap sprite DIAB[7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A7.PNG"	}
+brightmap sprite DIAB[8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2A8.PNG"	}
+brightmap sprite DIAB\1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B1.PNG"	}
+brightmap sprite DIAB\2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B2.PNG"	}
+brightmap sprite DIAB\3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B3.PNG"	}
+brightmap sprite DIAB\4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B4.PNG"	}
+brightmap sprite DIAB\5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B5.PNG"	}
+brightmap sprite DIAB\6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B6.PNG"	}
+brightmap sprite DIAB\7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B7.PNG"	}
+brightmap sprite DIAB\8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2B8.PNG"	}
+brightmap sprite DIAB]1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C1.PNG"	}
+brightmap sprite DIAB]2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C2.PNG"	}
+brightmap sprite DIAB]3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C3.PNG"	}
+brightmap sprite DIAB]4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C4.PNG"	}
+brightmap sprite DIAB]5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C5.PNG"	}
+brightmap sprite DIAB]6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C6.PNG"	}
+brightmap sprite DIAB]7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C7.PNG"	}
+brightmap sprite DIAB]8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Summoner/DIA2C8.PNG"	}
+
+brightmap sprite DIAYY1		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABB1E1.PNG"	}
+brightmap sprite DIAYY2		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABB2E8.PNG"	}
+brightmap sprite DIAYY8		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABB8E2.PNG"	}
+brightmap sprite DIAYZ1		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABQ1.PNG"	}
+brightmap sprite DIAYZ2		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABQ2.PNG"	}
+brightmap sprite DIAYZ3		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABQ3.PNG"	}
+brightmap sprite DIAYZ4		{ map "Graphics/Brightmaps/Monsters/Summoner/DIABQ4.PNG"	}
+
+brightmap sprite DIAYX1		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX1.PNG"	}
+brightmap sprite DIAYX2		{ map "Graphics/Brightmaps/Monsters/Summoner/DIAYX2.PNG"	}
+brightmap sprite DIAYX3		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX3.PNG"	}
+brightmap sprite DIAYX4		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX4.PNG"	}
+brightmap sprite DIAYX5		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX5.PNG"	}
+brightmap sprite DIAYX6		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX6.PNG"	}
+brightmap sprite DIAYX7		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX7.PNG"	}
+brightmap sprite DIAYX8		{  map "Graphics/Brightmaps/Monsters/Summoner/DIAYX8.PNG"	}
+*/
+
+
+
+
+
+//Arachnotron brightmaps made and implemented by DBThanatos
+brightmap sprite ARACA1D1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACA1D1.png"	}
+brightmap sprite ARACA2D8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACA2D8.png"	}
+brightmap sprite ARACA3D7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACA3D7.png"	}
+brightmap sprite ARACB1E1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACB1E1.png"	}
+brightmap sprite ARACB3E7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACB3E7.png"	}
+brightmap sprite ARACC1F1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACC1F1.png"	}
+brightmap sprite ARACC2F8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACC2F8.png"	}
+brightmap sprite ARACG1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACG1.png"	}
+brightmap sprite ARACG2G8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACG2G8.png"	}
+brightmap sprite ARACG3G7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACG3G7.png"	}
+brightmap sprite ARACG4G6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite ARACG5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite ARACH1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACH1.png"	}
+brightmap sprite ARACH2H8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACH2H8.png"	}
+brightmap sprite ARACH3H7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACH3H7.png"	}
+brightmap sprite ARACH4H6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACH4H6.png"	}
+brightmap sprite ARACH5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite ARACI1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACI1.png"	}
+brightmap sprite ARACI2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACI2.png"	}
+brightmap sprite ARACI3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACI3.png"	}
+brightmap sprite ARACJ0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Arachno/ARACJ0.png"	}
+brightmap sprite ARACY1		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACA1D1.png"	}
+brightmap sprite ARACY2		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACA2D8.png"	}
+brightmap sprite ARACY3		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACA3D7.png"	}
+brightmap sprite ARACZ1		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACI1.png"	}
+brightmap sprite ARACZ2		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACI2.png"	}
+brightmap sprite ARACZ3		{ map "Graphics/Brightmaps/Monsters/Arachno/ARACI3.png"	}
+/*
+brightmap sprite ARACX1		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX1.png"	}
+brightmap sprite ARACX2		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX2.png"	}
+brightmap sprite ARACX3		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX3.png"	}
+brightmap sprite ARACX4		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX4.png"	}
+brightmap sprite ARACX5		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX5.png"	}
+brightmap sprite ARACX6		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX6.png"	}
+brightmap sprite ARACX7		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX7.png"	}
+brightmap sprite ARACX8		{  map "Graphics/Brightmaps/Monsters/Arachno/ARACX8.png"	}
+*/
+
+
+
+
+
+//Cacodemon brightmaps made and implemented by DBThanatos
+brightmap sprite CAC2A1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A1.png"	}
+brightmap sprite CAC2A2A8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2A3A7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2B1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2B1.png"	}
+brightmap sprite CAC2B2B8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2B3B7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2C1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2C1.png"	}
+brightmap sprite CAC2C2C8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2C3C7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2D1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2D1.png"	}
+brightmap sprite CAC2D2D8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2D3D7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2D4D6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite CAC2D5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite CAC2E1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2E1.png"	}
+brightmap sprite CAC2E2E8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2E3E7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2F1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2F1.png"	}
+brightmap sprite CAC2F2F8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2F3F7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2G0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2G0.png"	}
+brightmap sprite CAC2H0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2H0.png"	}
+brightmap sprite CAC2I0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2I0.png"	}
+brightmap sprite CAC2J0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2J0.png"	}
+brightmap sprite CAC2Y1		{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A1.png"	}
+brightmap sprite CAC2Y2Y8	{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2Y3Y7	{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+brightmap sprite CAC2Z1		{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2E1.png"	}
+brightmap sprite CAC2Z2Z8	{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A2A8.png"	}
+brightmap sprite CAC2Z3Z7	{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2A3A7.png"	}
+/*
+brightmap sprite CAC2X1		{  map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2X1.png"	}
+brightmap sprite CAC2X2X8	{ map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2X2X8.png"	}
+brightmap sprite CAC2X3X7	{  map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2X3X7.png"	}
+brightmap sprite CAC2X4X6	{  map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2X4X6.png"	}
+brightmap sprite CAC2X5		{  map "Graphics/Brightmaps/Monsters/Cacodemon/CAC2X5.png"	}
+*/
+
+
+
+
+//Hell Fatso brightmaps made and implemented by DBThanatos
+brightmap sprite FAT2A1D1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A1D1.png"	}
+brightmap sprite FAT2A2D8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A2D8.png"	}
+brightmap sprite FAT2A7D3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A7D3.png"	}
+brightmap sprite FAT2A8D2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A8D2.png"	}
+brightmap sprite FAT2B1E1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2B1E1.png"	}
+brightmap sprite FAT2B2E8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2B2E8.png"	}
+brightmap sprite FAT2B8E2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2B8E2.png"	}
+brightmap sprite FAT2C1F1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2C1F1.png"	}
+brightmap sprite FAT2C2F8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2C2F8.png"	}
+brightmap sprite FAT2C8F2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2C8F2.png"	}
+brightmap sprite FAT2G1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2G1.png"	}
+brightmap sprite FAT2G2G8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2G2G8.png"	}
+brightmap sprite FAT2G3G7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2G3G7.png"	}
+brightmap sprite FAT2G4G6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2G4G6.png"	}
+brightmap sprite FAT2G5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2G5.png"	}
+brightmap sprite FAT2H1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2H1.png"	}
+brightmap sprite FAT2H2H8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2H2H8.png"	}
+brightmap sprite FAT2H3H7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2H3H7.png"	}
+brightmap sprite FAT2H4H6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2H4H6.png"	}
+brightmap sprite FAT2H5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2H5.png"	}
+brightmap sprite FAT2I1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2I1.png"	}
+brightmap sprite FAT2I2I8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2I2I8.png"	}
+brightmap sprite FAT2J1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2J1.png"	}
+brightmap sprite FAT2J2J8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2J2J8.png"	}
+brightmap sprite FAT2U1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2U1.png"	}
+brightmap sprite FAT2U2V8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2U2V8.png"	}
+brightmap sprite FAT2U3V7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2U3V7.png"	}
+brightmap sprite FAT2U4V6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2U4V6.png"	}
+brightmap sprite FAT2U5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2U5.png"	}
+brightmap sprite FAT2V1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2V1.png"	}
+brightmap sprite FAT2V2U8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2V2U8.png"	}
+brightmap sprite FAT2V3U7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2V3U7.png"	}
+brightmap sprite FAT2V4U6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2V4U6.png"	}
+brightmap sprite FAT2V5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2V5.png"	}
+
+brightmap sprite FAT2Y1		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A1D1.png"	}
+brightmap sprite FAT2Y2		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A2D8.png"	}
+brightmap sprite FAT2Y7		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A7D3.png"	}
+brightmap sprite FAT2Y8		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2A8D2.png"	}
+brightmap sprite FAT2Z1		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2J1.png"	}
+brightmap sprite FAT2Z2Z8	{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2J2J8.png"	}
+/*
+brightmap sprite FAT2X1			{  map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2X1.png"	}
+brightmap sprite FAT2X2X8		{  map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2X2X8.png"	}
+brightmap sprite FAT2X3X7		{  map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2X3X7.png"	}
+brightmap sprite FAT2X4X6		{ map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2X4X6.png"	}
+brightmap sprite FAT2X5			{  map "Graphics/Brightmaps/Monsters/FatsoHell/FAT2X5.png"	}
+*/
+
+
+//Unwillin gbrightmaps made and implemented by DBThanatos
+/*
+brightmap sprite ZFODX1		{  map "Graphics/Brightmaps/Monsters/Unwilling/ZFODX1.png"	}
+brightmap sprite ZFODX2X8	{ map "Graphics/Brightmaps/Monsters/Unwilling/ZFODX2X8.png"	}
+brightmap sprite ZFODX3X7	{  map "Graphics/Brightmaps/Monsters/Unwilling/ZFODX3X7.png"	}
+brightmap sprite ZFODX4X6	{  map "Graphics/Brightmaps/Monsters/Unwilling/ZFODX4X6.png"	}
+brightmap sprite ZFODX5		{  map "Graphics/Brightmaps/Monsters/Unwilling/ZFODX5.png"	}
+*/
+
+
+
+//Hell Razer brightmaps made and implemented by DBThanatos
+brightmap sprite HRZRA1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA1.png"	}
+brightmap sprite HRZRA2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA2.png"	}
+brightmap sprite HRZRA3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA3.png"	}
+brightmap sprite HRZRA4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA4.png"	}
+brightmap sprite HRZRA5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA5.png"	}
+brightmap sprite HRZRA6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA6.png"	}
+brightmap sprite HRZRA7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA7.png"	}
+brightmap sprite HRZRA8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA8.png"	}
+brightmap sprite HRZRB1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB1.png"	}
+brightmap sprite HRZRB2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB2.png"	}
+brightmap sprite HRZRB3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB3.png"	}
+brightmap sprite HRZRB4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB4.png"	}
+brightmap sprite HRZRB5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB5.png"	}
+brightmap sprite HRZRB6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB6.png"	}
+brightmap sprite HRZRB7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB7.png"	}
+brightmap sprite HRZRB8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRB8.png"	}
+brightmap sprite HRZRC1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC1.png"	}
+brightmap sprite HRZRC2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC2.png"	}
+brightmap sprite HRZRC3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC3.png"	}
+brightmap sprite HRZRC4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC4.png"	}
+brightmap sprite HRZRC5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC5.png"	}
+brightmap sprite HRZRC6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC6.png"	}
+brightmap sprite HRZRC7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC7.png"	}
+brightmap sprite HRZRC8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRC8.png"	}
+brightmap sprite HRZRD1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD1.png"	}
+brightmap sprite HRZRD2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD2.png"	}
+brightmap sprite HRZRD3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD3.png"	}
+brightmap sprite HRZRD4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD4.png"	}
+brightmap sprite HRZRD5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD5.png"	}
+brightmap sprite HRZRD6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD6.png"	}
+brightmap sprite HRZRD7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD7.png"	}
+brightmap sprite HRZRD8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRD8.png"	}
+brightmap sprite HRZRE1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE1.png" DisableFullBright	}
+brightmap sprite HRZRE2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE2.png" DisableFullBright	}
+brightmap sprite HRZRE3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE3.png" DisableFullBright	}
+brightmap sprite HRZRE4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE4.png" DisableFullBright	}
+brightmap sprite HRZRE5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE5.png" DisableFullBright	}
+brightmap sprite HRZRE6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE6.png" DisableFullBright	}
+brightmap sprite HRZRE7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE7.png" DisableFullBright	}
+brightmap sprite HRZRE8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRE8.png" DisableFullBright	}
+brightmap sprite HRZRG1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG1.png"	}
+brightmap sprite HRZRG2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG2.png"	}
+brightmap sprite HRZRG3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG3.png"	}
+brightmap sprite HRZRG4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG4.png"	}
+brightmap sprite HRZRG5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG5.png"	}
+brightmap sprite HRZRG6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG6.png"	}
+brightmap sprite HRZRG7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG7.png"	}
+brightmap sprite HRZRG8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG8.png"	}
+brightmap sprite HRZRI0	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRI0.png"	}
+brightmap sprite HRZRJ0	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRJ0.png"	}
+brightmap sprite HRZRK0	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRK0.png"	}
+
+brightmap sprite HRZRY1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA1.png"	}
+brightmap sprite HRZRY2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA2.png"	}
+brightmap sprite HRZRY3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA3.png"	}
+brightmap sprite HRZRY4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA4.png"	}
+brightmap sprite HRZRY5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA5.png"	}
+brightmap sprite HRZRY6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA6.png"	}
+brightmap sprite HRZRY7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA7.png"	}
+brightmap sprite HRZRY8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRA8.png"	}
+brightmap sprite HRZRZ1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG1.png"	}
+brightmap sprite HRZRZ2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG2.png"	}
+brightmap sprite HRZRZ3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG3.png"	}
+brightmap sprite HRZRZ4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG4.png"	}
+brightmap sprite HRZRZ5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG5.png"	}
+brightmap sprite HRZRZ6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG6.png"	}
+brightmap sprite HRZRZ7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG7.png"	}
+brightmap sprite HRZRZ8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRG8.png"	}
+
+/*brightmap sprite HRZRX1	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX1.png" }
+brightmap sprite HRZRX2	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX2.png" 	}
+brightmap sprite HRZRX3	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX3.png" 	}
+brightmap sprite HRZRX4	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX4.png" 	}
+brightmap sprite HRZRX5	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX5.png" 	}
+brightmap sprite HRZRX6	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX6.png" 	}
+brightmap sprite HRZRX7	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX7.png" 	}
+brightmap sprite HRZRX8	{ map "Graphics/Brightmaps/Monsters/Razer/HRZRX8.png" 	}*/
+
+
+
+
+/*
+//Doom2 fatso brightmaps, and one-barrel-fire sprite/bmap  made and implemented by DBThanatos
+brightmap sprite FATTA1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA1.png"	}
+brightmap sprite FATTA2A8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA2A8.png"	}
+brightmap sprite FATTB1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB1.png"	}
+brightmap sprite FATTB2B8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB2B8.png"	}
+brightmap sprite FATTB3B7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB3B7.png"	}
+brightmap sprite FATTC1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC1.png"	}
+brightmap sprite FATTC2C8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC2C8.png"	}
+brightmap sprite FATTC3C7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC3C7.png"	}
+brightmap sprite FATTD1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD1.png"	}
+brightmap sprite FATTD2D8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD2D8.png"	}
+brightmap sprite FATTD3D7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD3D7.png"	}
+brightmap sprite FATTE1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE1.png"	}
+brightmap sprite FATTE2E8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE2E8.png"	}
+brightmap sprite FATTE3E7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE3E7.png"	}
+brightmap sprite FATTF1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF1.png"	}
+brightmap sprite FATTF2F8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF2F8.png"	}
+brightmap sprite FATTF3F7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF3F7.png"	}
+brightmap sprite FATTG1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTG1.png"	}
+brightmap sprite FATTG2G8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTG2G8.png"	}
+brightmap sprite FATTH1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTH1.png"		}
+brightmap sprite FATTH2H8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTH2H8.png"	}
+brightmap sprite FATTH3H7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTH3H7.png"	}
+brightmap sprite FATTH4H6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTH4H6.png"	}
+brightmap sprite FATTH5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite FATTI1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTI1.png"	}
+brightmap sprite FATTI2I8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTI2I8.png"	}
+brightmap sprite FATTJ1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ1.png"	}
+brightmap sprite FATTJ2		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ2.png"	}
+brightmap sprite FATTJ8		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ8.png"	}
+brightmap sprite FATTU1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTU1.png"		}
+brightmap sprite FATTU2V8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTU2V8.png"	}
+brightmap sprite FATTU3V7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTU3V7.png"	}
+brightmap sprite FATTU4V6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTU4V6.png"	}
+brightmap sprite FATTU5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite FATTV1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTV1.png"		}
+brightmap sprite FATTV2U8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTV2U8.png"	}
+brightmap sprite FATTV3U7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTV3U7.png"	}
+brightmap sprite FATTV4U6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite FATTV5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+
+brightmap sprite FATTY1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA1.png"	}
+brightmap sprite FATTY2Y8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA2A8.png"	}
+brightmap sprite FATTZ1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ1.png"	}
+brightmap sprite FATTZ2		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ2.png"	}
+brightmap sprite FATTZ8		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ8.png"	}
+
+brightmap sprite FATTX1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX1.png"	}
+brightmap sprite FATTX2		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX2.png"	}
+brightmap sprite FATTX3		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX3.png"	}
+brightmap sprite FATTX4		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX4.png"	}
+brightmap sprite FATTX5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX5.png"	}
+brightmap sprite FATTX6		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX6.png"	}
+brightmap sprite FATTX7		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX7.png"	}
+brightmap sprite FATTX8		{ DisableFullBright map "Graphics/Brightmaps/Monsters/FatsoTech/FATTX8.png"	}
+*/
+
+
+
+
+//Phobos867 lost soul brightmaps made and implemented by DBThanatos
+brightmap sprite PSULA1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULA1.png"	}
+brightmap sprite PSULA5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULA5.png"	}
+brightmap sprite PSULA6A4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULA6A4.png"	}
+brightmap sprite PSULA7A3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULA7A3.png"	}
+brightmap sprite PSULA8A2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULA8A2.png"	}
+brightmap sprite PSULB1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULB1.png"	}
+brightmap sprite PSULB5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULB5.png"	}
+brightmap sprite PSULB6B4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULB6B4.png"	}
+brightmap sprite PSULB7B3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULB7B3.png"	}
+brightmap sprite PSULB8B2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULB8B2.png"	}
+brightmap sprite PSULC1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC1.png"	}
+brightmap sprite PSULC5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC5.png"	}
+brightmap sprite PSULC6C4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC6C4.png"	}
+brightmap sprite PSULC7C3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC7C3.png"	}
+brightmap sprite PSULC8C2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC8C2.png"	}
+brightmap sprite PSULU1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC1.png"	}
+brightmap sprite PSULU5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC5.png"	}
+brightmap sprite PSULU6U4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC6C4.png"	}
+brightmap sprite PSULU7U3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC7C3.png"	}
+brightmap sprite PSULU8U2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/LostSoul/PSULC8C2.png"	}
+
+
+
+
+/*
+//Cyberdemon brightmaps by Z86 and further edited by DBThanatos
+brightmap sprite CYBRA1	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA1.png"	}
+brightmap sprite CYBRA2	{					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA2.png"	}
+brightmap sprite CYBRA3	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA3.png"	}
+brightmap sprite CYBRA4	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA4.png"	}
+brightmap sprite CYBRA7	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA7.png"	}
+brightmap sprite CYBRA8	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRA8.png"	}
+brightmap sprite CYBRB1	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRB1.png"	}
+brightmap sprite CYBRB2	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRB2.png"	}
+brightmap sprite CYBRB3	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRB3.png"	}
+brightmap sprite CYBRB7	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRB7.png"	}
+brightmap sprite CYBRB8	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRB8.png"	}
+brightmap sprite CYBRC1	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRC1.png"	}
+brightmap sprite CYBRC2	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRC2.png"	}
+brightmap sprite CYBRC3	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRC3.png"	}
+brightmap sprite CYBRC7	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRC7.png"	}
+brightmap sprite CYBRC8	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRC8.png"	}
+brightmap sprite CYBRD1	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRD1.png"	}
+brightmap sprite CYBRD2	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRD2.png"	}
+brightmap sprite CYBRD3	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRD3.png"	}
+brightmap sprite CYBRD7	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRD7.png"	}
+brightmap sprite CYBRD8	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRD8.png"	}
+brightmap sprite CYBRE1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRE1.png"	} //attack frames
+brightmap sprite CYBRE2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRE2.png"	}
+brightmap sprite CYBRE3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRE3.png"	}
+brightmap sprite CYBRE4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite CYBRE5	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite CYBRE6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite CYBRE7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRE7.png"	} 
+brightmap sprite CYBRE8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRE8.png"	}
+brightmap sprite CYBRF1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF1.png"	}
+brightmap sprite CYBRF2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF2.png"	}
+brightmap sprite CYBRF3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF3.png"	}
+brightmap sprite CYBRF4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF4.png"	}
+brightmap sprite CYBRF5	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF5.png"	}
+brightmap sprite CYBRF6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF6.png"	}
+brightmap sprite CYBRF7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF7.png"	}
+brightmap sprite CYBRF8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRF8.png"	}
+brightmap sprite CYBRG1	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRG1.png"	}
+brightmap sprite CYBRG2	{					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRG2.png"	}
+brightmap sprite CYBRG7	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRG7.png"	}
+brightmap sprite CYBRG8	{ 					map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRG8.png"	}
+brightmap sprite CYBRH0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRH0.png"	} //death frames
+brightmap sprite CYBRI0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRI0.png"	}
+brightmap sprite CYBRJ0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRJ0.png"	}
+brightmap sprite CYBRK0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRK0.png"	}
+brightmap sprite CYBRL0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRL0.png"	}
+brightmap sprite CYBRM0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRM0.png"	}
+brightmap sprite CYBRN0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRN0.png"	}
+brightmap sprite CYBRO0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRO0.png"	}
+brightmap sprite CYBRX1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX1.png"	}
+brightmap sprite CYBRX2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX2.png"	}
+brightmap sprite CYBRX3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX3.png"	}
+brightmap sprite CYBRX4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX4.png"	}
+brightmap sprite CYBRX5	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX5.png"	}
+brightmap sprite CYBRX6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX6.png"	}
+brightmap sprite CYBRX7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX7.png"	}
+brightmap sprite CYBRX8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBRX8.png"	}
+*/
+
+
+
+
+/*
+//Spider Mastermind brightmaps by Z86 and further edited by DBThanatos
+brightmap sprite SPIDA1D1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDA1D1.png"	}
+brightmap sprite SPIDA3A7	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDA3A7.png"	}
+brightmap sprite SPIDB1E1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDB1E1.png"	}
+brightmap sprite SPIDB3B7	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDB3B7.png"	}
+brightmap sprite SPIDC1F1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDC1F1.png"	}
+brightmap sprite SPIDC2C8	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDC2C8.png"	}
+brightmap sprite SPIDF2F8	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDF2F8.png"	}
+brightmap sprite SPIDG1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDG1.png"	}
+brightmap sprite SPIDG2G8	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDG2G8.png"	}
+brightmap sprite SPIDG3G7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDG4G6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDG5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDH1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH1.png"	}
+brightmap sprite SPIDH2H8	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH2H8.png"	}
+brightmap sprite SPIDH3H7	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH3H7.png"	}
+brightmap sprite SPIDH4H6	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH4H6.png"	}
+brightmap sprite SPIDH5		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH5.png"	}
+brightmap sprite SPIDI1		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI1.png"	}
+brightmap sprite SPIDI2		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI2.png"	}
+brightmap sprite SPIDI3		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI3.png"	}
+brightmap sprite SPIDI8		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI8.png"	}
+brightmap sprite SPIDJ0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDJ0.png"	}
+brightmap sprite SPIDK0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDK0.png"	}
+brightmap sprite SPIDL0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDL0.png"	}
+brightmap sprite SPIDM0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDM0.png"	}
+brightmap sprite SPIDN0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDN0.png"	}
+brightmap sprite SPIDO0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDO0.png"	}
+brightmap sprite SPIDP0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDP0.png"	}
+brightmap sprite SPIDQ0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDQ0.png"	}
+brightmap sprite SPIDR0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDR0.png"	}
+
+brightmap sprite SPIDX1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX1.png"	}
+brightmap sprite SPIDX2		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX2.png"	}
+brightmap sprite SPIDX3		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX3.png"	}
+brightmap sprite SPIDX4		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX4.png"	}
+brightmap sprite SPIDX5		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX5.png"	}
+brightmap sprite SPIDX6		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX6.png"	}
+brightmap sprite SPIDX7		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX7.png"	}
+brightmap sprite SPIDX8		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX8.png"	}
+*/
+
+
+
+//Pain Elemental brightmaps by Z86 
+brightmap sprite PAINA1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINA1.png"	}
+brightmap sprite PAINA2A8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINA2A8.png"	}
+brightmap sprite PAINA3A7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINA3A7.png"	}
+brightmap sprite PAINB1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINB1.png"	}
+brightmap sprite PAINB2B8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINB2B8.png"	}
+brightmap sprite PAINB3B7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINB3B7.png"	}
+brightmap sprite PAINC1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINC1.png"	}
+brightmap sprite PAINC2C8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINC2C8.png"	}
+brightmap sprite PAINC3C7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINC3C7.png"	}
+brightmap sprite PAIND1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAIND1.png"	}
+brightmap sprite PAIND2D8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAIND2D8.png"	}
+brightmap sprite PAIND3D7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAIND3D7.png"	}
+brightmap sprite PAIND4D6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAIND4D6.png"	}
+brightmap sprite PAIND5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAIND5.png"	}
+brightmap sprite PAINE1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINE1.png"	}
+brightmap sprite PAINE2E8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINE2E8.png"	}
+brightmap sprite PAINE3E7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINE3E7.png"	}
+brightmap sprite PAINE4E6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINE4E6.png"	}
+brightmap sprite PAINE5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINE5.png"	}
+brightmap sprite PAINF1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINF1.png"	}
+brightmap sprite PAINF2F8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINF2F8.png"	}
+brightmap sprite PAINF3F7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINF3F7.png"	}
+brightmap sprite PAINF4F6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINF4F6.png"	}
+brightmap sprite PAINF5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINF5.png"	}
+brightmap sprite PAING1		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAING1.png"	}
+brightmap sprite PAING2G8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAING2G8.png"	}
+brightmap sprite PAING3G7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAING3G7.png"	}
+brightmap sprite PAINH0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINH0.png"	}
+brightmap sprite PAINI0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINI0.png"	}
+brightmap sprite PAINJ0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINJ0.png"	}
+brightmap sprite PAINK0		{ DisableFullBright map "Graphics/Brightmaps/Monsters/PainElem/PAINK0.png"	}
+
+brightmap sprite PAINY1		{ map "Graphics/Brightmaps/Monsters/PainElem/PAINA1.png"	}
+brightmap sprite PAINY2Y8	{ map "Graphics/Brightmaps/Monsters/PainElem/PAINA2A8.png"	}
+brightmap sprite PAINY3Y7	{ map "Graphics/Brightmaps/Monsters/PainElem/PAINA3A7.png"	}
+brightmap sprite PAINZ1		{ map "Graphics/Brightmaps/Monsters/PainElem/PAING1.png"	}
+brightmap sprite PAINZ2Z8	{ map "Graphics/Brightmaps/Monsters/PainElem/PAING2G8.png"	}
+brightmap sprite PAINZ3Z7	{ map "Graphics/Brightmaps/Monsters/PainElem/PAING3G7.png"	}
+/*
+brightmap sprite PAINX1			{  map "Graphics/Brightmaps/Monsters/PainElem/PAINX1.png"		}
+brightmap sprite PAINX2X8		{  map "Graphics/Brightmaps/Monsters/PainElem/PAINX2X8.png"	}
+brightmap sprite PAINX3X7		{  map "Graphics/Brightmaps/Monsters/PainElem/PAINX3X7.png"	}
+brightmap sprite PAINX4X6		{  map "Graphics/Brightmaps/Monsters/PainElem/PAINX4X6.png"	}
+brightmap sprite PAINX5			{  map "Graphics/Brightmaps/Monsters/PainElem/PAINX5.png"		}
+*/
+
+//WolfensteinSS brightmaps by Z86 and further edited by DBThanatos
+brightmap sprite SSWVG0	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Nazi/sswvg0.png"	}
+/*
+brightmap sprite SSWVX1	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX1.png"	}
+brightmap sprite SSWVX2	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX2.png"	}
+brightmap sprite SSWVX3	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX3.png"	}
+brightmap sprite SSWVX4	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX4.png"	}
+brightmap sprite SSWVX5	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX5.png"	}
+brightmap sprite SSWVX6	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX6.png"	}
+brightmap sprite SSWVX7	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX7.png"	}
+brightmap sprite SSWVX8	{  map "Graphics/Brightmaps/Monsters/Nazi/SSWVX8.png"	}
+*/
+
+
+
+//Revenant Elemental brightmaps by Z86 
+brightmap sprite SKELJ1	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ1.png"	}
+brightmap sprite SKELJ2	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ2.png"	}
+brightmap sprite SKELJ3	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ3.png"	}
+brightmap sprite SKELJ4	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ4.png"	}
+brightmap sprite SKELJ5	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ5.png"	}
+brightmap sprite SKELJ6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ6.png"	}
+brightmap sprite SKELJ7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ7.png"	}
+brightmap sprite SKELJ8	{ DisableFullBright map "Graphics/Brightmaps/Monsters/Revenant/SKELJ8.png"	}
+/*
+brightmap sprite SKELX1	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX1.png"	}
+brightmap sprite SKELX2	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX2.png"	}
+brightmap sprite SKELX3	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX3.png"	}
+brightmap sprite SKELX4	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX4.png"	}
+brightmap sprite SKELX5	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX5.png"	}
+brightmap sprite SKELX6	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX6.png"	}
+brightmap sprite SKELX7	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX7.png"	}
+brightmap sprite SKELX8	{  map "Graphics/Brightmaps/Monsters/Revenant/SKELX8.png"	}
+*/
+
+
+//===========================================================================
+//===========================================================================
+//
+//	MISC
+//
+//===========================================================================
+//===========================================================================
+
+// Barrel sprites and brightmaps by Franco Tieppo, implemented by DBT
+brightmap sprite D4BRA0	{ DisableFullBright map "Graphics/Brightmaps/Other/D4BRA0.png"	}
+
+brightmap sprite PSMCB0	{ DisableFullBright map "Graphics/Brightmaps/Other/D4ELA0.png"	}
+brightmap sprite EGDBA0	{ DisableFullBright map "Graphics/Brightmaps/Other/D4ELA0.png"	}
+ 
+//D16 FatsoTech
+brightmap sprite FATTA1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA1.png"	}
+brightmap sprite FATTA2A8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA2A8.png"	}
+brightmap sprite FATTA3A7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA3A7.png"	}
+brightmap sprite FATTA4A6   { map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA4A6.png"	}
+brightmap sprite FATTA5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTA5.png"	}
+brightmap sprite FATTB1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB1.png"	}
+brightmap sprite FATTB2B8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB2B8.png"	}
+brightmap sprite FATTB3B7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB3B7.png"	}
+brightmap sprite FATTB4B6	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB4B6.png"	}
+brightmap sprite FATTB5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTB5.png"	}
+brightmap sprite FATTC1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC1.png"	}
+brightmap sprite FATTC2C8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC2C8.png"	}
+brightmap sprite FATTC3C7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC3C7.png"	}
+brightmap sprite FATTC4C6	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC4C6.png"	}
+brightmap sprite FATTC5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTC5.png"	}
+brightmap sprite FATTD1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD1.png"	}
+brightmap sprite FATTD2D8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD2D8.png"	}
+brightmap sprite FATTD3D7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD3D7.png"	}
+brightmap sprite FATTD4D6	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD4D6.png"	}
+brightmap sprite FATTD5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTD5.png"	}
+brightmap sprite FATTE1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE1.png"	}
+brightmap sprite FATTE2E8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE2E8.png"	}
+brightmap sprite FATTE3E7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE3E7.png"	}
+brightmap sprite FATTE4E6	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE4E6.png"	}
+brightmap sprite FATTE5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTE5.png"	}
+brightmap sprite FATTF1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF1.png"	}
+brightmap sprite FATTF2F8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF2F8.png"	}
+brightmap sprite FATTF3F7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF3F7.png"	}
+brightmap sprite FATTF4F6	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF4F6.png"	}
+brightmap sprite FATTF5		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTF5.png"	}
+brightmap sprite FATTG1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTG1.png"	}
+brightmap sprite FATTG2G8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTG2G8.png"	}
+brightmap sprite FATTG3G7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTG3G7.png"	}
+brightmap sprite FATTI1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTI1.png"	}
+brightmap sprite FATTI2I8	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTI2I8.png"	}
+brightmap sprite FATTI3I7	{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTI3I7.png"	}
+brightmap sprite FATTJ1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ1.png"	}
+brightmap sprite FATTJ2		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ2.png"	}
+brightmap sprite FATTJ3		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ3.png"	}
+brightmap sprite FATTJ7		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ7.png"	}
+brightmap sprite FATTJ8		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTJ8.png"	}
+brightmap sprite FATTY1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTY1.png"	}
+brightmap sprite FATTZ1		{ map "Graphics/Brightmaps/Monsters/FatsoTech/FATTZ1.png"	}
+
+
+//SpiderMastermind
+brightmap sprite SPIDA1D1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDA1D1.png"	}
+//brightmap sprite SPIDA3A7	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDA3A7.png"	}
+brightmap sprite SPIDB1E1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDB1E1.png"	}
+//brightmap sprite SPIDB3B7	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDB3B7.png"	}
+brightmap sprite SPIDC1F1	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDC1F1.png"	}
+brightmap sprite SPIDC2C8	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDC2C8.png"	}
+brightmap sprite SPIDF2F8	{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDF2F8.png"	}
+brightmap sprite SPIDG1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDG1.png"	}
+brightmap sprite SPIDG2G8	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDG2G8.png"	}
+brightmap sprite SPIDG3G7	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDG4G6	{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDG5		{ DisableFullBright map "Graphics/Brightmaps/Monsters/None.png"	}
+brightmap sprite SPIDH1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH1.png"	}
+brightmap sprite SPIDH2H8	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH2H8.png"	}
+//brightmap sprite SPIDH3H7	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH3H7.png"	}
+//brightmap sprite SPIDH4H6	{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH4H6.png"	}
+//brightmap sprite SPIDH5		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDH5.png"	}
+brightmap sprite SPIDI1		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI1.png"	}
+brightmap sprite SPIDI2		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI2.png"	}
+//brightmap sprite SPIDI3		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI3.png"	}
+brightmap sprite SPIDI8		{ 					map "Graphics/Brightmaps/Monsters/Mastermind/SPIDI8.png"	}
+brightmap sprite SPIDJ0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDJ0.png"	}
+brightmap sprite SPIDK0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDK0.png"	}
+brightmap sprite SPIDL0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDL0.png"	}
+brightmap sprite SPIDM0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDM0.png"	}
+brightmap sprite SPIDN0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDN0.png"	}
+brightmap sprite SPIDO0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDO0.png"	}
+brightmap sprite SPIDP0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDP0.png"	}
+brightmap sprite SPIDQ0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDQ0.png"	}
+brightmap sprite SPIDR0		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDR0.png"	}
+/*
+brightmap sprite SPIDX1		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX1.png"	}
+brightmap sprite SPIDX2		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX2.png"	}
+brightmap sprite SPIDX3		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX3.png"	}
+brightmap sprite SPIDX4		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX4.png"	}
+brightmap sprite SPIDX5		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX5.png"	}
+brightmap sprite SPIDX6		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX6.png"	}
+brightmap sprite SPIDX7		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX7.png"	}
+brightmap sprite SPIDX8		{ DisableFullBright	map "Graphics/Brightmaps/Monsters/Mastermind/SPIDX8.png"	}
+*/
+
+//D16Cyberdemon
+brightmap sprite CYBIA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA1.png"	}
+brightmap sprite CYBIA2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA2.png"	}
+brightmap sprite CYBIA3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA3.png"	}
+brightmap sprite CYBIA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA7.png"	}
+brightmap sprite CYBIA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA8.png"	}
+brightmap sprite CWLKA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKA1.png"	}
+brightmap sprite CWLKA2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKA2.png"	}
+brightmap sprite CWLKA3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKA3.png"	}
+brightmap sprite CWLKA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKA7.png"	}
+brightmap sprite CWLKA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKA8.png"	}
+brightmap sprite CWLKB1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKB1.png"	}
+brightmap sprite CWLKB2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKB2.png"	}
+brightmap sprite CWLKB3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKB3.png"	}
+brightmap sprite CWLKB7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKB7.png"	}
+brightmap sprite CWLKB8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKB8.png"	}
+brightmap sprite CWLKC1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKC1.png"	}
+brightmap sprite CWLKC2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKC2.png"	}
+brightmap sprite CWLKC7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKC7.png"	}
+brightmap sprite CWLKC8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKC8.png"	}
+brightmap sprite CWLKD1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKD1.png"	}
+brightmap sprite CWLKD2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKD2.png"	}
+brightmap sprite CWLKD3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKD3.png"	}
+brightmap sprite CWLKD7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKD7.png"	}
+brightmap sprite CWLKD8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CWLKD8.png"	}
+brightmap sprite CYRKA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYRKA1.png"	}
+brightmap sprite CYRKA6		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYRKA6.png"	}
+brightmap sprite CYRKA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYRKA7.png"	}
+brightmap sprite CYRKA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYRKA8.png"	}
+brightmap sprite CYBFA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFA1.png"	}
+brightmap sprite CYBFA5		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFA5.png"	}
+brightmap sprite CYBFA6		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFA6.png"	}
+brightmap sprite CYBFA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFA7.png"	}
+brightmap sprite CYBFA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFA8.png"	}
+brightmap sprite CYBFB1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFB1.png"	}
+brightmap sprite CYBFB2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFB2.png"	}
+brightmap sprite CYBFB7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFB7.png"	}
+brightmap sprite CYBFB8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFB8.png"	}
+brightmap sprite CYBFC1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFC1.png"	}
+brightmap sprite CYBFC2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFC2.png"	}
+brightmap sprite CYBFC3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFC3.png"	}
+brightmap sprite CYBFC4		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFC4.png"	}
+brightmap sprite CYBFC8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFC8.png"	}
+brightmap sprite CYBFD1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFD1.png"	}
+brightmap sprite CYBFD2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFD2.png"	}
+brightmap sprite CYBFD3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFD3.png"	}
+brightmap sprite CYBFD4		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBFD4.png"	}
+brightmap sprite RKRNA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/RKRNA1.png"	}
+brightmap sprite RKRNA2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/RKRNA2.png"	}
+brightmap sprite RKRNA3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/RKRNA3.png"	}
+brightmap sprite RKRNA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/RKRNA7.png"	}
+brightmap sprite RKRNA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/RKRNA8.png"	}
+brightmap sprite CYPNA1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA1.png"	}
+brightmap sprite CYPNA2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA2.png"	}
+brightmap sprite CYPNA3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA3.png"	}
+brightmap sprite CYPNA7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA7.png"	}
+brightmap sprite CYPNA8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA8.png"	}
+brightmap sprite CYDTA0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTA0.png"	}
+brightmap sprite CYDTB0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTB0.png"	}
+brightmap sprite CYDTC0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTC0.png"	}
+brightmap sprite CYDTD0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTD0.png"	}
+brightmap sprite CYDTE0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTE0.png"	}
+brightmap sprite CYDTF0		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYDTF0.png"	}
+brightmap sprite CYBRY1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA1.png"	}
+brightmap sprite CYBRY2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA2.png"	}
+brightmap sprite CYBRY3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA3.png"	}
+brightmap sprite CYBRY7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA7.png"	}
+brightmap sprite CYBRY8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYBIA8.png"	}
+brightmap sprite CYBRZ1		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA1.png"	}
+brightmap sprite CYBRZ2		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA2.png"	}
+brightmap sprite CYBRZ3		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA3.png"	}
+brightmap sprite CYBRZ7		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA7.png"	}
+brightmap sprite CYBRZ8		{ map "Graphics/Brightmaps/Monsters/Cyberdemon/CYPNA8.png"	}

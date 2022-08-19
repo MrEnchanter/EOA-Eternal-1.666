@@ -1,0 +1,73 @@
+AddOptionMenu "OptionsMenu" 
+{
+	StaticText " "
+	Submenu "Bolognese Gore Options", "BologneseOptions"
+}
+
+OptionMenu "BologneseOptions"
+{
+  Title "Bolognese Gore Options"
+  StaticText " "
+  Option "Use Enhanced Giblets", "enhanced_gibs", "YesNo"
+  StaticText "If you want to see more gibs"
+  StaticText " "
+  Option "Which mode are you playing", "isrunningzandronum", "SelectEngineType"
+  StaticText "Singleplayer/Multiplayer requires different CVARs for blood amount."
+  StaticText " "
+  StaticText " "
+  
+  Option "Blood Amount", "zdoombrutalblood", "BrutalBlood"
+  //Option "Blood Amount (Client/Multiplayer)", "bd_bloodamount", "BrutalBlood"
+  StaticText "How much blood you want to see?"
+  StaticText " "
+  
+  /*Option "Minimum health for gibbing ", "bd_mingibhealth", "mingibhealth"
+  StaticText "cvar bd_mingibhealth"
+  StaticText "Increase this if you are seeing zombies being exploded"
+  StaticText "by pea shooter bullets, or decrease it for maximum hilarity."
+  StaticText " " */   // no need for this because D4T decides when will mosnters explode
+    
+  Option "Max Wall Decals", "cl_maxdecals", "maxdecals"
+  Option "Max Gibs and Blood Pools", "sv_corpsequeuesize", "maxgibs"
+  StaticText " "
+}
+
+OptionValue "BrutalBlood"
+{
+	1, "1-Minimal"
+	2, "2-Normal"
+	3, "3-Quentin Tarantino Movie"
+	4, "4-Anime Blood"
+	5, "5-Geisers of Blood"
+}
+
+OptionValue "maxdecals"
+{
+	1, "0"
+	128, "128"
+	512, "512"
+	1024, "1024"
+	2056, "2056"
+	5102, "5102"
+	9999, "9999"
+}
+
+OptionValue "maxgibs"
+{
+	1, "0"
+	64, "64"
+	100, "100"
+	300, "300"
+	500, "500"
+	1000, "1000"
+	2000, "2000"
+	5000, "5000"
+	10000, "10000"
+	25000, "25000"
+	50000, "50000"
+}
+
+OptionValue "SelectEngineType"
+{
+	0, "GZDoom"
+}

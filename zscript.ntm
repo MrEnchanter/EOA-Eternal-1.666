@@ -1,0 +1,3 @@
+version "4.1"
+#include "zscript/monsters.ntm"
+#include "zscript/effects.ntm"

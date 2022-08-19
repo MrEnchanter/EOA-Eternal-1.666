@@ -1,0 +1,28 @@
+Class Extralive : EOA_Ammo
+{
+	Default
+	{
+		Scale 0.4;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 999999999;
+		Inventory.PickupSound "ExtaLifePickup";
+		Ammo.DropAmount 1;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 3;
+		+NOGRAVITY
+		+FLOATBOB
+		+MOVEWITHSECTOR
+		+RELATIVETOFLOOR
+		FloatBobStrength 0.3;
+	}
+	States
+	{
+	Spawn:
+		EXLV A 0 NoDelay; //A_CheckFlag("DROPPED", "Null");
+	SpawnLooper:	
+		EXLV A 35 Bright;
+		Loop;
+	Pickup:
+		Stop;
+	}
+}

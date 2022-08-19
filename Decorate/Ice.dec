@@ -1,0 +1,179 @@
+
+Actor FTIce
+{
+  +EXTREMEDEATH
+  +LowGravity
+  +THRUACTORS
+  Radius 4
+  Height 4
+  Speed 16
+  Damage 1
+  damagetype "ice"
+  Projectile
+  RenderStyle Add
+  DamageType Ice
+  Alpha 0.35
+  Scale 0.67
+  SeeSound "Ice/Fire"
+  //DeathSound "Flamethrower/Hit"
+  States
+  {
+  Spawn:
+    TNT1 A 2
+    FRFI ABCD 2 bright A_Explode(4, 8, 0)
+    TNT1 A 0 A_LowGravity
+    FRFI EFG 2 bright A_Explode(4, 16, 0)
+    FRFI HIJ 2 bright A_Explode(4, 32, 0)
+    FRFI KLM 2 bright A_Explode(4, 64, 0)
+    FRFI NO 2 bright
+    Stop
+  Death:
+    FRFI HIJ 2 bright A_Explode(4, 32, 0)
+    FRFI KLM 2 bright A_Explode(4, 64, 0)
+    FRFI NO 2 bright
+    Stop
+  }
+}
+Actor IceBombChunk : IceChunk replaces IceChunk
+{ 
+	+BRIGHT
+	Translation "0:255=%[0, 0, 0]:[0.9, 1.0, 1.66]"
+}
+
+Actor IceBombExplosionFX : EOA_RocketExplosion
+{ 
+	Scale 1.5
+	Translation "0:255=%[0, 0, 0]:[0.9, 1.0, 1.66]"
+}
+
+Actor IceBombTrail : FastProjectileTrail
+{ 
+	MissileType "IceBombSmokeTrail"
+}
+
+Actor IceBombSmokeTrail : FragGrenadeSmoke
+{ 
+	+BRIGHT
+	Scale 0.05
+	RenderStyle "Add"
+	Translation "0:255=%[0, 0, 0]:[0.9, 1.0, 1.66]"  
+}
+
+Actor IceBombShockwave 
+{ 
+	RenderStyle "Add"
+	//Translation "0:255=%[0, 0, 0]:[0.9, 1, 1.66]"
+	Scale 0.10
+	//Alpha 0.5
+	+ROLLSPRITE
+	+ROLLCENTER
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359))
+		BSW2 A 1 Bright
+		{
+			A_FadeOut(0.07);
+			A_SetScale(ScaleX + 0.05 * 2);
+		}
+		Wait
+	}
+}
+
+Actor IceBombShockwave2
+{ 
+	RenderStyle "Add" //"Translucent"
+	Translation "0:255=%[0, 0, 0]:[0.9, 1.0, 1.66]"
+	Scale 0.70
+	Alpha 0.9
+	+ROLLSPRITE
+	+ROLLCENTER
+	+NOINTERACTION
+	+FORCEXYBILLBOARD
+	+DONTSPLASH
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359))
+		ICEB A 1 Bright
+		{
+			A_FadeOut(0.07);
+			A_SetScale(ScaleX + 0.08 * 2);
+		}
+		Wait
+	}
+}
+
+
+Actor IceBombSmoke //code borrowed from QCDE
+{
+	+THRUACTORS
+	+CLIENTSIDEONLY +NONETID
+	+FORCEXYBILLBOARD
+	+FLOORCLIP
+	+NOFRICTION
+	RenderStyle Add
+	Alpha 0.0
+	Scale 0.4
+	Gravity 0.08
+	Radius 5
+	Height 7
+	//Translation "Ice"  
+	States
+	{
+	Spawn:
+		X110 A 0 NODELAY A_Jump(128,"Flip")
+		Goto Spawnn
+	Flip:
+		X110 A 0 A_SetScale(scalex*-1,scaley)
+		Goto Spawnn
+	Spawnn:
+		X110 ABCDEFGHIJK 1 Bright A_FadeIn(0.09)
+		X110 LMNOPQRSTUVWXY 1 Bright
+	Looper:
+		X110 ABCDEFGHIJKLMNOPQRSTUVWXY 1 Bright A_FadeOut(0.09)
+		Loop
+	
+	}
+}
+
+Actor FTIceBall 
+{
+	damage 0
+	Damagetype "Ice"
+	//ExplosionDamage 320
+	//ExplosionRadius 120
+   	Projectile
+	Radius 10
+	Height 10
+    Speed 30
+	Scale 1.5
+	DeathSound "Ice/Fire"
+	+MTHRUSPECIES
+	+NOTELEPORT
+	-BOUNCEONWALLS
+	-BOUNCEONFLOORS
+	-BOUNCEONCEILINGS
+	+FORCERADIUSDMG
+	+NODAMAGETHRUST
+	Gravity 0.5
+	Mass 400
+		
+	States
+	{
+	Spawn:
+		FRFI AB 1 Bright 
+		Loop
+	Death:
+		FRFI C 2 Bright A_Explode(2,256,0,0,256)
+		FRFI DOP 2 Bright 
+		TNT1 AAA 0 A_SpawnItemEx("IceBombShockwave", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		FRFI P 1 Bright A_IceGuyDie
+		Stop
+	}
+}

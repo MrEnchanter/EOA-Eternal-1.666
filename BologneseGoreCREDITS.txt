@@ -1,0 +1,10 @@
+Brutal Bolognese Gore mod by Sgt. Mark IV.
+
+Sprites XDT1** - From Duke Nukem 3D
+Sprites BLHT** and BLHN** - are based on effects from Team Fortress, but recolored by me.
+Sprites XME8** - From Strife
+Sprites XDB5** and BRIB** - Based on sprites from Blood (I think from a version recolored by Mike12), edited by me.
+Sprites GUTS** - Based on sprites from Powerslave, animated by me.
+Gore sounds from Half-Life and Postal
+
+All other sprites are made by me, either edited from Doom, or made from scratch.

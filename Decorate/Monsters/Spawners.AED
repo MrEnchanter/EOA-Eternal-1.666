@@ -1,0 +1,78 @@
+/*Actor AutomapSpawner : RandomSpawner replaces Allmap
+{
+	DropItem "EOA_Allmap2"
+}
+*/
+Actor ImpSpawner : RandomSpawner replaces DoomImp
+{
+	DropItem "DEDoomImp", 255, 10
+	DropItem "DEGargoyle", 255, 4
+}
+Actor ZombiemanSpawner : RandomSpawner Replaces Zombieman
+{
+	DropItem "DEZombieman", 255
+}
+Actor ShotgunGuySpawner : RandomSpawner Replaces ShotgunGuy
+{
+	DropItem "DEMechaZombie", 255
+}
+Actor ChaingunGuySpawner : RandomSpawner replaces ChaingunGuy
+{
+	DropItem "DEMaykrDrone", 255
+	DropItem "DEShieldGuy", 255, 6
+}
+Actor ArachnotronSpawner : RandomSpawner Replaces Arachnotron
+{
+	Dropitem "DEArachnotron", 255
+	DropItem "DERiotShieldGuy", 255
+}
+Actor FatsoSpawner : RandomSpawner replaces Fatso
+{
+	DropItem "DEFatsoHell", 255, 10
+	DropItem "DEFatsoTech", 255, 4
+}
+Actor DemonSpawner : RandomSpawner Replaces Demon
+{
+	DropItem "DERiotShieldGuy", 255, 6
+	Dropitem "DEdemon", 255, 6
+	Dropitem "DEprowler", 255, 6
+}
+Actor CacoSpawner : RandomSpawner Replaces CacoDemon
+{
+	DropItem "DEcacoDemon", 255
+}
+Actor SpectreSpawner : RandomSpawner Replaces Spectre
+{
+	Dropitem "DEStoneImp", 255, 70
+	Dropitem "DESpectre", 255, 40
+	Dropitem "DESpectreWhiplash", 255, 25
+}
+Actor HellKnightspawner : RandomSpawner replaces HellKnight
+{
+	DropItem "DEHellKnight",255,20
+	DropItem "DEWhiplash",255,16
+}
+Actor RevSpawner : RandomSpawner replaces Revenant
+{
+	DropItem "DERevenant", 255, 20
+	DropItem "DECarcass", 255, 6
+}
+Actor PainSpawner : RandomSpawner Replaces PainElemental
+{
+	DropItem "DEPainElemental", 255
+	DropItem "DECursedProwler", 255
+}
+Actor ArchvileSpawner : RandomSpawner replaces Archvile
+{
+	DropItem "DEMarauder", 255, 10
+	DropItem "DEArchvile", 255, 8
+}
+Actor BaronSpawner : RandomSpawner Replaces BaronofHell
+{
+	Dropitem "DEDreadknight", 255, 50
+	DropItem "DEBaronofHell", 255, 35
+}
+Actor CyberSpawner : RandomSpawner Replaces CyberDemon
+{
+	DropItem "DETyrant", 255
+}

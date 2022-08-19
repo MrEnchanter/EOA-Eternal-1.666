@@ -1,0 +1,96 @@
+Class EOAE_HudRenderer : EventHandler
+{
+	Const HUDBaseWidth = 1280;
+	Const HUDBaseHeight = 960;
+	Const Scale = 1.5;
+
+	Const XHairW = 4980;
+	Const XHairH = 3860;
+
+	Const GXHairW = 1364; 
+	Const GXHairH = 1023;
+	
+	static clearscope Shape2D MakeSquare()
+    {
+        // the shape that will be drawn
+        Shape2D square = new("Shape2D");
+        // texture coordinates of each corner
+        square.PushCoord((0, 0));
+        square.PushCoord((1, 0));
+        square.PushCoord((0, 1));
+        square.PushCoord((1, 1));
+        // two triangles make up the square
+        // the points have to be in counter-clockwise order
+        square.PushTriangle(0, 3, 1);
+        square.PushTriangle(0, 2, 3);
+        return square;
+    }
+
+    // set the positions of an existing square shape's vertices
+    static clearscope void MoveSquare(Shape2D shape, Vector2 size, Vector2 pos, double angle)
+    {
+        // clear any vertices already set
+        shape.Clear(Shape2D.C_Verts);
+        // corners of a square centered on 0,0
+        Vector2 points[4];
+        points[0] = (-0.5 * size.X, -0.5 * size.Y);
+        points[1] = (0.5 * size.X, -0.5 * size.Y);
+        points[2] = (-0.5 * size.X, 0.5 * size.Y);
+        points[3] = (0.5 * size.X, 0.5 * size.Y);
+		
+        // then move the points by the set offset
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 oldpos = points[i];
+            points[i].X = oldpos.X * cos(angle) - oldpos.Y * sin(angle) + pos.X;
+            points[i].Y = oldpos.X * sin(angle) + oldpos.Y * cos(angle) + pos.Y;
+            shape.PushVertex(points[i]);
+        }
+    }
+	
+	static clearscope Void XHRDrawShape2d(String tex, bool animate, Vector2 Pos, Vector2 Scale, double angle, double rotation, Bool KeepRatio, Float Alpha, int Style, int ColorInHex)
+	{
+		let Shape = MakeSquare();
+		int virtualW = Screen.GetWidth();
+		int virtualH = Screen.GetHeight();
+		TextureID Texture = TexMan.CheckForTexture(tex, TexMan.TYPE_ANY); //Top Right thing
+		Vector2 ScalePos = TexMan.GetScaledSize(Texture);
+		ScalePos = ((virtualW/10) * Scale.X, (virtualW/10) * Scale.Y);
+		Vector2 RotatedPos = Actor.RotateVector(Pos, angle)/100;
+		MoveSquare(Shape, ScalePos, (virtualW/2.0 + RotatedPos.X * -100, virtualH/2.0 + RotatedPos.Y * -100), angle + rotation);
+		Screen.DrawShape(Texture, true, Shape, DTA_VirtualWidth, HUDBaseWidth, DTA_VirtualHeight, VirtualH, DTA_KeepRatio, KeepRatio, DTA_Alpha, Alpha, DTA_LegacyRenderStyle, Style, DTA_ColorOverlay, ColorInHex);
+		
+	}
+	
+	static clearscope Void DrawHudShape(String tex, bool animate, Vector2 Pos, Vector2 Scale, double angle, double rotation, Bool KeepRatio, Float Alpha, int Style, int ColorInHex)
+	{
+		let Shape = MakeSquare();
+		int virtualW = Screen.GetWidth();
+		int virtualH = Screen.GetHeight();
+		TextureID Texture = TexMan.CheckForTexture(tex, TexMan.TYPE_ANY); //Top Right thing
+		Vector2 ScalePos = TexMan.GetScaledSize(Texture);
+		ScalePos = ((virtualW/10) * Scale.X, (virtualW/10) * Scale.Y);
+		Vector2 RotatedPos = Actor.RotateVector(Pos, angle)/100;
+		MoveSquare(Shape, ScalePos, (virtualW/2.0 + RotatedPos.X * -100, virtualH/2.0 + RotatedPos.Y * -100), angle + rotation);
+		Screen.SetClipRect(virtualW/2.0 + RotatedPos.X * -100, virtualH/2.0 + RotatedPos.Y * -100, 26, 45);
+		Screen.DrawShape(Texture, true, Shape, DTA_VirtualWidth, HUDBaseWidth, DTA_VirtualHeight, VirtualH, DTA_KeepRatio, KeepRatio, DTA_Alpha, Alpha);//, DTA_LegacyRenderStyle, Style, DTA_ColorOverlay, ColorInHex);
+		Screen.ClearClipRect();
+	}
+	
+	Override Void RenderOverlay(RenderEvent e)
+	{
+		Float U_XOffset = 210;
+		Float U_YOffset = 32;
+		Float HudYOffset = (HUDBaseHeight * 85 / 100 + 140 - U_YOffset)/5;
+		Float HudLXOffset = (-370 + U_XOffset)/100;
+		PlayerInfo Player = Players[ConsolePlayer];
+		//TestValue = TestValue ? TestValue : CVar.GetCVar("TestValue", Player);
+		If (Player && Player.Mo && Player.Mo == e.Camera && PlayerInGame[ConsolePlayer])
+		{
+			Let Mo = PlayerPawn(e.Camera);
+			TextureID Test = TexMan.CheckForTexture("HLTHBAR3", TEXMAN.TYPE_ANY);
+			If(Test)	
+			TexMan.ReplaceTextures("ARMRBAR", "HLTHBAR3", 0);
+		}
+	}
+}

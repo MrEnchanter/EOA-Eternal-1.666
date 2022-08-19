@@ -1,0 +1,50 @@
+class EDE_Explosion : Actor
+{
+	Default
+	{
+		+Corpse
+		+NoTeleport
+		+NoBlockMap
+		+NoGravity
+		+NotOnAutomap
+		FloatBobPhase 0;
+	}
+	States
+	{
+		Spawn:
+			NEXP A 3 NoDelay Bright
+			{
+				scale.x *= FRandomPick(-1, 1);
+			}
+			NEXP BCDEFGHIJ 3 Bright;
+			Stop;
+	}
+}
+class EDE_Debris : Actor
+{
+	Default
+	{
+		+Corpse
+		+NoTeleport
+		+NoBlockMap
+		+NotOnAutomap
+		FloatBobPhase 0;
+		Health 10;
+		Radius 8;
+		Height 1;
+		Mass 1;
+		Gravity 0.5;
+	}
+	States
+	{
+		Spawn:
+			NDEB A 0 A_Jump(127, 5);
+			NDEB ABCD 3;
+			Goto Spawn + 1;
+			NDEB EFGH 3;
+			Goto Spawn + 5;
+		Crash:
+			TNT1 A 0;
+			Stop;
+	}
+}

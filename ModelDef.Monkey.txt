@@ -1,0 +1,90 @@
+Model EOA_MonkeyPoleA
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexA.png"
+	Model 0 "POLEA.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB A 0 0
+}
+
+Model EOA_MonkeyPoleB
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexB.png"
+	Model 0 "POLEB.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB B 0 0
+}
+
+Model EOA_MonkeyPoleC
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexC.png"
+	Model 0 "POLEC.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB C 0 0
+}
+
+Model EOA_MonkeyPoleD
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexD.png"
+	Model 0 "POLED.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB D 0 0
+}
+
+Model MonkeyPoleA
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexA.png"
+	Model 0 "POLEA.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB A 0 0
+}
+
+
+Model MonkeyPoleB
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexB.png"
+	Model 0 "POLEB.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB B 0 0
+}
+
+
+Model MonkeyPoleC
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexC.png"
+	Model 0 "POLEC.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB C 0 0
+}
+
+
+Model MonkeyPoleD
+{ 
+	Path "Models\Poles"
+	Skin 0 "PoleTexD.png"
+	Model 0 "POLED.md3"
+	Scale 2.5 2.5 2.5
+	Offset 0 0 10
+
+	FrameIndex MONB D 0 0
+}

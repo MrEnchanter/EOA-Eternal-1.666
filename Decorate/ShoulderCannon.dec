@@ -1,0 +1,323 @@
+ACTOR FlameTriggerer : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 ACS_NAMEDEXECUTEALWAYS("FlameBelch")
+		Fail
+	}
+}
+
+ACTOR SawTriggerer : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 ACS_NAMEDEXECUTEALWAYS("Quicksaw")
+		Fail
+	}
+}
+
+ACTOR IceTriggerer : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 ACS_NAMEDEXECUTEALWAYS("IceBomb")
+		Fail
+	}
+}
+
+ACTOR GrenadeTriggerer : CustomInventory
+{
+	Inventory.Amount 1
+	Inventory.MaxAmount 1
+	-INVBAR
+	+UNDROPPABLE
+	States
+	{
+	Use:
+		TNT1 A 0 ACS_NAMEDEXECUTEALWAYS("FragGrenade")
+		Fail
+	}
+}
+
+ACTOR FlameTrigger : EOA_Token{}
+ACTOR SawTrigger : EOA_Token{}
+ACTOR IceTrigger : EOA_Token{}
+ACTOR GrenadeTrigger : EOA_Token{}
+ACTOR ExtraNade : EOA_Token{}
+ACTOR BurningToken : EOA_Token{}
+ACTOR ShoulderInv : EOA_Token{}
+ACTOR SawInv : EOA_Token{}
+
+/*
+Actor ShoulderFlame : Weapon 
+{
+  Obituary "%o was burned alive by %k's shoulder flamethrower."
+  //Weapon.UpSound "Flamethrower/Charge"
+  +Weapon.Explosive
+  Weapon.SelectionOrder 1000
+  States
+  {
+  Deselect:
+    TNT1 A 1 A_Lower(120)
+    Loop
+  Select:
+    TNT1 A 1 A_Raise(120)
+    Loop
+  Ready:
+	//TNT1 A 0 A_TakeInventory("StopMe", 1)
+	//TNT1 A 0 A_GiveInventory("FlameOn", 1)
+	TNT1 A 0 A_GiveInventory("Shoulderinv", 1)
+	TNT1 A 0 A_JumpIfInventory("IceToken",1,"IceAttack")
+	TNT1 A 0 A_JumpIfInventory("FlameThrowerColdownString",1,"TakeShoulder")
+	TNT1 A 0 A_JumpIfInventory("IceBombCooldownString",1,"TakeShoulder")
+	TNT1 A 0 A_JumpIf(GetCVAR("DECannon")==true, "DEFlame")
+	SCF0 A 0 A_PlaySound("Flamethrower/Charge",1)
+	SCF0 F 3 A_Quake(8, 8, 0, 32)
+	TNT1 A 0 A_Recoil (4)
+	TNT1 A 0 A_AlertMonsters
+	SCF0 G 5 bright A_GunFlash
+    SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+    SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+    SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 J 1 bright 
+    SCF0 G 0 bright A_GunFlash
+	SCF0 H 1 bright
+	SCF0 I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	SCF0 A 0 A_TakeInventory("ShoulderInv", 1)
+	SCF0 A 0 A_GiveInventory("FlameThrowerColdownToken",25)
+	SCF0 A 0 A_GiveInventory("FlameThrowerColdownString",1) 
+    SCF0 H 2 bright A_ReFire
+	Goto InvisLoop
+	
+  DEFlame:  //Doom Eternal Cannon sprite
+	DE_C A 0 A_PlaySound("Flamethrower/Charge",1)
+	DE_C E 0
+	DE_C F 3 A_Quake(8, 8, 0, 32)
+	TNT1 A 0 A_Recoil (4)
+	TNT1 A 0 A_AlertMonsters
+	DE_C G 5 bright A_GunFlash
+    DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+    DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+    DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C J 1 bright 
+    DE_C G 0 bright A_GunFlash
+	DE_C H 1 bright
+	DE_C I 1 bright A_FireCustomMissile("FTFire", -3, 0, Random(-13, -17), 15, FPF_NOAUTOAIM, -10)
+	DE_C A 0 A_TakeInventory("ShoulderInv", 1)
+	DE_C A 0 A_GiveInventory("FlameThrowerColdownToken",25)
+	DE_C A 0 A_GiveInventory("FlameThrowerColdownString",1) 
+    DE_C H 2 bright A_ReFire
+	Goto InvisLoop
+	
+  IceAttack:
+	TNT1 A 0 A_JumpIf(GetCVAR("DECannon")==true, "DEIce")
+	SCF0 ABCD 1 A_PlaySound("Cannon/Charge",1)
+	SCF0 E 10
+	SCF0 F 3 A_Quake(8, 8, 0, 32)
+	TNT1 A 0 A_Recoil (4)
+	TNT1 A 0 A_AlertMonsters
+	SCF0 G 0 bright A_GunFlash
+    SCFI J 1 bright A_FireCustomMissile("IceBombProjectile", -3, 0, -17, 16, FPF_NOAUTOAIM, -10)
+	TNT1 A 15 
+	SCF0 A 0 A_TakeInventory("ShoulderInv", 1)
+	SCF0 A 0 A_GiveInventory("IceBombCooldownToken",40)
+	SCF0 A 0 A_GiveInventory("IceBombCooldownString",1) 
+    //DE_C F 2 bright A_ReFire
+	Goto InvisLoop
+
+  DEIce:	
+	DE_C ABCD 1 A_PlaySound("Cannon/Charge",1)
+	DE_C E 10
+	DE_C F 3 A_Quake(8, 8, 0, 32)
+	TNT1 A 0 A_Recoil (4)
+	TNT1 A 0 A_AlertMonsters
+	DE_C G 0 bright A_GunFlash
+    DE_C F 1 bright A_FireCustomMissile("IceBombProjectile", -3, 0, -17, 16, FPF_NOAUTOAIM, -10)
+	TNT1 A 15 
+	DE_C A 0 A_TakeInventory("ShoulderInv", 1)
+	DE_C A 0 A_GiveInventory("IceBombCooldownToken",40)
+	DE_C A 0 A_GiveInventory("IceBombCooldownString",1) 
+    //DE_C F 2 bright A_ReFire
+	Goto InvisLoop
+
+	TakeShoulder:
+	    SCF0 A 0 A_TakeInventory("ShoulderInv", 1)
+		SCF0 A 0 ACS_NAMEDEXECUTEALWAYS("PlayCooldownSound", 1)
+	Goto InvisLoop
+	
+  Flash:
+    TNT1 A 2 A_Light1
+    TNT1 A 2 A_Light2
+    TNT1 A 1 A_Light1
+    TNT1 A 1 A_Light0
+    Stop
+  InvisLoop:
+	Fire:
+		TNT1 A 1
+		Loop
+  }
+}
+*/
+
+ACTOR StopMe : Inventory
+{
+	Inventory.MaxAmount 1
+}
+
+ACTOR FlameToken : Inventory{Inventory.MaxAmount 1}
+ACTOR FlameString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 90 ACS_NAMEDEXECUTEALWAYS("ShowFlame")
+	
+	Loop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+
+ACTOR IceToken : Inventory{Inventory.MaxAmount 1}
+ACTOR IceString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 90 ACS_NAMEDEXECUTEALWAYS("ShowIce")
+	
+	Loop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+ACTOR RocketToken : Inventory{Inventory.MaxAmount 1}
+ACTOR RocketString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 90 ACS_NAMEDEXECUTEALWAYS("ShowRocket")
+	
+	Loop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+ACTOR IceBombCooldownToken :   Inventory{Inventory.MaxAmount 40}
+ACTOR IceBombCooldownString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 200 ACS_NAMEDEXECUTEALWAYS("IceCooldown")
+	stop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+
+ACTOR GrenadeSelected :   Inventory{Inventory.MaxAmount 1}
+ACTOR GrenadeCooldownToken :   Inventory{Inventory.MaxAmount 40}
+ACTOR ExtraGrenadeCooldownToken :   Inventory{Inventory.MaxAmount 40}
+ACTOR GrenadeCooldownString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 200 ACS_NAMEDEXECUTEALWAYS("GrenadeCooldown")
+	stop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+ACTOR FlameThrowerCooldownToken : Inventory{Inventory.MaxAmount 25}
+ACTOR FlameThrowerCooldownString : CustomInventory{
+ +INVENTORY.ALWAYSPICKUP
+ States
+  {
+  PickUp:
+	"####" "#" 200 ACS_NAMEDEXECUTEALWAYS("FlameCooldown")
+	
+	stop
+  PickUp.No:
+	"####" "#" 0
+	Stop
+  }
+  }
+  ACTOR SecondaryAttackToken : Inventory{Inventory.MaxAmount 1}
+ ACTOR PoorGuyBurningLife:Inventory{Inventory.MaxAmount 30}

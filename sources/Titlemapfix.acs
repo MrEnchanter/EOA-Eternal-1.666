@@ -1,0 +1,15 @@
+#library "Titlemapfix"
+#include "zcommon.acs"
+
+Script "HUDStuffSwitch" (void)
+{
+    If (GameType() == GAME_TITLE_MAP || GetCvar("ScreenBlocks") > 11)
+    {
+        SetResultValue(0);
+    }
+
+    Else
+    {
+        SetResultValue(1);
+    }
+}

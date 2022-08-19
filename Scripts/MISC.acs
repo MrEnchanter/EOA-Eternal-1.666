@@ -1,0 +1,147 @@
+#library "MISC"
+#include "zcommon.acs"
+
+Script "SetThisActorHealthTo" (int howmuch)
+{
+	SetActorProperty(0,APROP_Health,howmuch);
+}
+
+Script "UnmorphPain" (void) //fix for pain elemental explode bug in GZDoom
+{
+	GiveInventory("Unmorpher",1);
+}
+
+
+// Actor utility function.
+// From AcsUtils by Korshun, DjSkaarj, Monsterovich, TechnoDoomed1.
+//
+// Michaelis has to digress to lament that he has written a function to do
+// exactly the same, and it doesn't work for some reason. Like, why does theirs
+// work and ours doesn't.
+
+function bool HasRoom(str classname, int x, int y, int z)
+{
+	int tid = UniqueTid();
+	if (!Spawn(classname, x, y, z, tid))
+		return false;
+	Thing_Remove(tid);
+	return true;
+}
+
+Script "GoreNestSpaceCheck" (void)
+{
+	bool succ = HasRoom("D4SpiderMastermind", GetActorX(0), GetActorY(0), GetActorZ(0));
+	SetResultValue( succ );
+}
+
+Script "GoreNestSpawnerSpaceCheck" (void)
+{
+	bool succ = HasRoom("D4Demon", GetActorX(0), GetActorY(0), GetActorZ(0));
+	SetResultValue( succ );
+}
+
+Script "KeySpaceCheck" (void)
+{
+	bool succ = HasRoom("D4Demon", GetActorX(0), GetActorY(0), GetActorZ(0));
+	SetResultValue( succ );
+}
+
+Script "ArachnoRocketDodge" (void)
+{
+    if (CheckProximity(0,"EOA_Rocket",150.0,1,CPXF_CHECKSIGHT))
+    {
+        SetActorState(0,"Slide");
+    }
+    
+    //Delay(35);
+    //restart;
+}
+
+Script "CybieResSequence" (void)
+{
+	SetActivator(0,AAPTR_MASTER);
+	Delay(140);
+	Thing_Raise(0);
+}
+
+Script "FadeToWhite" (void)
+{
+	SetActivator(0,AAPTR_PLAYER1);
+	FadeTo (255, 255, 255, 1.0, 1.7);
+	Delay(70);
+	FadeTo (255, 255, 255, 0.0, 1.3);
+}
+
+Script "CheckCybers" (void)
+{
+		if(ThingCountName("D16Cyberdemon",0)>=1)
+		{
+			SetResultValue(0);
+		}
+		else
+		{
+			SetResultValue(1);
+		}
+		
+}
+
+Script "MapDownloadMessage" (void)
+{
+	SetFont("MAPDLDED");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND, 0, 0, 1.5, 0.84, 3.0, 0.005, 1.0);
+}	
+	
+Script "RedKeyPickMessage" (void)
+{
+	SetFont("RKEYBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("RKEYTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/KeyCard",127);
+}
+
+Script "YellowKeyPickMessage" (void)
+{
+	SetFont("YKEYBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("YKEYTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/KeyCard",127);
+}
+
+Script "BlueKeyPickMessage" (void)
+{
+	SetFont("BKEYBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("BKEYTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/KeyCard",127);
+}
+
+Script "RedSkullPickMessage" (void)
+{
+	SetFont("RSKLBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("RSKLTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/PickSkull",127);
+}
+
+Script "YellowSkullPickMessage" (void)
+{
+	SetFont("YSKLBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("YSKLTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/PickSkull",127);
+}
+
+Script "BlueSkullPickMessage" (void)
+{
+	SetFont("BSKLBACK");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_NOTWITHFULLMAP|HUDMSG_ADDBLEND|HUDMSG_LAYER_UNDERHUD, 0, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	SetFont("BSKLTEXT");
+	HudMessage(s:"A";HUDMSG_TYPEON|HUDMSG_ALPHA|HUDMSG_NOTWITHFULLMAP,998, 0, 1.5, 0.80, 3.0, 0.005, 1.0);
+	LocalAmbientSound("Doom4/Pickups/PickSkull",127);
+}
+

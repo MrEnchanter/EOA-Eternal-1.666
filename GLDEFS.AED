@@ -1,0 +1,210 @@
+#include "GLDEFS/GenericLights.AED"
+#include "GLDEFS/GenericLightsDLS.AED"
+#include "GLDEFS/Brightmaps.AED"
+#include "GLDEFS/AddShaders.AED"
+
+PointLight SoulGlo
+{
+
+	color 0.0 0.0 2.0
+	size 96
+
+}
+
+Object EOA_MegaHealth
+{
+Frame SOUL { Light SoulGlo }
+}
+
+PointLight Khan
+{
+
+	color 2.0 2.0 0.0
+	size 160
+
+}
+Object DEKhanMaykr
+{
+
+Frame KAHNA { Light Khan }
+Frame KAHNB { Light Khan }
+Frame KAHNC { Light Khan }
+Frame KAHND { Light Khan }
+Frame KAHNE { Light Khan }
+Frame KAHNF { Light Khan }
+Frame KAHNG { Light Khan }
+Frame KAHNH { Light Khan }
+
+
+}
+
+
+PointLight AXEA
+{
+
+	color 1.0 0.0 0.0
+	size 32
+
+}
+
+
+Object DEMarauder
+{
+
+Frame MAUDA { Light AXEA }
+Frame MAUDB { Light AXEA }
+Frame MAUDC { Light AXEA }
+Frame MAUDD { Light AXEA }
+Frame MAUDE { Light AXEA }
+Frame MAUDF { Light AXEA }
+Frame MAUDG { Light AXEA }
+Frame MAUDU { Light AXEA }
+Frame MAUDW { Light AXEA }
+
+
+}
+
+
+PointLight Green
+{
+
+	Color 0.0 6.0 0.0
+	Size 96
+	
+}
+
+Object GreenLight
+{
+
+Frame GRENA { Light GREEN }
+
+}
+pulselight  D4Equipment
+{
+    color 1.0 1.0 1.0
+    size 20
+	secondarysize 25
+    offset 0 10 0
+	Interval 0.6
+}
+PulseLight WeaponUpgradeLight
+{
+    color 1.0 0.5 0.3
+    size 30
+	secondarySize 50
+    offset 0 20 0
+	Interval 1.2
+}
+
+PulseLight WeaponUpgradeLightRed
+{
+    color 1.0 0.0 0.0
+    size 45
+	secondarySize 65
+    offset 0 20 0
+
+}
+
+pointlight PlayerLight1
+{
+    color 1.0 1.0 1.0
+    size 48
+    offset 0 40 0
+}
+
+pointlight PlayerLight2
+{
+    color 1.0 1.0 1.0
+    size 44
+    offset 0 40 0
+	dontlightself 1
+}
+
+pointlight PlayerLight3
+{
+    color 1.0 1.0 1.0
+    size 40
+    offset 0 40 0
+	dontlightself 1
+}
+
+pointlight PlayerLight4
+{
+    color 1.0 1.0 1.0
+    size 36
+    offset 0 40 0
+	dontlightself 1
+}
+
+pointlight PlayerLight5
+{
+    color 1.0 1.0 1.0
+    size 32
+    offset 0 40 0
+	dontlightself 1
+}
+
+pointlight PlayerLight6
+{
+    color 1.0 1.0 1.0
+    size 28
+    offset 0 40 0
+	dontlightself 1
+}
+
+
+//==============================================================================================================
+//
+//==============================================================================================================
+//==============================================================================================================
+//				Glowing flats
+//==============================================================================================================
+//==============================================================================================================
+//
+//==============================================================================================================
+
+
+Glow
+{
+	Flats
+	{
+		flat NUKAGE1
+		flat NUKAGE2
+		flat NUKAGE3
+		flat LAVA1
+		flat LAVA2
+		flat LAVA3
+		flat LAVA4
+	}
+	Texture "LAVA1", fca000, 64 //fullbright
+	Texture "LAVA2", fca000, 64 //fullbright
+	Texture "LAVA3", fca000, 64 //fullbright
+	Texture "LAVA4", fca000, 64 //fullbright
+	Texture "NUKAGE1", 009411, 64
+	Texture "NUKAGE2", 009411, 64
+	Texture "NUKAGE3", 009411, 64
+}
+
+
+
+
+
+
+//--------------------------------------------------
+// For monsters
+flickerlight ImpPrepareAttackSmall 
+{
+    color 1.0 0.8 0.0
+    size 30
+    secondarySize 40
+    chance 0.4
+	offset 0 40 0
+}
+
+flickerlight ImpPrepareAttackBig
+{
+    color 1.0 0.8 0.0
+    size 60
+    secondarySize 65
+    chance 0.4
+}

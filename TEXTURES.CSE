@@ -1,0 +1,116 @@
+
+Graphic "BKEYBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "KEYGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[0.14,0.39,0.85]"
+				
+	}
+}
+
+Graphic "YKEYBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "KEYGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[0.76,0.72,0.20]"
+				
+	}
+}
+
+Graphic "RKEYBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "KEYGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[1.00,0.03,0.05]"
+				
+	}
+}
+
+Graphic "BSKLBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "SKLGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[0.14,0.39,0.85]"
+				
+	}
+}
+
+Graphic "YSKLBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "SKLGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[0.76,0.72,0.20]"
+				
+	}
+}
+
+Graphic "RSKLBACK", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "SKLGRAPH", 0, 0
+	{
+		Translation "0:255=%[0.00,0.00,0.00]:[1.00,0.03,0.05]"
+				
+	}
+}
+
+Graphic "BKEYTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "BLUEPICK", 0, 0
+}
+
+Graphic "YKEYTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "YELLPICK", 0, 0
+}
+
+Graphic "RKEYTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "REDPICK", 0, 0
+}
+
+Graphic "BSKLTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "BSKLPICK", 0, 0
+}
+
+Graphic "YSKLTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "YSKLPICK", 0, 0
+}
+
+Graphic "RSKLTEXT", 278, 89
+{
+	XScale 1.54
+	YScale 1.54
+	Patch "RSKLPICK", 0, 0
+}
+
+Graphic "MAPDLDED", 278, 89
+{
+	XScale 1.65
+	YScale 1.65
+	Patch "AUTOMAPD", 0, 0
+}
+

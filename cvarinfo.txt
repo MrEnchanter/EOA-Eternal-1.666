@@ -1,0 +1,54 @@
+
+user bool chp_showall = false;
+user bool chp_showhidden = true;
+user bool chp_showname = false;
+user bool chp_showpercentage = true;
+user bool chp_visible = true;
+user float chp_fade = 0.25;
+user float TestValue = 100;
+user int chp_opacity = 70;
+user int chp_position = 3;
+user int chp_size = 0;
+user int chp_x = 0;
+user int chp_y = 0;
+user noarchive int chp_bridge_maxhealth;
+user noarchive string chp_bridge_name;
+
+User NoArchive Int BloodpunchCost = 2;
+
+User Bool EOAE_FlameStart = True;
+User Bool EOAE_IceStart = True;
+User Bool EOAE_FragStart = True;
+User Bool EOAE_CrucibleStart = True;
+User Bool EOAE_InfiniteExtraLives = False;
+User Bool EOAE_IDKFA = False;
+User Bool EOAE_FullyUpgradedSuit = False;
+User Bool EOAE_ActivateAllCheats = False;
+User Bool EOAE_InfiniteOnSlaught = False;
+User Bool EOAE_InfiniteOverDrive = False;
+User Bool EOAE_InfiniteBerserk = False;
+User Bool EOAE_CrucibleQuickSwing = True;
+User Bool EOAE_CrosshairHud = True;
+User Bool EOAE_AutoBhop = True;
+User Bool EOAE_CenteredWeapons = False;
+
+//Hud Colors
+User Color HealthColor = 26C4FF;
+User Color ArmorColor = 91D317;
+User Color RadColor = 44C030;
+User Color AbilityColor = E7FE63;
+
+User Color ShellAmmo = FFC928;
+User Color BulletAmmo = C6DB62;
+User Color RocketAmmo = EC6455;
+User Color CellAmmo = C169D3;
+User Color BFGAmmo = B9FF5B;
+User Color SawAmmo = FF2222;
+
+User Color SawEqColor = FD7717;
+User Color FlameEqColor = FEC617;
+User Color IceEqColor = 83CCFF;
+User Color GenEqColor = 80FF3E;
+User Color HamEqColor = FF0000;
+
+user noarchive int hm_bridge_hitmarker;

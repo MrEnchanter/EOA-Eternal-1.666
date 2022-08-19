@@ -1,0 +1,434 @@
+//================================================================================================================
+//================================================================================================================
+//
+//
+//================================================================================================================
+//================================================================================================================
+ACTOR DECarcass : EDE_Imp
+{
+	//$Category "DE base monsters"
+	//$Color 12
+	Health 475
+	Radius 20
+	Height 56
+	Mass 5000
+	Speed 8
+	PainChance 48
+	Monster
+	yScale 1.2
+	xScale 1.5
+	MeleeRange 72
+	//MaxDropOffHeight 120
+	+NEVERRESPAWN
+	+FLOORCLIP
+	+NoTarget
+	+NoInFighting
+	SeeSound "Carcass/See"
+	PainSound "Carcass/pain"
+	DeathSound "chainguy/death"
+	ActiveSound "Carcass/See"
+	HitObituary "$OB_IMPHIT"
+	Obituary "%o was thrashed by a Carcass"
+	Tag "Carcass"
+	DropItem "ZombieTimer", 192
+	var int user_wall;
+	DropItem "HeavyMediumDrop"
+	States
+	{
+	Spawn:
+		CARC A 0 NODELAY
+		Goto Idle
+	Idle:
+		TNT1 A 0 A_SetUserVar(user_wall,Random(0,1))
+		CARC A 10 A_Look
+		Loop
+	See:
+		CARC AABBCCDD 2 A_Chase
+		Loop
+	Melee:
+			CRCM A 0 A_FaceTarget
+			CRRM A 0 A_PlaySound("Carcass/Melee",7,1.0,false,attn_norm)
+			CRCM A 3 A_Recoil(-25)
+			CRCM A 1 A_RadiusThrust(1000,82,RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE)
+			CRCM AB 1 A_CustomMeleeAttack(2,"","")
+			CRCM C 1 A_RadiusThrust(1000,82,RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE)
+			CRCM DE 1 A_CustomMeleeAttack(2,"","")
+			CRCM F 1 A_RadiusThrust(1000,82,RTF_NOIMPACTDAMAGE|RTF_NOTMISSILE)
+			CRCM GH 1 A_CustomMeleeAttack(3,"","")
+			CRCM AAAAAA 3
+	Missile:
+			TNT1 A 0 A_JumpifCloser(170,"Melee")
+			TNT1 A 0 A_JumpIf(user_wall >= 2, "Shield")
+			TNT1 A 0  A_SetUserVar(user_wall, user_wall + 1)
+	RingFire:
+			CARC EEEE 4 A_FaceTarget
+			TNT1 A 0 A_Jump(128,"GroundAttack")
+			CARC F 4 Bright A_CustomMissile("CarcassBall",20,5)
+			CARC EEEE 4 A_FaceTarget
+			CARC F 4 Bright A_CustomMissile("CarcassBall",20,5)
+			CARC EEE 4 A_FaceTarget
+			CARC F 4 Bright A_CustomMissile("CarcassBall",20,5)
+			CARC EEEE 4 A_FaceTarget
+			CARC EEE 4 A_FaceTarget
+			TNT1 A 0 A_Jump(128,"ValueAdd")
+			TNT1 A 0 A_JumpIf(user_wall >= 2, "Shield")
+			Goto See
+	GroundAttack:
+			CARC F 4 Bright A_CustomMissile("DECarcassTracer",35,5,0)
+			CARC EEEE 4 A_FaceTarget
+			CARC EEEE 4 A_FaceTarget
+			TNT1 A 0 A_Jump(128,"ValueAdd")
+			TNT1 A 0 A_JumpIf(user_wall >= 2, "Shield")
+			Goto See
+	ValueAdd:
+			TNT1 A 0  A_SetUserVar(user_wall, user_wall + 1)
+			Goto see 
+	Shield:
+			CACC A 0 A_JumpIfCloser(400,"ShieldSelf")
+			CARC F 6 A_vileTarget("DEShieldWall")
+			TNT1 A 0 A_SetUserVar(user_wall,0)
+			CARC EEFE 4 A_FaceTarget
+			CARC EEEE 2 A_FaceTarget
+			Goto See
+	ShieldSelf:
+			TNT1 A 0 A_JumpIfCloser(220,"RingFire")
+			CARC E 3 A_FaceTarget
+			CARC F 3 A_CustomMissile("DEShieldWall",0,0,180)
+			TNT1 A 0 A_SetUserVar(user_wall,0)
+			CARC EEEE 4 A_FaceTarget
+			CARC EEEE 2 A_FaceTarget
+			Goto See
+			
+	Pain:
+		CARC G 2
+		CARC G 2 A_Pain
+		Goto See
+
+	Death:
+		"####" "#" 0  A_SpawnItemEx("SituationalPinata",0,0,32,0,0,0,0,SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS)
+		CARC J 4 A_Scream 
+		CARC KLOP 4 A_NoBlocking
+		CARC P -1
+		Wait
+	
+	Death.Massacre:
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Minimal",CHAN_AUTO,1.0,false,2.0)
+		TNT1 A 35 A_BossDeath
+		Stop
+	
+	XDeath:
+		TNT1 A 0 A_XScream
+		TNT1 A 0 A_NoBlocking
+		TNT1 A 0 A_JumpIf(GetCVAR("enhanced_gibs") == false,"XDeathMinimal")
+		TNT1 A 0 A_Jump(128,"BologneseXDeath")
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropperBig",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 0 A_Jump(256,3)
+	XDeathMinimal:
+		TNT1 A 0 A_PlaySound("Doom4/Gore/Medium",7,1.0,false,1.3)
+		TNT1 A 0 A_SpawnItemEx("BloodGibDropperBigMinimal",0,0,28,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR)
+		TNT1 A 35 A_BossDeath
+		Stop	
+		
+		
+	}
+}
+
+
+ACTOR CarcassBall
+{
+	Speed 32
+	FastSpeed 32
+	Damage 3
+	Alpha 0.9
+	scale 0.25
+	Translation "0:255=%[0,0,0]:[1.0,0.4,0.00]"
+	Radius 6
+	Height 8
+	Projectile
+	+RANDOMIZE
+	RenderStyle Add
+	Alpha 1
+	SeeSound "Carcass/Fire"
+	DeathSound ""
+	+FORCEXYBILLBOARD
+	Decal "FireballScorch"
+	States
+	{
+	Spawn:
+		DB20 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 BRIGHT A_SpawnItemEx("CarcassBallTrail")
+		Loop
+	Death:
+		HIBI A 0 A_SetScale(0.4)
+		DB20 ABCDEFGHIJKLMNOPQRSTUVWXYZ 1 BRIGHT Light("PurpleSmallFlicker1") A_FadeOut(0.0,0)
+		Stop
+	}
+}
+
+Actor CarcassBallTrail
+{
+	+NoGravity
+	Translation "0:255=%[0,0,0]:[1.0,0.7,0.00]"
+	RenderStyle Add
+	Scale 0.25
+	States
+	{
+	Spawn:
+		DB20 ABCDE 1 BRIGHT
+		Stop
+	}
+}
+
+ACTOR DECarcassTracer : D4AbstractMissile
+{
+	Radius 6
+	Height 8
+	Speed 24
+	FastSpeed 24
+	Damage 5
+	Projectile
+	+RANDOMIZE
+	RenderStyle Add
+	Alpha 1
+	SeeSound "Carcass/GroundLoop"
+	DeathSound "Carcass/Ground"
+	scale 0.2
+	+SeekerMissile
+	+FloorHugger
+	Reactiontime 15
+	+FORCEXYBILLBOARD
+	Translation "0:255=%[0,0,0]:[1.0,0.4,0.1]"
+	Decal "FireballScorchBig"
+	States
+	{
+	Spawn:
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 ABCD 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 EFGH 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 IJKL 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 MNOP 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 QRST 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100) 
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 UVWX 1 BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		DB57 YZ 1  BRIGHT Light("YellowMediumFlicker2") A_SpawnItemEx("ImpBallFlamelet",random(-2,-8),random(8,-8),random(8,-8),0,0,frandom(0,0.6),0,SXF_NOCHECKPOSITION|SXF_TRANSFERTRANSLATION,100)
+		TNT1 A 0 A_SeekerMissile(18,18)
+		TNT1 A 0 A_CountDown
+		Loop
+	Death:
+		TNT1 A 0 A_SetScale(0.8)
+		//TNT1 A 0 A_RadiusThrust(3500,96)
+		DB07 ABC 1 Bright Light("YellowMediumFlicker3")
+		DB07 DEF 1 Bright Light("YellowMediumFlicker2")
+		DB07 GHI 1 Bright Light("YellowMediumFlicker2")
+		DB07 JKL 1 Bright Light("YellowMediumFlicker3")
+		DB07 MNO 1 Bright Light("YellowSmallFlicker1")
+		DB07 PQR 1 Bright Light("YellowSmallFlicker2")
+		DB07 STU 1 Bright Light("YellowSmallFlicker3")
+		DB07 VWX 1 Bright Light("YellowSmallFlicker3")
+		Stop
+	}
+}
+
+
+Actor DEShieldWall
+{
+	Projectile
+	Speed 40
+	-NOGRAVITY
+	+THRUSPECIES
+	+MTHRUSPECIES
+	+NOTAUTOAIMED
+	RenderStyle Add
+	Scale 0.05
+	Gravity 0.8
+	Radius 3
+	Height 6
+	SeeSound "Carcass/ShieldUp"
+	Species "Players"
+	Obituary "%o paid for %k's wall %p last coin and starved. How else could %g die from a wall?"
+	States
+	{
+	Spawn:
+		BALT E 0
+		BALT E 0
+		BALT E 0 ThrustThingZ(0,abs(velz),0,1)
+		Goto Death
+		
+	Idle:
+		BALT EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE 1 A_SpawnItemEx("ShieldFX",velx*2,vely*2,velz*2,0,0,0,0,SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION|SXF_ABSOLUTEPOSITION)
+		BALT E 0
+		BALT E 0 A_Stop
+		BALT E 0 A_NoGravity
+		Goto Death
+		
+	Death:
+		"####" "#" 0 A_ChangeFlag(THRUACTORS,1)
+		"####" "#" 0 A_PlaySound("Carcass/Shieldup",7,1.0,False,ATTN_NORM,0)
+		"####" "#" 35 A_Jump(256,"Explosion")
+		Goto Explosion
+		
+	Explosion:
+		BALT E 0 A_FaceTarget
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,  0,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192, -8,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,  8,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,-16,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192, 16,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,-24,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192, 24,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,-32,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192, 32,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192,-40,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn" , 192, 40,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192,-48,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192, 48,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192,-56,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192, 56,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192,-64,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SpawnItemEx("DEWallGrenadeColumn", 192, 64,0, 0,0,0, 0, SXF_NOCHECKPOSITION | SXF_TRANSFERTRANSLATION | SXF_TRANSFERPOINTERS)
+		BALT E 0 A_SetScale(ScaleX + 0.3)
+		BALT E 0 A_FadeOut(0.1, 0)
+		TNT1 A 210 A_ChangeFlag("NOCLIP",TRUE)
+		TNT1 A 10 A_PlaySound("NONE",7,1.0,false,1.7) 
+		Stop
+	}
+}
+
+Actor DEWallGrenadeColumn
+{
+	+SHOOTABLE	+SOLID
+	+FORCEYBILLBOARD
+	+NOBLOOD	+NOGRAVITY
+	+NOTAUTOAIMED
+	Health 200 // far from infinite, far from destructible either
+	Mass 1000000 // far from immovable, far from lightweight either
+	Radius 9
+	Height 72
+	RenderStyle Add
+	xScale 0.4
+	yScale 0.04
+	DamageFactor "PlasmaShield", 500.0
+	DamageType "PlasmaShield"
+	SeeSound "Carcass/ShieldLoop"
+	DeathSound "Carcass/ShieldDown"
+	States
+	{
+	Spawn:
+		BALT A 0
+		Goto Idle
+	Idle:
+		"####" "#" 0 A_RadiusThrust(2000, 16, RTF_AFFECTSOURCE|RTF_NOIMPACTDAMAGE, 10)
+		"####" "###########" 1 Bright A_SetScale(ScaleX, ScaleY * 1.34)
+		Goto See
+	See:
+		"####" "####" 35 Bright //A_PlaySound("Carcass/ShieldLoop",7,1.0,false,1.7) // <-- WALL DURATION in seconds minus 2
+	Glitch:
+		"####" "#" 1
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright 
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 A_Jump(256, "ooo", "oox", "oxo", "oxx", "xoo", "xox", "xxo", "xxx")
+	ooo:
+		"####" "#" 1 
+		"####" "#" 1 
+		"####" "#" 1 
+		Goto Pain
+	oxo:
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		Goto Pain
+	xoo:
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		"####" "#" 1 
+		Goto Pain
+	xxo:
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		Goto Pain
+	oox:
+		"####" "#" 1 
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		Goto Pain
+	oxx:
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		Goto Pain
+	xox:
+		"####" "#" 1 Bright
+		"####" "#" 1 
+		"####" "#" 1 Bright
+		Goto Pain
+	xxx:
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		"####" "#" 1 Bright
+		Goto Pain
+	Pain:
+		"####" "#" 35
+	Death:
+		TNT1 A 0 A_Explode (4,64,XF_HURTSOURCE,0,0,0,0,0,"PlasmaShield")
+		"####" "#" 1 A_FadeOut
+		Wait
+	
+	}
+}
+Actor DEcarcassGN : DEcarcass
+{
+	+LOOKALLAROUND
+	-COUNTKILL
+}
+

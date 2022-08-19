@@ -1,0 +1,600 @@
+Class EOAE_HudRenderer : EventHandler
+{
+	Const HUDBaseWidth = 1280;
+	Const HUDBaseHeight = 960;
+	
+	Const XHairW = 4980;
+	Const XHairH = 3860;
+
+	Const GXHairW = 1364;
+	Const GXHairH = 1023;
+
+	Const Scale = 1.4;
+	
+	//yes i know this isnt fixed point math but i just did the functions so i have to do less editing alright ? shut up now
+	Static clearscope Float FixedDiv(Float A, Float B)
+	{	
+		Float Result = A/B;
+		Return Result;
+	}
+	
+	Static clearscope Float FixedMul(Float A, Float B)
+	{	
+		Float Result = A*B;
+		Return Result;
+	}
+	
+	static clearscope Shape2D MakeSquare()
+    {
+        // the shape that will be drawn
+        Shape2D square = new("Shape2D");
+        // texture coordinates of each corner
+        square.PushCoord((0, 0));
+        square.PushCoord((1, 0));
+        square.PushCoord((0, 1));
+        square.PushCoord((1, 1));
+        // two triangles make up the square
+        // the points have to be in counter-clockwise order
+        square.PushTriangle(0, 3, 1);
+        square.PushTriangle(0, 2, 3);
+        return square;
+    }
+
+    // set the positions of an existing square shape's vertices
+    static clearscope void MoveSquare(Shape2D shape, Vector2 size, Vector2 pos, double angle)
+    {
+        // clear any vertices already set
+        shape.Clear(Shape2D.C_Verts);
+        // corners of a square centered on 0,0
+        Vector2 points[4];
+        points[0] = (-0.5 * size.X, -0.5 * size.Y);
+        points[1] = (0.5 * size.X, -0.5 * size.Y);
+        points[2] = (-0.5 * size.X, 0.5 * size.Y);
+        points[3] = (0.5 * size.X, 0.5 * size.Y);
+		
+        // then move the points by the set offset
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 oldpos = points[i];
+            points[i].X = oldpos.X * cos(angle) - oldpos.Y * sin(angle) + pos.X;
+            points[i].Y = oldpos.X * sin(angle) + oldpos.Y * cos(angle) + pos.Y;
+            shape.PushVertex(points[i]);
+        }
+    }
+	
+	static clearscope Void XHRDrawHudShape(String tex, Float X, Float Y, Float Scale, double angle, double rotation, Float Alpha, int ColorInHex = 0xFFFFFFFF)
+	{
+		let Shape = MakeSquare();
+		X *= Scale; Y *= Scale;
+		TextureID Texture = TexMan.CheckForTexture(tex, TexMan.TYPE_ANY);
+		Vector2 ScalePos = TexMan.GetScaledSize(Texture);
+		Vector2 RotatedPos = Actor.RotateVector((x, y), angle);
+		MoveSquare(Shape, ScalePos/Scale, (GXHairW/2 + RotatedPos.X, GXHairH/2 + RotatedPos.Y), angle + rotation);
+		Screen.DrawShape(Texture, true, Shape, DTA_VirtualWidthF, GXHairW, DTA_VirtualHeightF, GXHairH, DTA_Alpha, Alpha, DTA_Color, ColorInHex);
+	}
+	
+	Static clearscope Void DrawHudStuff(String Texture, Int X, Int Y, Float Scale, Float Alpha, Int ColorInHex = 0xFFFFFFFF, Bool InvertOnX = False, Bool InvertOnY = False,
+	Int RenderStyle = STYLE_Translucent, Bool Visible = True)
+	{
+		Float ScaledHUDW = HUDBaseWidth * Scale;
+		Float ScaledHUDH = HUDBaseHeight * Scale;
+		TextureID Texture2D;
+		X *= Scale; Y *= Scale;
+		Texture2D = TexMan.CheckForTexture(Texture);
+		If(Texture2D && Visible)
+		{Screen.DrawTexture(Texture2D, False, X, Y, DTA_VirtualWidthf, ScaledHUDW, DTA_VirtualHeightf, ScaledHUDH, DTA_Alpha, Alpha, DTA_Color, ColorInHex, DTA_FlipX, InvertOnX, DTA_FlipY, InvertOnY, DTA_LegacyRenderStyle, RenderStyle);}
+	}
+	
+	Static clearscope Void DrawHudText(Font CFont, String Text, Float X, Float Y, Float Scale, Float Alpha, Int HexColor = 0xFFFFFFFF, Bool InvertOnX = False, Bool InvertOnY = False)
+	{
+		Float ScaledHUDW = HUDBaseWidth * Scale;
+		Float ScaledHUDH = HUDBaseHeight * Scale;
+		TextureID Texture2D;
+		X *= Scale; Y *= Scale;
+		Screen.DrawText(CFont, FONT.CR_UNTRANSLATED, X, Y, Text, DTA_VirtualWidthf, ScaledHudW, DTA_VirtualHeightf, ScaledHudH, DTA_Alpha, Alpha, DTA_Color, HexColor);
+	}
+	
+	Static clearscope float lerp(float a, float b, float f) 
+	{
+		return (a * (1.0 - f)) + (b * f);
+	}
+	
+	Static clearscope Void SDrawHudStuff(String Texture, Int X, Int Y, Float Scale, Float Alpha, Int FrameNumber,Int ColorInHex = 0xFFFFFFFF, Bool InvertOnX = False, Bool InvertOnY = False
+	, Int RenderStyle = STYLE_Translucent)
+	{
+		Float ScaledHUDW = HUDBaseWidth * Scale;
+		Float ScaledHUDH = HUDBaseHeight * Scale;
+		Int InterpolationSpeed = 1;
+		Int LastFrame = 23;
+		TextureID Texture2D;
+		X *= Scale; Y *= Scale;
+		String TextureName = String.Format("%s%i", Texture, FrameNumber);
+		Texture2D = TexMan.CheckForTexture(TextureName);
+		If(Texture2D)
+		{Screen.DrawTexture(Texture2D, False, X, Y, DTA_VirtualWidthf, ScaledHUDW, DTA_VirtualHeightf, ScaledHUDH, DTA_Alpha, Alpha, DTA_Color, ColorInHex, DTA_FlipX, InvertOnX, DTA_FlipY, InvertOnY, DTA_LegacyRenderStyle, RenderStyle);}
+	}
+	
+	Static ClearScope Int GetHex(String CvarName)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		String CString = String.Format("0xFF%s", String.Format("%s", Cvar.GetCvar(CvarName, Player).GetString()));
+		CString.Replace(" ", "");
+		Int Result = CString.ToInt();
+		Return Result;
+	}
+	
+	Static ClearScope String GetEquippedWeapon()
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		If(!Player || !Player.Mo)
+		Return "None";
+		
+		If(Player.ReadyWeapon)
+		Return Player.ReadyWeapon.GetClassName();
+		else
+		Return "None";
+	}
+	
+	Static ClearScope Int GetWeaponNumber(String WeaponName)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		If(!Player || !Player.Mo)
+		Return 0;
+		
+		Int WeapNum = 0;
+		Array<String> Weapons = {
+			"EOA_CombatShotgun",
+			"EOA_SuperShotgun",
+			"EOA_HeavyAssaultRifle",
+			"EOA_Chaingun",
+			"EOA_PlasmaRifle",
+			"EOA_GaussCannon",
+			"EOA_RocketLauncher",
+			"EOA_BFG",
+			"EOA_Unmaykr",
+			"EOA_Chainsaw"
+		};
+		
+		For (Int i = 0; i < 9; i++)
+		{
+			If (WeaponName == Weapons[i])
+			{
+				WeapNum = i;
+				Return WeapNum;;
+			}
+		}
+		Return WeapNum;
+	}
+	
+	Static ClearScope String GetAmmoType(Actor Activator)
+	{
+		If (!Activator || !Activator.Player || !Activator.Player.ReadyWeapon)
+		{
+			Return "";
+		}
+		Let Player = Activator.Player;
+		Let AmmoType = Player.ReadyWeapon.AmmoType1;
+		Let Item = Activator.FindInventory(AmmoType);
+		If (Item)
+		{
+			Return Item.GetClassName();
+		}
+		Return "None";
+	}
+	
+	Override Void RenderOverlay(RenderEvent e)
+	{
+		PlayerInfo Player = Players[ConsolePlayer];
+		If (Player && Player.Mo && Player.Mo == e.Camera && PlayerInGame[ConsolePlayer] && Player.Mo.Health > 0)
+		{	
+			float U_XOffset = 210;
+			float U_YOffset = 64;
+			Int HudYOffset = (HudBaseHeight * 85 / 100 + 140 - U_YOffset);
+			Int HudLXOffset = (-370 + U_XOffset);
+			Int HudRXOffset = HUDBaseWidth - 330/Scale + (350 - U_XOffset);
+			Int PHealth = Player.Mo.Health;
+			Int PRadSuit = Player.Mo.CountInv("EOA_RadSuit");
+			//VV shifted 51 pixels, saving this for the future
+			//Health Bar
+			DrawHUDStuff("SideBar", HudLXOffset, HudYOffset + FixedDiv(-66, Scale), Scale, 1.0, GetHex("HealthColor"));
+			DrawHUDStuff("HPICO", HudLXOffset + FixedDiv(40, Scale), HudYOffset + FixedDiv(-49, Scale), FixedDiv(Scale, 0.85), 5.0, GetHex("HealthColor"));
+			DrawHUDText(
+				"TTSPRMOL", 								//Font
+				String.Format("000", PHealth), 				//What to write
+				HudLXOffset + FixedDiv(130, Scale), //X
+				HudYOffset - FixedDiv(43, Scale),			//Y
+				FixedMul(Scale, 0.37), 						//scale
+				0.25, 										//alpha
+				GetHex("HealthColor")						//color
+			);
+			DrawHUDText(
+				"TTSPRMOL", 								
+				String.Format("%i", PHealth), 				
+				HudLXOffset + FixedDiv(190 + 30 - (30 * String.Format("%i", PHealth).Length()), Scale),
+				HudYOffset - FixedDiv(43, Scale),			
+				FixedMul(Scale, 0.37), 						
+				1.0, 										
+				GetHex("HealthColor")						
+			);
+			For (int i = 0; i < 4 + Player.Mo.CountInv("EOA_ArgentHealthBonusCounter"); i++)
+			{
+				Int PipNumber = PHealth - (i * 25);
+				If (PipNumber > 25) PipNumber = 25;
+				If (PipNumber < 0) PipNumber = 0;
+				SDrawHUDStuff("BPIP", HudLXOffset + FixedDiv(240 + (40 * i), Scale), HudYOffset + FixedDiv(-49, Scale), FixedDiv(Scale, 1.2), 5.0, PipNumber, GetHex("HealthColor"));
+				DrawHUDStuff("BCON", HudLXOffset + FixedDiv(240 + (40 * i), Scale), HudYOffset + FixedDiv(-49, Scale), FixedDiv(Scale, 1.2), 5.0, GetHex("HealthColor"));
+			}
+			
+			//Armor
+			//so for some retarded reason i need to shift all the bars 52 pixels, despite everything else just working with the original offsets
+			//iam wnat hte are die
+			Int PArmor = Player.Mo.CountInv("BasicArmor");
+			Float ArmorAlpha = 1.0;
+			If(PArmor > 0)
+				{ArmorAlpha = 1.0;}
+			Else
+				{ArmorAlpha = 0.5;}
+			DrawHUDStuff("SSideBar", HudLXOffset, HudYOffset + FixedDiv(-151, Scale), Scale, ArmorAlpha, GetHex("ArmorColor"), False, True);
+			DrawHUDStuff("ARMICO", HudLXOffset + FixedDiv(45, Scale), HudYOffset + FixedDiv(-116, Scale), FixedDiv(Scale, 0.75), ArmorAlpha, GetHex("ArmorColor"));
+			DrawHUDText(
+				"TTSPRMOL", 							
+				String.Format("000", PArmor), 				
+				HudLXOffset + FixedDiv(130, Scale), 
+				HudYOffset - FixedDiv(117, Scale),			
+				FixedMul(Scale, 0.37), 						
+				0.25, 									
+				GetHex("ArmorColor")					
+			);
+			If (ArmorAlpha == 1.0)
+			{
+					DrawHUDText(
+						"TTSPRMOL", 								
+						String.Format("%i", PArmor), 				
+						HudLXOffset + FixedDiv(190 + 30 - (30 * String.Format("%i", PHealth).Length()), Scale),
+						HudYOffset - FixedDiv(117, Scale),			
+						FixedMul(Scale, 0.37), 						
+						1.0, 										
+						GetHex("ArmorColor")						
+					);
+			}
+			For (int j = 0; j < 2 + Player.Mo.CountInv("EOA_ArgentArmorBonusCounter"); j++)
+			{
+				Int PipNumber = PArmor - (j * 25);
+				If (PipNumber > 25) PipNumber = 25;
+				If (PipNumber < 0) PipNumber = 0;
+				SDrawHUDStuff("BPIP", HudLXOffset + FixedDiv(240 + (40 * j), Scale), HudYOffset + FixedDiv(-117, Scale), FixedDiv(Scale, 1.2), 5.0, PipNumber, GetHex("ArmorColor"), False, True);
+				DrawHUDStuff("BCON", HudLXOffset + FixedDiv(240 + (40 * j), Scale), HudYOffset + FixedDiv(-117, Scale), FixedDiv(Scale, 1.2), 5.0, GetHex("ArmorColor"), False, True);
+			}
+			
+			//RadSuit
+			If(PRadSuit > 0)
+			{
+				//Icon Offset X +35, Y +30
+				//Text Offset X +190, Y -34
+				Int RadOffsetX = 40;
+				Int RadOffsetY = -223;
+				DrawHUDStuff("SSideBar", HudLXOffset + FixedDiv(40, Scale), HudYOffset + FixedDiv(-223, Scale), Scale, ArmorAlpha, GetHex("RadColor"), False, True);
+				DrawHUDStuff("RADICO", HudLXOffset + FixedDiv(RadOffsetX + 35, Scale), HudYOffset + FixedDiv(RadOffsetY + 30, Scale), FixedDiv(Scale, 0.75), ArmorAlpha, GetHex("RadColor"));
+				DrawHUDText(
+					"TTSPRMOL", 							
+					String.Format("000", PRadSuit), 				
+					HudLXOffset + FixedDiv(RadOffsetX + 190 + 30 - (30 * String.Format("000", PHealth).Length()), Scale), 
+					HudYOffset - FixedDiv(-RadOffsetY - 34, Scale),			
+					FixedMul(Scale, 0.37), 						
+					0.25, 									
+					GetHex("RadColor")					
+				);
+				DrawHUDText(
+					"TTSPRMOL", 								
+					String.Format("%i", PRadSuit), 				
+					HudLXOffset + FixedDiv(RadOffsetX + 190 + 30 - (30 * String.Format("%i", PHealth).Length()), Scale),
+					HudYOffset - FixedDiv(-RadOffsetY - 34, Scale),			
+					FixedMul(Scale, 0.37), 						
+					1.0, 										
+					GetHex("RadColor")						
+				);
+				For (int m = 0; m < 4; m++)
+				{
+					Int PipNumber = PRadSuit - (m * 25);
+					If (PipNumber > 25) PipNumber = 25;
+					If (PipNumber < 0) PipNumber = 0;
+					SDrawHUDStuff("BPIP", HudLXOffset + FixedDiv(265 + (40 * m), Scale), HudYOffset + FixedDiv(-190, Scale), FixedDiv(Scale, 1.2), 5.0, PipNumber, GetHex("RadColor"), False, True);
+					DrawHUDStuff("BCON", HudLXOffset + FixedDiv(265 + (40 * m), Scale), HudYOffset + FixedDiv(-190, Scale), FixedDiv(Scale, 1.2), 5.0, GetHex("RadColor"), False, True);
+			
+				}
+			}
+			
+			//player abilities
+			Int DashOffset = 40;
+			Int Dashes = Player.Mo.CountInv("B5_DDash");
+			Float DashAlpha;
+			If(Dashes < 1)
+				DashAlpha = 0.5;
+			Else
+				DashAlpha = 1.0;
+			DrawHUDStuff("HUDABPR5", HudLXOffset + FixedDiv(DashOffset + 65, Scale), HudYOffset + FixedDiv(-250, Scale), FixedDiv(4.25, Scale), 1.0, GetHex("AbilityColor"));
+			DrawHUDStuff("HUDABPR5", HudLXOffset + FixedDiv(DashOffset, Scale), HudYOffset + FixedDiv(-250, Scale), FixedDiv(4.25, Scale), 1.0, GetHex("AbilityColor"), True);
+			For(int d = 0; d < Dashes; d++)
+			{
+				Bool Flip;
+				If(d > 0)
+					{Flip = False;}
+				Else
+					{Flip = True;}
+				DrawHUDStuff("HUDABPR6", HudLXOffset + FixedDiv(DashOffset + (d * 65), Scale), HudYOffset + FixedDiv(-250, Scale), FixedDiv(4.25, Scale), 1.0, GetHex("AbilityColor"), Flip);
+			}
+			DrawHUDStuff("HDSHIC", HudLXOffset + FixedDiv(DashOffset + 20, Scale), HudYOffset + FixedDiv(-240, Scale), FixedDiv(4.25, Scale), DashAlpha, GetHex("AbilityColor"));
+			
+			//Weapon Bar
+			String AmmoType = GetAmmoType(Player.Mo);
+			String AmmoTypeIcon;
+			Int WBColor;
+			if(AmmoType == "EOA_ShellAmmo")
+			{
+				WBColor = GetHex("ShellAmmo");
+				AmmoTypeIcon = "AMTPSHEL";
+			}
+			Else if(AmmoType == "EOA_BulletAmmo")
+			{
+				WBColor = GetHex("BulletAmmo");
+				AmmoTypeIcon = "AMTPBOLT";
+			}
+			Else if(AmmoType == "EOA_RocketAmmo")
+			{
+				WBColor = GetHex("RocketAmmo");
+				AmmoTypeIcon = "AMTPRCKT";
+			}
+			Else if(AmmoType == "EOA_CellAmmo")
+			{
+				WBColor = GetHex("CellAmmo");
+				AmmoTypeIcon = "AMTPCELL";
+			}
+			Else if(AmmoType == "EOA_BFGAmmo")
+			{
+				WBColor = GetHex("BFGAmmo");
+				AmmoTypeIcon = "AMTPBFG";
+			}
+			Else if(AmmoType == "EOA_FuelAmmo")
+			{
+				WBColor = GetHex("SawAmmo");
+				AmmoTypeIcon = "AMTPSAW";
+			}
+			Else
+			{
+				WBColor = 0xFFFFFFFF;
+				AmmoTypeIcon = "AMTPFIST";
+			}
+			
+			
+			Array<String> SelectedWeapon ={
+					"CombatShotgunSelected",
+					"SuperShotgunSelected",
+					"HeavyAssaultRifleSelected",
+					"ChaingunSelected",
+					"PlasmaRifleSelected",
+					"GaussCannonSelected",
+					"RocketLauncherSelected",
+					"BFGSelected",
+					"UMKSelected",
+					""
+				};
+			Array<String> SelectedMods1 ={
+					"ChargedBurstSelected", 
+					"",
+					"MicroMissilesSelected",
+					"GatlingRotatorSelected",
+					"HeatBlastSelected", 
+					"PrecisionBoltSelected", 
+					"LockOnBurstSelected",
+					"",
+					"",
+					""
+				};
+			Array<String> SelectedMods2 ={
+					"ExplosiveShotSelected",
+					"",
+					"TacticalScopeSelected",
+					"MobileTurretSelected",
+					"StunBombSelected",
+					"SiegeModeSelected",
+					"RemoteDetonationSelected",
+					"",
+					"",
+					""
+				};		
+			Array<String> WMods1 ={
+					"CSMOD1", 
+					"",
+					"HARMOD2",
+					"CHAMOD1",
+					"PLSMOD2", 
+					"GCMOD1", 
+					"RLMOD2",
+					"",
+					"",
+					""
+				};			
+			Array<String> WMods2 ={
+					"CSMOD2",
+					"",
+					"HARMOD1",
+					"CHAMOD2",
+					"PLSMOD1",
+					"GCMOD2",
+					"RLMOD1",
+					"",
+					"",
+					""
+				};
+				
+			Int WeapNum = GetWeaponNumber(GetEquippedWeapon());
+			String SelectedWeap = SelectedWeapon[WeapNum];
+			String Mod1 = SelectedMods1[WeapNum];
+			String Mod2 = SelectedMods2[WeapNum];
+			String WeaponBar;
+			String ModIcon;
+			Bool HasWeaponMod = (Player.Mo.CountInv(SelectedWeap) && (Player.Mo.CountInv(Mod1) | Player.Mo.CountInv(Mod2)));
+			Bool WPMod1;
+			If(HasWeaponMod || Player.ReadyWeapon Is "EOA_SuperShotgun")
+				WeaponBar = "ICONFIST";
+			Else
+				WeaponBar = "ICOFIST";
+			If(Player.Mo.CountInv(SelectedWeap) && HasWeaponMod)
+			{
+				If(Player.Mo.CountInv(Mod1))
+				WPMod1 = True;
+				Else
+				WPMod1 = False;
+			}
+			If(Player.Mo.CountInv("SuperShotgunSelected"))
+			ModIcon = "SSGMOD";
+			Else If(HasWeaponMod && WPMod1)
+			ModIcon = WMods1[WeapNum];
+			Else If(HasWeaponMod && !WPMod1)
+			ModIcon = WMods2[WeapNum];
+			Else
+			ModIcon = "";
+			DrawHUDStuff(WeaponBar, HudRXOffset + FixedDiv(-160, Scale), HudYOffset - 18 - FixedDiv(30, Scale), Scale, 1.0, WBColor);
+			DrawHUDStuff(AmmoTypeIcon, HudRXOffset + FixedDiv(150, Scale), HudYOffset - 18 - FixedDiv(25, Scale), Scale, 1.0, WBColor);
+			DrawHUDStuff(ModIcon, HudRXOffset + FixedDiv(240, Scale), HudYOffset - 18 - FixedDiv(28, Scale), FixedMul(Scale, 3.5), 3.0, WBColor);
+			
+			String AmmoNumber = "";
+			AmmoNumber = String.Format("%i", Player.Mo.CountInv(Player.ReadyWeapon.AmmoType1.GetClassName()));
+			DrawHUDText(
+				"TTSPRMOL", 							
+				AmmoNumber, 				
+				HudRXOffset + FixedDiv(130 - (30 * AmmoNumber.Length()), Scale), 
+				HudYOffset - FixedDiv(43, Scale),			
+				FixedMul(Scale, 0.37), 						
+				1.0,								
+				WBColor
+			);
+			DrawHUDText(
+				"TTSPRMOL", 							
+				"000", 				
+				HudRXOffset + FixedDiv(40, Scale), 
+				HudYOffset - FixedDiv(43, Scale),			
+				FixedMul(Scale, 0.37), 						
+				0.25,								
+				WBColor
+			);
+			
+			//Equipment Launcher
+			Int SawOffset = 245;
+			Int FUAM = Player.Mo.CountInv("EOA_FuelAmmo");
+			Int FCOL = Player.Mo.CountInv("ChainsawCooldownToken");
+			Int ChainsawColor = GetHex("SawEqColor");
+			If(Player.Mo.CountInv("EOA_Chainsaw"))
+			{
+				DrawHUDStuff("EQBACK", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8);
+				//ChainsawColor
+				If (FUAM >= 1)
+				{	
+					DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, ChainsawColor);
+					DrawHUDStuff("EQFILLT3", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, ChainsawColor, 0, 0, STYLE_AddShaded);
+					DrawHUDStuff("AMTPFUEL", HudRXOffset + FixedDiv(SawOffset + 43, Scale), HudYOffset - 18 - FixedDiv(75, Scale), FixedDiv(Scale, 0.6), 0.8, ChainsawColor, 0, 0, STYLE_AddShaded);
+					SDrawHUDStuff("EQPIPG", HudRXOffset + FixedDiv(SawOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, FUAM, ChainsawColor, 0, 0, STYLE_AddShaded);
+				}
+				Else
+				{
+					DrawHUDStuff("AMTPFUEL", HudRXOffset + FixedDiv(SawOffset + 43, Scale), HudYOffset - 18 - FixedDiv(75, Scale), FixedDiv(Scale, 0.6), 0.8);
+					//X Starts at offset + 15, Ends At Offset + 15 + 30
+					//Y Starts At 35, Ends at 35 + 50
+					DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(SawOffset + 15 + (30 * abs(20 - FCOL)/20), Scale), HudYOffset - 18 - FixedDiv(35 + (50 * abs(20 - FCOL)/20), Scale), FixedDiv(Scale, 1.35), 0.8);
+				}
+			}
+			
+			Int IceOffset = 170;
+			Int IBCT = Player.Mo.CountInv("IceBombCooldownToken");
+			Bool FastIRecharge = Player.Mo.CountInv("FasterIceCoolDown");
+			Int IceBombColor = GetHex("IceEqColor");
+			If(Player.Mo.CountInv("IceBomb"))
+			{
+				DrawHUDStuff("EQBACK", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8);
+				//ChainsawColor
+				If (IBCT >= 1)
+				{	
+					DrawHUDStuff("EICOICE", HudRXOffset + FixedDiv(IceOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8);
+					DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(IceOffset + 15 + (30 * (40 - (20 * FastIRecharge) - IBCT)/40), Scale), HudYOffset - 18 - FixedDiv(35 + (50 * (40 - (20 * FastIRecharge) - IBCT)/40), Scale), FixedDiv(Scale, 1.35), 0.8);
+				}
+				Else
+				{
+					DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, IceBombColor);
+					DrawHUDStuff("EQFILLT1", HudRXOffset + FixedDiv(IceOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, IceBombColor, 0, 0, STYLE_AddShaded);
+					DrawHUDStuff("EICOICE", HudRXOffset + FixedDiv(IceOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8, IceBombColor, 0, 0, STYLE_AddShaded);
+				}
+			}
+			
+			Int NadeOffset = 97;
+			Int FGCT = Player.Mo.CountInv("GrenadeCooldownToken");
+			Int FGCT2 = Player.Mo.CountInv("ExtraGrenadeCooldownToken");
+			Bool FastGRecharge = Player.Mo.CountInv("FasterFragCoolDown");
+			Int GrenadeColor = GetHex("GenEqColor");
+			If(Player.Mo.CountInv("FragGrenade"))
+			{
+				DrawHUDStuff("EQBACK", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8);
+				if(!Player.Mo.CountInv("StockUp"))
+				{
+					If (FGCT >= 1)
+					{	
+						DrawHUDStuff("EICOGND", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8);
+						DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(NadeOffset + 15 + (30 * (40 - (20 * FastGRecharge) - FGCT)/40), Scale), HudYOffset - 18 - FixedDiv(35 + (50 * (40 - (20 * FastGRecharge) - FGCT)/40), Scale), FixedDiv(Scale, 1.35), 0.8);
+					}
+					Else
+					{
+						DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor);
+						DrawHUDStuff("EQFILLT1", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor, 0, 0, STYLE_Shaded);
+						DrawHUDStuff("EICOGND", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8, GrenadeColor, 0, 0, STYLE_AddShaded);
+					}
+				}
+				Else
+				{
+					If (FGCT == 0 && FGCT2 >= 1)
+					{	
+						DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor);
+						DrawHUDStuff("EQFILLT4", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor, 0, 0, STYLE_Shaded);
+						DrawHUDStuff("EICOGND", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8, GrenadeColor, 0, 0, STYLE_AddShaded);
+						DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(NadeOffset + 15 + (60 * (40 - (20 * FastGRecharge) - FGCT2)/80), Scale), HudYOffset - 18 - FixedDiv(50 + (50 * (40 - (20 * FastGRecharge) - FGCT2)/80), Scale), FixedDiv(Scale, 1.35), 0.8);
+					}
+					Else If (FGCT >= 1 && FGCT2 >= 1)
+					{
+						DrawHUDStuff("EICOGND", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8);
+						DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(NadeOffset + 15 + (30 * (40 - (20 * FastGRecharge) - ((FGCT2 + FGCT)/2))/40), Scale), HudYOffset - 18 - FixedDiv(35 + (50 * (40 - (20 * FastGRecharge) - ((FGCT2 + FGCT)/2))/40), Scale), FixedDiv(Scale, 1.35), 0.8);
+					}
+					Else
+					{
+						DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor);
+						DrawHUDStuff("EQFILLT2", HudRXOffset + FixedDiv(NadeOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, GrenadeColor, 0, 0, STYLE_Shaded);
+						DrawHUDStuff("EICOGND", HudRXOffset + FixedDiv(NadeOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8, GrenadeColor, 0, 0, STYLE_AddShaded);
+					}
+				}
+			}
+			Int FTCT = Player.Mo.CountInv("FlameThrowerCooldownToken");
+			Int FlameOffset = 22;
+			Int FlameBelchColor = GetHex("FlameEqColor");
+			If(Player.Mo.CountInv("FlameBelch"))
+			{
+				DrawHUDStuff("EQBACK", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8);
+				If (FTCT >= 1)
+				{	
+					DrawHUDStuff("EICOFLM", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8);
+					DrawHUDStuff("EQPMTR", HudRXOffset + FixedDiv(FlameOffset + 15 + (30 * abs(20 - FTCT)/20), Scale), HudYOffset - 18 - FixedDiv(35 + (50 * abs(25 - FTCT)/20), Scale), FixedDiv(Scale, 1.35), 0.8);
+				}
+				Else
+				{
+					DrawHUDStuff("EQINSIDE", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, FlameBelchColor);
+					DrawHUDStuff("EQFILLT1", HudRXOffset + FixedDiv(FlameOffset, Scale), HudYOffset - 18 - FixedDiv(122, Scale), FixedDiv(Scale, 0.5), 0.8, FlameBelchColor, 0, 0, STYLE_AddShaded);
+					DrawHUDStuff("EICOFLM", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.8);
+					DrawHUDStuff("EICOFLM", HudRXOffset + FixedDiv(FlameOffset + 40, Scale), HudYOffset - 18 - FixedDiv(80, Scale), FixedDiv(Scale, 0.6), 0.35, FlameBelchColor, 0, 0, STYLE_AddShaded);
+				}
+			}
+			
+			Int HammerCharges = Player.Mo.CountInv("CrucibleAmmo");
+			Int HammerOffset = -50;
+			Int HammerColor = GetHex("HamEqColor");
+			If(Player.Mo.CountInv("DEHellBreaker"))
+			{
+			}
+		}
+	}
+}

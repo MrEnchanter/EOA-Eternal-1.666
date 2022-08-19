@@ -1,0 +1,97 @@
+-------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------UPDATE 1.1 ----------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+- Removed Vuln State on marauder's dog spawning
+- Increased Dog's health from 60 to 140
+- Changed Marauder's shield painchance from 255 to 224 in an attempt to reduce duplications
+- Moved the Jump inventory calls in an attempt to avoid marauder freezing, which is an issue some have had
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------UPDATE 1.2 ----------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+- Made additional improvements to the marauder to work with fast monsters on
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------UPDATE 1.3 ----------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------
+- Added The Khan Maykr (Sprites courtesy of Craneo)
+- Added Stone Imps (Sprite edit courtesy of Phoenixfire)
+- Fixed a few obituaries
+- Added "+NEVERRESPAWN" to every enemy to avoid respawning in Nightmare difficulty
+- Introduced some of the Brutal doom gore code back into the mod
+- NOTE For people with EOAe early access, the headshot bug may still be present
+
+Imps:
+- Heavy attack now leads
+
+Gargoyles:
+- Heavy attack now leads
+
+MaykrDrones:
+- Maykr Drones now drop less ammo when headshot, this is due to how easy it is to hit, as well as how many there are on average
+- Fixed Maykr Drones playing zombiemen noises when attacking
+- Change Maykr drones headshot function to use A_DamageMaster instead of A_Explode
+
+Arachnotron:
+- Heavy attack and bombs now leads
+- Reduced rate of fire for turret
+- Changed the sprites of the Zombieman and Arachnotron heavy shot from DB19 to DB25
+
+Cacodemon:
+- Bite activation range reduced
+- Bite damage reduced
+- Bite movement speed reduced
+
+Carcass:
+- Reduced health of Carcass shield 
+- Carcass projectile's trail color is now correct
+
+Mancubus:
+- Added +NoInfighting and +NoTarget onto the Cyber Mancubus
+
+Dread Knight:
+- Blade now leads
+- Increased length of ranged attack
+- will choose to leap less
+- added ": baronofhell" onto the actor tags of the Baron and Dread knight so they work with the E1M8 speciel 
+
+Demon:
+- Removed RORADIUSDMG tag from Pinky and Spectre, since they seem to take spash damage anyways 
+
+Prowler:
+- Prowler's will only teleport after melee 50% of the time
+
+Pain Elemental:
+- Bllue fire soul speed, tracking and damage reduced
+- Red fire souls now leads
+
+Revenant:
+- Slower primary rate of fire
+- Shoots less tracking missiles durring barrage
+
+Spectre:
+- Spectres can now turn while charging much like their visible counterpart
+
+Archvile:
+- Primary projectile now leads
+- Decreased time for Archvile to summon from 160 tics to 130 tics
+- Archviles now remove summons if gibbed
+- Arch wall death also has been changed to A_DamageMaster
+- Archviles health increased from 1750 to 2400
+- Archvile will now go into a teleport state after pain
+
+Baron of hell:
+- All attacks now leads
+- added ": baronofhell" onto the actor tags of the Baron and Dread knight so they work with the E1M8 speciel 
+
+Marauder:
+- Reduced Marauder's shotgun check in his missile state from 72 to 56
+- Marauder Eyes threshhold reduced from 2 points to 1 point
+
+Tyrant:
+- Increased Tyrant's health from 6000 to 8000
+- Removed Tyrant's ability to dash, as this very frequently caused him to get stuck
+
+

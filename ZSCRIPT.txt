@@ -1,0 +1,188 @@
+version "4.5"
+//#include "ZScript/EOA/Reticles.txt"
+#include "ZScript/EOA/Hud.txt"
+#include "Zscript/EOA/Items/DEPraetor.txt"
+#include "Zscript/EOA/Items/BuffTotem.txt"
+#include "Zscript/EOA/Items/MonkeyPole.txt"
+#include "Zscript/EOA/Weapons/DEEquipment.txt"
+//#include "Zscript/EOA/Weapons/SwimArms.txt"
+#include "Zscript/EOA/CVARActors.txt"
+
+ENum test
+{
+	TestTRNS = "0:255=%[0,0,0]:[1,0,0]" 
+};
+
+Const TestTRNS2 = "0:255=%[0,0,0]:[1,0,0]";
+
+//this allmap is no longer needed because it's already in EOA 1.7
+/* Class EOA_Allmap2 : Actor replaces Allmap 
+{
+	Bool MapDownloaded;
+	Default
+	{
+		Radius 10;
+		Height 46;
+		XScale 0.75;
+		YScale 0.65;
+		+SHOOTABLE
+		+NOBLOOD
+		+RELATIVETOFLOOR
+		+NODAMAGE
+		+DONTTHRUST
+		+DONTBLAST
+		+DONTGIB
+	}
+	Override Bool Used(Actor User)
+	{
+		If (!MapDownloaded)
+		{
+			A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+			MapDownloaded = True;
+			User.ACS_NamedExecuteAlways("MapDownloadMessage");
+			User.A_GiveInventory("EOA_Allmap");
+			SetState(ResolveState("Downloaded"));
+			Return True;
+		}
+		Return False;
+	}
+	States
+	{
+	Spawn:
+		AMAP EFGHIIHGFEEE 6; 
+		Loop;
+	Downloaded:
+		AMAP J -1;
+		Stop;
+	}
+} */
+
+Class KeyCorpseBase : Actor
+{
+	Bool KeyClaimed;
+	Default
+	{
+		Radius 20;
+		Height 20;
+		Scale 0.6;
+		+SOLID
+		+NOBLOOD
+		+RELATIVETOFLOOR
+		+NODAMAGE
+		+DONTTHRUST
+		+DONTBLAST
+		+DONTGIB
+		+SPECIAL
+	}
+	Override Void Tick()
+	{
+		If (KeyClaimed)
+		{
+			SetState(ResolveState("KeyPicked"));
+		}
+		Super.Tick();
+	}
+}
+
+Class RedKeyCorpse : KeyCorpseBase 
+{
+	
+	Override void Touch(Actor Toucher)
+	{
+		If (!KeyClaimed)
+		{
+			A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+			Toucher.A_GiveInventory("RedCard");
+			Toucher.ACS_NamedExecuteAlways("RedKeyPickMessage");
+			KeyClaimed = True;
+		}
+	}
+	
+	States
+	{
+	Spawn:
+		R_KC A 0 NoDelay A_UnSetSolid();
+		R_KC A 0 A_Jump(128,"Idle");
+		R_KZ A 0;
+		Goto Idle;
+	Idle:	
+		"####" ABCDEFGH 2; 
+		"####" IIIII 5; 
+		Loop;
+	KeyPicked:
+		"####" J -1;
+		Stop;
+	}
+}
+
+Class YellowKeyCorpse : KeyCorpseBase
+{
+	Override void Touch(Actor Toucher)
+	{
+		If (!KeyClaimed)
+		{
+			A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+			Toucher.A_GiveInventory("YellowCard");
+			Toucher.ACS_NamedExecuteAlways("YellowKeyPickMessage");
+			KeyClaimed = True;
+		}
+	}
+	
+	States
+	{
+	Spawn:
+		Y_KC A 0 NoDelay A_UnSetSolid();
+		Y_KC A 0 A_Jump(128,"Idle");
+		Y_KZ A 0;
+		Goto Idle;
+	Idle:	
+		"####" ABCDEFGH 2; 
+		"####" IIIII 5; 
+		Loop;
+	KeyPicked:
+		"####" J -1;
+		Stop;
+	}
+}
+
+Class BlueKeyCorpse : KeyCorpseBase
+{
+	Override void Touch(Actor Toucher)
+	{
+		If (!KeyClaimed)
+		{
+			A_CallSpecial(Special, Args[0], Args[1], Args[2], Args[3], Args[4]);
+			Toucher.A_GiveInventory("BlueCard");
+			Toucher.ACS_NamedExecuteAlways("BlueKeyPickMessage");
+			KeyClaimed = True;
+		}
+	}
+	
+	States
+	{
+	Spawn:
+		B_KC A 0 NoDelay A_UnSetSolid();
+		B_KC A 0 A_Jump(128,"Idle");
+		B_KZ A 0;
+		Goto Idle;
+	Idle:	
+		"####" ABCDEFGH 2; 
+		"####" IIIII 5; 
+		Loop;
+	KeyPicked:
+		"####" J -1;
+		Stop;
+	}
+}
+
+
+/*	
+Class RedKeyCardIndicator : PraetorTokenIndicator
+{
+	Default
+	{
+		Translation "0:255=%[0,0,0]:[1.2,0.1,0.0]";
+	}
+	
+}*/
+

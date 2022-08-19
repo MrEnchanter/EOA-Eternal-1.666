@@ -1,0 +1,60 @@
+
+#include "Decorate/Decorations.AED"
+#include "Decorate/MiscItems.AED"
+#include "Decorate/MiscEffects.AED"
+#include "Decorate/Blood.AED"
+#include "Decorate/Keys.AED"
+#include "Decorate/NeededActors.AED"
+
+// Monsters
+#include "Decorate/Monsters/MonsterBase.AED"
+#include "Decorate/Monsters/Zombie.AED"
+#include "Decorate/Monsters/riotgunner.fns"
+#include "Decorate/Monsters/Zombieman.AED"
+#include "Decorate/Monsters/MechaZombie.AED"
+#include "Decorate/Monsters/Shieldguy.AED"
+#include "Decorate/Monsters/Prowler.AED"
+#include "Decorate/Monsters/DoomImp.AED"
+#include "Decorate/Monsters/StoneImp.AED"
+#include "Decorate/Monsters/Gargoyle.AED"
+#include "Decorate/Monsters/Demon.AED"
+#include "Decorate/Monsters/LostSoul.AED"
+#include "Decorate/Monsters/Revenant.AED"
+#include "Decorate/Monsters/Carcass.AED"
+#include "Decorate/Monsters/Cacodemon.AED"
+#include "Decorate/Monsters/PainElemental.AED"
+#include "Decorate/Monsters/FatsoHell.AED"
+#include "Decorate/Monsters/FatsoTech.AED"
+#include "Decorate/Monsters/Arachnotron.AED"
+#include "Decorate/Monsters/BaronOfHell.AED"
+#include "Decorate/Monsters/DreadKnight.AED"
+#include "Decorate/Monsters/HellKnight.AED"
+#include "Decorate/Monsters/Whiplash.AED"
+#include "Decorate/Monsters/Archvile.AED"
+#include "Decorate/Monsters/Marauder.AED"
+#include "Decorate/Monsters/DoomHunter.AED"
+#include "Decorate/Monsters/Tyrant.AED"
+#include "Decorate/Monsters/KhanMaykr.AED"
+#include "Decorate/Monsters/Makyrdrone.AED"
+//#include "Decorate/Monsters/MapperList.AED"
+
+#include "Decorate/Monsters/Spawners.AED"
+#include "Decorate/Monsters/GoreNest.AED"
+
+#include TOMATOSAUCE.txt //Blood actors
+#include MEAT.txt //Gib actors
+#include SERVING.txt //Gore Groups (spawns gibs and blood when enemies explodes)
+
+#include GREENGORE.txt
+#include BLUEGORE.txt
+
+
+Actor IsOverWater : Inventory{inventory.maxamount 1}
+Actor IsOverSlime : Inventory{inventory.maxamount 1}
+Actor IsOverSludge : Inventory{inventory.maxamount 1}
+Actor IsOverBlood : Inventory{inventory.maxamount 1}
+Actor IsOverNukage : Inventory{inventory.maxamount 1}
+Actor AnimuGore : Inventory{inventory.maxamount 1}
+Actor IsOverLava : Inventory{inventory.maxamount 1}
+Actor LowGraphicsMode : Inventory{inventory.maxamount 1}
+Actor IsOverSlimy : Inventory{inventory.maxamount 1}

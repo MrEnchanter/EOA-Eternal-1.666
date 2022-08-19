@@ -1,0 +1,1288 @@
+
+//dash refill
+ACTOR DashRefill : CustomInventory 23033 //EOA_Ammo
+{
+	Scale 1
+	Inventory.Amount 2
+	Inventory.MaxAmount 2
+	Inventory.PickupSound "Health/Stim"
+	//Ammo.DropAmount 2
+	//Ammo.BackpackAmount 0
+	//Ammo.BackpackMaxAmount 3
+	Tag "DashRefill"
+	+NOGRAVITY
+    +FLOATBOB
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	FloatBobStrength 0.3
+	States
+	{
+	Spawn:
+		DASH P 0 NoDelay //A_CheckFlag("DROPPED", "Null")
+	SpawnLooper:	
+		DASH P 35 Bright
+		Loop
+	pickup:
+		TNT1 A 0 A_Giveinventory("B5_DDASH", 2)
+		stop
+	}
+}
+//Health
+ACTOR EOA_MediStim : EOA_Health 22000 //Replaces HealthBonus
+{
+	Scale 0.44
+	Inventory.Amount 5
+	Inventory.PickupSound "Health/Stim"
+	+BRIGHT
+	States
+	{
+	Spawn:
+		BON1 A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+	SpawnLoop:
+		BON1 A 35
+		Loop
+	}
+}
+
+//ACTOR EOA_StimPack2 : RandomSpawner Replaces StimPack {DropItem "EOA_StimPack"}
+
+ACTOR EOA_MediKit : EOA_Health 22001 //Replaces StimPack
+{
+	Scale 0.7
+	Inventory.Amount 25
+	Inventory.PickupSound "Health/Kit"
+	+BRIGHT
+	States
+	{
+	Spawn:
+		STIM A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+	SpawnLoop:
+		STIM A 35
+		Loop
+	}
+}
+
+ACTOR EOA_MediPack : EOA_Health 22002 //Replaces MediKit
+{
+	Scale 0.65
+	Inventory.Amount 50
+	Inventory.PickupSound "Health/Pack"
+	+BRIGHT
+	States
+	{
+	Spawn:
+		MEDI A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+	SpawnLoop:
+		MEDI A 35
+		Loop
+	}
+}
+
+/*ACTOR EOA_MediKitHandler : RandomSpawner Replaces MediKit
+{
+	DropItem "EOA_MediKit", 255 3
+	DropItem "EOA_MediPack", 255 1
+}*/
+
+//Armor
+ACTOR EOA_SmallArmor : EOA_Armor 22010 //Replaces ArmorBonus
+{
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	+FLATSPRITE
+	-Floorclip
+	+ROLLCENTER
+	+FORCEXYBILLBOARD
+	+FLOAT
+	pitch 35
+	angle 35
+	roll 35
+	scale 0.125
+	Armor.SaveAmount 5
+	States
+	{
+	Spawn:
+		ASHD A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+	SpawnLoop:
+		BON2 A 35
+		Loop
+	}
+}
+
+ACTOR EOA_MediumArmor : EOA_Armor 22011 //Replaces GreenArmor
+{
+	scale 0.3
+	Armor.SaveAmount 25
+	Inventory.PickupSound "Armor/Pickup"
+	States
+	{
+	Spawn:
+		ARMN A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+	SpawnLoop:
+		ARMN A 35
+		Loop
+	}
+}
+
+ACTOR EOA_LargeArmor : EOA_Armor 22012 //Replaces BlueArmor
+{
+	scale 0.35
+	Armor.SaveAmount 50
+	Inventory.PickupSound "Armor/Pickup"
+	States
+	{
+	Spawn:
+		ARMM A 0 NoDelay A_CheckFlag("DROPPED", "Null")
+		ARMM A 0 A_Jump(15,"SpawnExtraLive") 
+	SpawnLoop:
+		ARMM A 35
+		Loop
+	  SpawnExtraLive:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("Extralive",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+        Stop 
+	}
+}
+
+//Spawners
+ACTOR EOA_SmallHealthSpawner : RandomSpawner Replaces HealthBonus{DropItem "EOA_MediStim"}
+ACTOR EOA_MediumHealthSpawner Replaces StimPack{}
+ACTOR EOA_LargeHealthSpawner Replaces Medikit{}
+ACTOR EOA_SmallArmorSpawner Replaces ArmorBonus{}
+ACTOR EOA_MediumArmorSpawner{}
+ACTOR EOA_LargeArmorSpawner Replaces GreenArmor{}
+ACTOR EOA_LargeArmorSpawner2 : RandomSpawner Replaces BlueArmor{DropItem "EOA_LargeArmorSpawner"}
+
+//Health
+ACTOR TempStim : EOA_Health
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Inventory.Amount 5
+	Inventory.PickupSound "Health/Stim"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TSTM A 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TSTM A 0 A_Jump(256, random(1, 8))
+		TSTM AAAAAAAAAAAAAAAAAA 1 //Random delay before the item begins to acquire a tracer.
+		{
+			A_SpawnItemEx("Healthtemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TSTM A 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER); //Check to see if there are any players in the vicinity.
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER))
+			If (CheckPlayerInRange)//Then check to see if the player is close enough and needs the item in order for the item to actually home.
+			{
+				//We're calling A_SeekerMissile 4 times because the max turn angle/threshold is 90 degrees.  90 * 4 = 360.  So it looks all around.
+				//But we'll split it up so that it homes in more precisely the closer it is to its tracer. ;)
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && A_JumpIfHealthLower(CallACS("GetMaxTracerHealth"), "Null", AAPTR_TRACER))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE);
+					A_ChangeFlag("THRUACTORS", 0); //So that it can be picked up.
+					A_RadiusThrust(1, 1); //So that the player doesn't have to move in order to pick it up.  The player won't budge, but the engine will register it as sufficient movement for the player to pick up the object.
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter"); //[DoomKrakken]: This counter will only be given once it's obtained a tracer.  This way, the item keeps its velocity without stopping mid-air.  Also used for making sure the Vacuum sound is played only once.
+				A_TakeInventory("InertCounter"); //If the item had obtained a tracer in the past, but no longer has one, it will have this counter.  Take it away so that it can stop mid-air (and only do so once), once it doesn't have a tracer anymore.  Lots of code for little bits of physics.
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempStimGK : TempStim
+{
+	ReactionTime 350
+}
+
+//Armor
+ACTOR TempArmor : EOA_Armor
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 350
+	Inventory.PickupSound "Armor/Shard"
+	Armor.SaveAmount 3
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TSHD A 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TSHD A 0 A_Jump(256, random(1, 8))
+		TSHD AAAAAAAAAAAAAAAAAA 1
+		{
+			A_SpawnItemEx("Armortemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TSHD A 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER))
+			If (CheckPlayerInRange)
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("BasicArmor", 0, "Null", AAPTR_TRACER))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempArmorBonus : EOA_Armor
+{
+	Armor.SaveAmount 3
+}
+
+//Ammo
+ACTOR TempBulletAmmo : EOA_BulletAmmo
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Inventory.Amount 10
+	Ammo.DropAmount 10
+	//Inventory.PickupSound "Ammo/Pickup"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TMPA A 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TMPA A 0 A_Jump(256, random(1, 8))
+		TMPA AAAAAAAAAAAAAAAAAA 1
+		{
+			A_SpawnItemEx("Bullettemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TMPA A 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+			If (CheckPlayerInRange && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_BulletAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_HeavyAssaultRifle", AAPTR_TRACER) || CountInv("EOA_Chaingun", AAPTR_TRACER)))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempShellAmmo : EOA_ShellAmmo
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Inventory.Amount 5
+	Ammo.DropAmount 5
+	//Inventory.PickupSound "Ammo/Pickup"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TMPA B 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TMPA B 0 A_Jump(256, random(1, 8))
+		TMPA BBBBBBBBBBBBBBBBBB 1
+		{
+			A_SpawnItemEx("shellstemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER)))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TMPA B 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER)))
+			If (CheckPlayerInRange && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER)))
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_ShellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_CombatShotgun", AAPTR_TRACER) || CountInv("EOA_SuperShotgun", AAPTR_TRACER)))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempRocketAmmo : EOA_RocketAmmo
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Inventory.Amount 2
+	Ammo.DropAmount 2
+	//Inventory.PickupSound "Ammo/Pickup"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TMPA C 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TMPA C 0 A_Jump(256, random(1, 8))
+		TMPA CCCCCCCCCCCCCCCCCC 1
+		{
+			A_SpawnItemEx("Rockettemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TMPA C 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER))
+			If (CheckPlayerInRange && CountInv("EOA_RocketLauncher", AAPTR_TRACER))
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER)) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_RocketAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_RocketLauncher", AAPTR_TRACER))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempCellAmmo : EOA_CellAmmo
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Inventory.Amount 15
+	Ammo.DropAmount 15
+	//Inventory.PickupSound "Ammo/Pickup"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TMPA D 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TMPA D 0 A_Jump(256, random(1, 8))
+		TMPA DDDDDDDDDDDDDDDDDD 1
+		{
+			A_SpawnItemEx("Plasmatemptrail", 0, 0, 6, 0, 0, 0, 0, SXF_ORIGINATOR|SXF_SETTRACER);
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER)))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TMPA D 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER)))
+			If (CheckPlayerInRange && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER)))
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER))) 
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_CellAmmo", 0, "Null", AAPTR_TRACER) && (CountInv("EOA_PlasmaRifle", AAPTR_TRACER) || CountInv("EOA_GaussCannon", AAPTR_TRACER)))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+ACTOR TempBFGAmmo : EOA_BFGAmmo
+{
+	Radius 5
+	Height 10
+	Speed 20
+	Gravity 0.5
+	Scale 0.375
+	BounceType "Doom"
+	BounceFactor 0.5
+	BounceSound "Item/Bounce"
+	ReactionTime 1050
+	Ammo.DropAmount 1 //Unnecesary, but just in case.
+	Inventory.Amount 1 //Also unnecessary...
+	//Inventory.PickupSound "Ammo/Pickup"
+	+BOUNCEONCEILINGS
+	+BOUNCEONFLOORS
+	+BOUNCEONWALLS
+	+BRIGHT
+	+DONTBLAST
+	+DONTTHRUST
+	+FIXMAPTHINGPOS
+	+FORCEXYBILLBOARD
+	+MBFBOUNCER
+	+NEVERRESPAWN
+	+NOBLOCKMONST
+	+NOTRIGGER
+	+SEEKERMISSILE
+	+SLIDESONWALLS
+	+THRUACTORS
+	States
+	{
+	Spawn:
+		TBFG A 0 NoDelay A_ChangeVelocity(frandom(-5.0, 5.0), frandom(-5.0, 5.0), 4.0, CVF_RELATIVE|CVF_REPLACE)
+		TBFG A 0 A_Jump(256, random(1, 8))
+		TBFG AAAAAAAAAAAAAAAAAA 1
+		{
+			If (CheckPlayerInRange && A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+			{
+				A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+				A_ChangeFlag("THRUACTORS", 0);
+				A_RadiusThrust(1, 1);
+			}
+			Else
+			{
+				A_ChangeFlag("THRUACTORS", 1);
+			}
+		}
+		TBFG A 1
+		{
+			//A_CheckProximity("", "PlayerPawn", 1024, 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER);
+			//If (A_CheckProximity("Null", "PlayerPawn", 256 * (1 + CountInv("VacuumSelected", AAPTR_TRACER)) * (1 + (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER))), 1, CPXF_ANCESTOR|CPXF_CHECKSIGHT|CPXF_CLOSEST|CPXF_SETTRACER) && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+			If (CheckPlayerInRange && CountInv("EOA_BFG", AAPTR_TRACER))
+			{
+				A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				/*If (A_JumpIfTracerCloser(192, "Null") && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(128, "Null") && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				If (A_JumpIfTracerCloser(64, "Null") && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+				{
+					A_SeekerMissile(90, 90, SMF_LOOK|SMF_PRECISE, 256, 16);
+				}
+				*/A_ChangeFlag("NOGRAVITY", 1);
+				If (A_JumpIfTracerCloser(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)), "Null") && !A_JumpIfInventory("EOA_BFGAmmo", 0, "Null", AAPTR_TRACER) && CountInv("EOA_BFG", AAPTR_TRACER))
+				{
+					A_Warp(AAPTR_TRACER, 0, 0, 0, 0, WARPF_NOCHECKPOSITION|WARPF_INTERPOLATE|WARPF_STOP);
+					A_ChangeFlag("THRUACTORS", 0);
+					A_RadiusThrust(1, 1);
+				}
+				Else
+				{
+					A_ChangeFlag("THRUACTORS", 1);
+				}
+			}
+			Else
+			{
+				A_RearrangePointers(AAPTR_NULL, AAPTR_NULL, AAPTR_NULL);
+				A_ChangeFlag("NOGRAVITY", 0);
+			}
+			If (Tracer)
+			{
+				If (!CountInv("TracerCounter") && CountInv("VacuumSelected", AAPTR_TRACER))
+				{
+					A_PlaySound("Rune/Vacuum");
+				}
+				A_GiveInventory("TracerCounter");
+				A_TakeInventory("InertCounter");
+				A_SetSpeed(20 + 20 * CountInv("VacuumSelected", AAPTR_TRACER) + 20 * (CountInv("VacuumSelected", AAPTR_TRACER) && CountInv("VacuumII", AAPTR_TRACER)));
+			}
+			Else If (!CountInv("InertCounter") && CountInv("TracerCounter"))
+			{
+				A_Stop;
+				A_GiveInventory("InertCounter");
+				A_TakeInventory("TracerCounter");
+				A_SetSpeed(0);
+			}
+			A_CountDown;
+		}
+		Wait
+	}
+}
+
+//Mega Items
+ACTOR EOA_MegaHealth : CustomInventory replaces Megasphere 22020
+{
+	Inventory.PickupMessage "+200 Health / +200 Armor"
+	Inventory.PickupSound "Health/Mega"
+	Inventory.RespawnTics 2100
+	+BRIGHT
+	+ALWAYSPICKUP
+	+BIGPOWERUP
+	+COUNTITEM
+	+NOSCREENFLASH
+	+FLOAT
+	FloatSpeed 2
+	Scale 0.5
+	States
+	{
+	Spawn:
+		SOUL A 0 nodelay A_Jump(15,"SpawnExtraLive") 
+	SpawnLoop:
+		SOUL A 10
+		loop
+	Pickup:
+		TNT1 A 0
+		{
+			A_GiveInventory("EOA_LargeArmorMega");
+			A_GiveInventory("EOA_MegaHealthBonus", 200);
+		}
+		Stop
+  SpawnExtraLive:
+       TNT1 A 0 A_ChangeFlag("THRUACTORS",1)
+       TNT1 A 1 A_SpawnItemEx("Extralive",0,0,20,0,0,0,0,SXF_NOCHECKPOSITION)
+       TNT1 A 0 
+        Stop 
+	}
+}
+
+ACTOR EOA_LargeArmorMega : EOA_Armor
+{
+	+ALWAYSPICKUP
+	scale 0.35
+	Armor.SaveAmount 200
+	States
+	{
+	Spawn:
+		ARMM A 0
+		Loop
+	}
+}
+
+ACTOR EOA_MegaArmorBonus : EOA_Armor
+{
+	+ALWAYSPICKUP
+	Inventory.Amount 200
+	Inventory.MaxAmount 200
+}
+
+ACTOR EOA_MegaHealthBonus : EOA_Health
+{
+	+ALWAYSPICKUP
+	Inventory.Amount 200
+}
+
+ACTOR SoulsphereReplacer : RandomSpawner replaces Soulsphere
+{
+	DropItem "EOA_MegaHealth"
+}
+
+ACTOR TempMediPack : TempStim
+{
+	Inventory.Amount 50
+	//Inventory.PickupMessage "+50 Health"
+	Inventory.PickupSound "Health/Pack"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfHealthLower(GetMaxHealth, 1)
+		Fail
+		TNT1 A 0 A_PlaySound("Health/Pack", 0)
+		TNT1 A 0 A_GiveInventory("EOA_StimPack", 10)
+		Stop
+	}*/
+}
+
+ACTOR MegaTempStim : TempStim
+{
+	Inventory.Amount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Health"
+	Inventory.PickupSound "Health/Pack"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfHealthLower(GetMaxHealth, 1)
+		Fail
+		TNT1 A 0 
+		{
+			A_PlaySound("Health/Pack", 0);
+			A_GiveInventory("EOA_MegaStim");
+		}
+		Stop
+	}*/
+}
+
+ACTOR EOA_MegaStim : EOA_MediPack
+{
+	Inventory.Amount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Health"
+	Inventory.PickupSound "Health/Pack"
+}
+
+ACTOR MegaTempBulletAmmo : TempBulletAmmo
+{
+	Inventory.Amount 0x7FFFFFFF
+	Ammo.DropAmount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Bullet Ammo"
+	Inventory.PickupSound "Item/Pickup"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("EOA_BulletAmmo", 0, "Failure")
+		TNT1 A 0 A_GiveInventory("EOA_BulletAmmo", 0x7FFFFFFF)
+		Stop
+	}*/
+}
+
+ACTOR MegaTempShellAmmo : TempShellAmmo
+{
+	Inventory.Amount 0x7FFFFFFF
+	Ammo.DropAmount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Shell Ammo"
+	Inventory.PickupSound "Item/Pickup"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("EOA_ShellAmmo", 0, "Failure")
+		TNT1 A 0 A_GiveInventory("EOA_ShellAmmo", 0x7FFFFFFF)
+		Stop
+	}*/
+}
+
+ACTOR MegaTempRocketAmmo : TempRocketAmmo
+{
+	Inventory.Amount 0x7FFFFFFF
+	Ammo.DropAmount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Rocket Ammo"
+	Inventory.PickupSound "Item/Pickup"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("EOA_RocketAmmo", 0, "Failure")
+		TNT1 A 0 A_GiveInventory("EOA_RocketAmmo", 0x7FFFFFFF)
+		Stop
+	}*/
+}
+
+ACTOR MegaTempCellAmmo : TempCellAmmo
+{
+	Inventory.Amount 0x7FFFFFFF
+	Ammo.DropAmount 0x7FFFFFFF
+	//Inventory.PickupMessage "Full Cell Ammo"
+	Inventory.PickupSound "Item/Pickup"
+	ReactionTime 0x7FFFFFFF
+	/*States
+	{
+	Pickup:
+		TNT1 A 0 A_JumpIfInventory("EOA_CellAmmo", 0, "Failure")
+		TNT1 A 0 A_GiveInventory("EOA_CellAmmo", 0x7FFFFFFF)
+		Stop
+	}*/
+}
+
+//Chainsaw drops
+ACTOR TempChainsawBulletAmmo : TempBulletAmmo {ReactionTime 350}
+ACTOR TempChainsawShellAmmo : TempShellAmmo {ReactionTime 350}
+ACTOR TempChainsawRocketAmmo : TempRocketAmmo {ReactionTime 350}
+ACTOR TempChainsawCellAmmo : TempCellAmmo {ReactionTime 350}
+
+//Ammo crate drops
+ACTOR TempCrateBulletAmmo : TempChainsawBulletAmmo
+{
+	+NODOUBLE
+	States
+	{
+	Spawn:
+		TMPA A 0 NoDelay A_ChangeVelocity(5, frandom(-1, 1), 0, CVF_RELATIVE|CVF_REPLACE)
+		Goto TempBulletAmmo::Spawn+1
+	}
+}
+
+ACTOR TempCrateShellAmmo : TempChainsawShellAmmo
+{
+	+NODOUBLE
+	States
+	{
+	Spawn:
+		TMPA B 0 NoDelay A_ChangeVelocity(5, frandom(-1, 1), 0, CVF_RELATIVE|CVF_REPLACE)
+		Goto TempShellAmmo::Spawn+1
+	}
+}
+
+ACTOR TempCrateRocketAmmo : TempChainsawRocketAmmo
+{
+	Inventory.Amount 5
+	Ammo.DropAmount 5
+	+NODOUBLE
+	States
+	{
+	Spawn:
+		TMPA C 0 NoDelay A_ChangeVelocity(5, frandom(-1, 1), 0, CVF_RELATIVE|CVF_REPLACE)
+		Goto TempRocketAmmo::Spawn+1
+	}
+}
+
+ACTOR TempCrateCellAmmo : TempChainsawCellAmmo
+{
+	+NODOUBLE
+	States
+	{
+	Spawn:
+		TMPA D 0 NoDelay A_ChangeVelocity(5, frandom(-1, 1), 0, CVF_RELATIVE|CVF_REPLACE)
+		Goto TempCellAmmo::Spawn+1
+	}
+}
+
+ACTOR InertCounter : EOA_Token{}
+ACTOR TracerCounter : EOA_Token{}
+
+ACTOR BossKillReward : EOA_Manipulator
+{
+	States
+	{
+	Pickup:
+		TNT1 A 0 ACS_NamedExecuteAlways("WeaponUpgradePointReward")
+		Stop
+	}
+}
+
+
+
+ACTOR Bullettemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		AMME A 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}
+
+ACTOR Healthtemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		HLTH A 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}
+
+ACTOR Armortemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		ARMR A 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}
+
+
+ACTOR Shellstemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		AMME B 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}
+
+
+ACTOR Rockettemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		AMME C 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}
+
+
+ACTOR Plasmatemptrail
+{
+	scale 0.3
+	//RenderStyle Translucent
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	+NOTRIGGER
+	States
+	{
+	Spawn:
+		TNT1 A 2
+		AMME D 1 bright
+		{
+			A_FadeOut(0.03);
+			A_SetScale(ScaleX - 0.01);
+		}
+		Wait
+	}
+}

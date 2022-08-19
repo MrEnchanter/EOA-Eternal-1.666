@@ -1,0 +1,832 @@
+Class DEcruicbleselected : EOA_token {}
+
+Class HammerImpactFX : Actor
+{
+	Bool LargeScale;
+	Default
+	{
+		Radius 1;
+		Height 1;
+		Gravity 0.66;
+		Scale 0.1;
+		Alpha 0.99;
+		//Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]";
+		RenderStyle "Add";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+THRUACTORS
+	}
+	States
+	{
+	Spawn:
+		BNO2 A 0 NoDelay 
+		{
+			A_SetRoll(random(0, 359));
+			If (Target && Target.GetClassName() == "SiegeModeProjectile")
+			{
+				LargeScale = True;
+				A_SetScale(Scale.X * 1.5);
+			}
+			Return A_Jump(256, random(1, 8));
+		}
+		BNO2 ABCDEFGH 0 A_Jump(256, "Fade");
+	Fade:
+		"####" "########" 1 A_SetScale(Scale.X * 1.18);
+		"####" "#" 1
+		{
+			A_SetScale(Scale.X * 1.18);
+			A_FadeOut(0.25 / (1 + LargeScale));
+		}
+		Wait;
+	}
+}
+
+Class HammerImpactShockWave : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		Gravity 0.66;
+		Scale 0.1;
+		Alpha 0.99;
+		ReactionTime 5;
+		//Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]";
+		RenderStyle "Add";
+		+BRIGHT
+		+DONTSPLASH
+		+FORCEXYBILLBOARD
+		+NOINTERACTION
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+		+THRUACTORS
+	}
+	States
+	{
+	Spawn:
+		BSW2 B 0 NoDelay 
+		{
+			A_SetRoll(random(0, 359));
+		}
+		BSW2 B 1 
+		{
+			A_SetScale(Scale.X * 1.25);
+			A_CountDown();
+		}
+		Wait;
+	Death:
+		BSW2 B 1
+		{
+			A_SetScale(Scale.X * 1.25);
+			A_FadeOut(0.25);
+		}
+		Wait;
+	}
+}
+
+Class HammerStunProjectile : EOA_Projectile
+{
+	Default
+	{
+		Radius 10;
+		Height 10;
+		Speed 40;
+		Scale 0.25;
+		Damage 1000;
+		Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]";
+		RenderStyle "Add";
+		Gravity 0.5;
+		Alpha 0.99;
+		+BRIGHT
+		+FORCERADIUSDMG
+		+FORCEXYBILLBOARD
+		-NOGRAVITY
+	}
+	Override Int DoSpecialDamage(Actor Target, Int Damage, Name DamageType)
+	{
+		//[DoomKrakken]: Tanky monsters such as Barons burn through this stuff twice as fast... so the effect tics will be halved.
+		If (Target Is "EOA_WeakPoint")
+		{
+			EOA_WeakPoint WP = EOA_WeakPoint(Target);
+			If (WP && WP.Owner)
+			{
+				WP.Owner.A_GiveInventory("PowerStunned");
+				Let StunItem = PowerStunned(WP.Owner.FindInventory("PowerStunned"));
+				If (StunItem)
+				{
+					StunItem.EffectTics *= 1 + CountInv("LongerStun", AAPTR_TARGET);
+					StunItem.EffectTics = clamp(StunItem.EffectTics, 0, 88 * (1 + CountInv("LongerStun", AAPTR_TARGET))); 
+					StunItem.Master = WP.Owner.Target = Self.Target;
+					A_GiveInventory("ChainsawGloryKillCounter", 1, AAPTR_TRACER);
+				}
+			}
+		}
+		Else
+		{
+			Target.A_GiveInventory("PowerStunned");
+			Let StunItem = PowerStunned(Target.FindInventory("PowerStunned"));
+			If (StunItem)
+			{
+				StunItem.EffectTics *= 1 + CountInv("LongerStun", AAPTR_TARGET);
+				StunItem.EffectTics = clamp(StunItem.EffectTics, 0, 88 * (1 + CountInv("LongerStun", AAPTR_TARGET)));
+				StunItem.Master = Target.Target = Self.Target;
+				Target.A_GiveInventory("ChainsawRipAndTear");
+				A_GiveInventory("PowerStaggered", 1, AAPTR_TRACER);
+				A_GiveInventory("ChainsawGloryKillCounter", 1, AAPTR_TRACER);				
+			}
+		}
+		//If(Target.Mass != 0 && !Target.bNOGRAVITY && !Target.bFLOAT)
+		//{Target.Vel.Z += fRandom(3, 10)/(Target.Mass/75) + 1;}
+		Return Super.DoSpecialDamage(Target, Damage, DamageType);
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_Jump(256, random(1, 3));
+		STBM ABC 0 A_Jump(256, "SpawnLoop");
+	SpawnLoop:
+		"####" "#" 0 EOA_SpawnCustomDynamicLight("PLR_Light", DynamicLight.PointLight, (255, 140, 25), 32, 1, DYNAMICLIGHT.LF_ADDITIVE|DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2));
+	Death:
+		TNT1 A 0 A_SetScale(0.1 * (1 + CountInv("BigShock", AAPTR_TARGET)));
+		TNT1 AAAAA 0 A_SpawnItemEx("HammerStunImpactLightning", frandom(-3, 3), frandom(-3, 3), frandom(-3, 3), Flags: SXF_NOCHECKPOSITION|SXF_TRANSFERSCALE);
+		TNT1 AAA 0 A_SpawnItemEx("HammerStunShockWave", Flags: SXF_NOCHECKPOSITION|SXF_TRANSFERPOINTERS);
+		TNT1 A 10
+		{
+			A_Explode(35, 420, 0, 1, 420);
+			A_StartSound("StunBomb/Impact", 1, 0, 0.5);
+			A_StartSound("StunBomb/Explode", 2);
+			A_StartSound("StunBomb/Shock", 3, 0, 0.5);
+			EOA_SpawnCustomDynamicLight("PLRAddLight", DynamicLight.PulseLight, (255, 140, 25), 96, 1, DYNAMICLIGHT.LF_ADDITIVE, Tics, (0, 0, Height / 2), 1.25 * Tics / TICRATE);
+			EOA_SpawnCustomDynamicLight("PLRAttLight", DynamicLight.PulseLight, (255, 140, 25), 96, 1, DYNAMICLIGHT.LF_ATTENUATE, Tics, (0, 0, Height / 2), 1.25 * Tics / TICRATE);
+		}
+		Stop;
+	}
+}
+
+Class HammerStunImpactLightning : PlasmaImpactLightning
+{
+	Default
+	{
+		Scale 0.6;
+		Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]";
+		+BRIGHT
+		+FLATSPRITE
+	}
+	States
+	{
+	KeepSprite:
+		LBLT "#" 1 
+		{
+			A_FadeOut(0.053);
+			A_SetScale(Scale.X * 1.3);
+		}
+		Wait;
+	}
+}
+
+
+Class HammerStunShockWave : Actor
+{
+	Default
+	{
+		RenderStyle "Add";
+		Scale 0.16;
+		//Translation "0:255=%[0, 0, 0]:[1.8, 0.60, 0.60]";
+		+DONTSPLASH
+		+NOINTERACTION
+		+FLATSPRITE
+		+NOTRIGGER
+		+ROLLCENTER
+		+ROLLSPRITE
+	}
+	States
+	{
+	Spawn:
+		TNT1 A 0 NoDelay A_SetRoll(random(0, 359));
+		BSW2 B 1 Bright
+		{
+			A_FadeOut(0.05);
+			A_SetScale(Scale.X + 0.05 * (1 + CountInv("BigShock", AAPTR_TARGET)));
+		}
+		Wait;
+	}
+}
+
+Class CrucibleAmmo : EOA_Ammo
+{
+	default
+	{
+		Scale 0.4;
+		Inventory.Amount 1;
+		Inventory.MaxAmount 2;
+		Inventory.PickupSound "Eternal/Crucible/AmmoPickup";
+		Ammo.DropAmount 1;
+		Ammo.BackpackAmount 0;
+		Ammo.BackpackMaxAmount 4;
+		Tag "Crucbile Energy";
+		+NOGRAVITY
+		+FLOATBOB
+		+MOVEWITHSECTOR
+		+RELATIVETOFLOOR
+		FloatBobStrength 0.3;
+	}
+	States
+	{
+	Spawn:
+		CRBL A 0 NoDelay; //A_CheckFlag("DROPPED", "Null");
+		CRBL A 0 A_PlaySound("Eternal/Crucible/AmmoLoop", 7, 1.0,True,2.0);
+	SpawnLooper:	
+		CRBL P 700 Bright;
+		TNT1 A 0 A_FadeOut (0.3);
+		Loop;
+	}
+}
+
+Class DECrucible : EOA_Token {}
+
+Class PowerCrucible : EOA_Token
+{	
+	default
+	{
+	Inventory.MaxAmount 1;
+	Inventory.PickupSound "";
+	Inventory.PickupMessage "";
+	}
+}
+
+Class SwordKilled : EOA_Manipulator
+{
+	default
+	{
+	}
+	States
+	{
+	Pickup:
+		TNT1 A 0
+		{
+			A_FaceTarget();
+			bNOTARGETSWITCH = False;
+			bNODAMAGE = False;
+			bNEVERTARGET = False;
+			A_DamageSelf(350, "Saw", DMSS_FOILINVUL|DMSS_FOILBUDDHA|DMSS_NOFACTOR|DMSS_NOPROTECT, "None", "None", AAPTR_TARGET);
+			//A_NoBlocking(0); //Have it not block anything, so it won't bump into anyone... but don't have it drop anything.
+			A_Recoil(3);
+		}
+		TNT1 A 1;
+		TNT1 A 0
+		{
+			A_TakeInventory("PowerStaggered");
+			A_TakeInventory("GloryKillCounter");
+			A_TakeInventory("RipAndTear");
+			A_TakeInventory("SwordKilled");
+		}
+		Stop;
+	}
+}
+
+Class CruciblePuff1 : EOA_MeleePuff
+{
+	default
+	{
+	Damage 350;
+	+ALWAYSPUFF
+	+PUFFONACTORS
+	+FOILINVUL
+	}
+	States
+	{
+	XDeath:
+		//TNT1 A 0 A_PlaySound("Eternal/Crucible/Slice",1,1.0)
+		TNT1 A 0 A_StartSound("Eternal/Crucible/Slice", CHAN_WEAPON, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("CruciblePuffHit", CHAN_6, CHANF_OVERLAP);
+		TNT1 A 0 A_SpawnItemEx("HARDevastatorPuff");
+		Stop;
+	Melee:
+	Crash:
+		//TNT1 A 0 A_PlaySound("Eternal/Crucible/Slice",1,1.0)
+		TNT1 A 0 A_StartSound("Eternal/Crucible/Slice", CHAN_WEAPON, CHANF_OVERLAP);
+		TNT1 A 0 A_StartSound("CruciblePuffHit", CHAN_6, CHANF_OVERLAP);
+		TNT1 A 0 A_SpawnItemEx("HARDevastatorPuff");
+		Goto Super::Melee;
+	}
+}
+
+Class CruciblePuff2 : Actor
+{
+	default
+	{
+	+PUFFONACTORS
+	+FOILINVUL
+	}
+	States
+	{
+	Spawn:
+	Melee:
+	Death:
+		TNT1 A 1 A_StartSound("CruciblePuffHit", CHAN_6, CHANF_OVERLAP);
+		Stop;
+	}
+}
+
+Class CrucibleBladeWave : Actor
+{
+	default
+	{
+	Projectile;
+	Renderstyle "Add";
+	Alpha 0.99;
+	Scale 0.3;
+	+FLATSPRITE
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	}
+	States
+	{
+	Spawn:
+		CWAV F 1 NoDelay Bright
+		{
+			A_FadeOut(0.10);
+		}
+		Wait;
+	}
+}
+
+Class AngledRCrucibleBladeWave : Actor
+{
+	default
+	{
+	Projectile;
+	Renderstyle "Add";
+	Alpha 0.99;
+	Scale 0.3;
+	+FLATSPRITE
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	}
+	States
+	{
+	Spawn:
+		CWAV F 1 NoDelay Bright
+		{
+			A_FadeOut(0.10);
+		}
+		Wait;
+	}
+}
+
+Class AngledLCrucibleBladeWave : Actor
+{
+	default
+	{
+	Projectile;
+	Renderstyle "Add";
+	Alpha 0.99;
+	Scale 0.3;
+	+FLATSPRITE
+	+NOINTERACTION
+	+DONTBLAST
+	+DONTTHRUST
+	}
+	States
+	{
+	Spawn:
+		CWAV F 1 NoDelay Bright
+		{
+			A_FadeOut(0.10);
+		}
+		Wait;
+	}
+}
+
+Class HammerSmashing : EOA_Token {}
+Class DEHellBreakerSmash : EOA_Token {}
+Class DEHellBreaker : EOA_Token {}
+
+Class DEHellBreakerWeapon : EOA_Weapon //Doom4Weapon
+{	
+	Bool Flipped;
+	Default
+	{
+		Scale 0.075;
+		//Inventory.PickupSound "Eternal/Crucible/Deploy";
+		Inventory.PickupMessage "The Hell Breaker.";
+		Obituary "%o was maraudered by %k's Hammer";
+		Tag "HellBreaker";
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+		Inventory.Icon "ICONCRU";
+		Weapon.UpSound "";
+		+WEAPON.NOALERT
+		+WEAPON.NOAUTOFIRE
+		+WEAPON.NOAUTOAIM
+		Weapon.AmmoType1 "CrucibleAmmo";
+		Weapon.AmmoUse 1;
+		Weapon.AmmoGive 6;
+		//Weapon.SelectionOrder 150;
+		//Weapon.SlotNumber 9;
+		//Weapon.SlotPriority 1.0;
+		+DONTGIB
+		+BRIGHT
+		+FLOATBOB
+	}
+	
+	private action void BeginDeselect()
+	{
+		A_WeaponOffset(0, 32);
+		A_StopSound(10);
+		A_StartSound("Eternal/Crucible/Deselect", 10);
+		A_StartSound("Eternal/Crucible/Return", 10, CHANF_OVERLAP);
+		A_RemoveLight("CrucibleLight");
+	}
+	
+	States
+	{
+	//--------------------------------------------------------------------------
+	Select:
+        TNT1 A 0 A_Giveinventory("DEcruicbleselected");
+		HAMI A 0
+		{	
+			A_Overlay(-50, "EquipmentHandler", 1);
+			A_StartSound("Eternal/Crucible/Select", CHAN_WEAPON, CHANF_OVERLAP);
+			If (GetCVar("EOA_Reticles"))
+			{
+				ACS_NamedExecuteAlways("CrucibleReticle", 0);
+				A_SetCrosshair(99);
+			}
+			Else
+			{
+				A_SetCrosshair(0);
+			}
+		}
+		HAMI A 1 A_Raise(70);
+		Wait;
+	Deselect:
+		TNT1 A 0 A_Takeinventory("DEcruicbleselected");
+		HAMI A 0
+		{
+			BeginDeselect();
+			A_Lower(1);
+		}
+		HAMI A 1 A_Lower(28);
+		Wait;
+	// Instant deselect for switching away when the player has the weapon already
+	// hidden post-swing.
+	Ready:
+		//TNT1 A 0 A_JumpIfInventory("CrucibleONToken",1,"ReRaise");
+		//TNT1 A 0 A_GiveInventory("CrucibleONToken");
+		M026 D 1 bright
+		{
+			A_StartSound("Eternal/Crucible/Idle",10,CHANF_LOOP|CHANF_OVERLAP,0.2);
+			A_WeaponOffset(-2, 4, WOF_ADD);
+			A_AttachLight("CrucibleLight", DynamicLight.PulseLight, Color(255, 255, 10, 10), 43, 46, 
+			DynamicLight.LF_DontLightSelf, (0,0,32), 0.7);
+		}
+		Goto ReadyLoop;
+	ReRaise:
+	ReadyLoop:
+		HAMI A 1
+		{
+			EOA_WeaponReady(WRF_ALLOWZOOM|WRF_NOBOB * (GetPlayerInput(INPUT_OLDBUTTONS) & BT_ZOOM)|WRF_NOPRIMARY * (GetPlayerInput(INPUT_OLDBUTTONS) & BT_ATTACK), EOA_ALLOWMANTLE|EOA_ALLOWEQUIPMENT);
+		    A_Overlay(-50, "EquipmentHandler", 1);
+		}
+		Wait;
+	
+	AltFire:
+		TNT1 A 0 A_JumpIf(CountInv("CrucibleAmmo") < 3, "Readyloop");
+		HAMA A 1
+		{
+			A_ChangeVelocity(0, 0, 15, CVF_RELATIVE);
+			SetPlayerProperty(0, 1, PROP_TOTALLYFROZEN);
+			bDONTTHRUST = True;
+		}
+		HAMA BCDEFGH 1
+		{
+			if(Player.OnGround)
+			{
+				bDONTTHRUST = False;
+				A_StartSound("Gauss/Impact", 2);
+				A_SpawnItemEx("HammerStunProjectile", 0, 0, -10);
+				Return ResolveState("ContinueAltFire");
+			}
+			Return ResolveState(Null);
+		}
+		HAMA I 7
+		{
+			if(Player.OnGround)
+			{
+				bDONTTHRUST = False;
+				A_StartSound("Gauss/Impact", 2);
+				A_SpawnItemEx("HammerStunProjectile", 0, 0, -10);
+				Return ResolveState("ContinueAltFire");
+			}
+			Return ResolveState(Null);
+		}
+		HAMA I 1
+		{
+			A_ChangeVelocity(0, 0, -8, CVF_RELATIVE);
+			if(Player.OnGround)
+			{
+				bDONTTHRUST = False;
+				A_StartSound("Gauss/Impact", 2);
+				A_SpawnItemEx("HammerStunProjectile", 0, 0, -10);
+				Return ResolveState("ContinueAltFire");
+			}
+			Return ResolveState(Null);
+		}
+		Wait;
+	ContinueAltFire:
+		TNT1 A 0 
+		{
+			A_TakeInventory("CrucibleAmmo", 3);
+		}
+		HAMA KLMLM 2 A_QuakeEx( 2, 2, 2, 2, 0, 18,0,QF_RELATIVE);
+		Goto Readyloop;
+	Fire:
+		HAMS A 1
+		{
+			A_StartSound("Eternal/Crucible/Swing", CHAN_WEAPON, CHANF_OVERLAP, 0.7);
+			A_WeaponOffset(10, 2, WOF_ADD);
+			EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE);
+		}
+		HAMS BCDE 2
+		{
+			If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				EOA_CheckCrucibleKill(); 
+			}
+			If (CountInv("RipAndTear"))
+			{
+				A_FireProjectile("EOA_GKSeeker", 0, 0, 0, 0);
+				A_CustomPunch(0, 1, 0, "EOA_NullPuff2", 192);
+				Return ResolveState ("Fire-Attack");
+			}
+			Else
+			{
+				Return ResolveState (Null);
+			}
+		}
+		HAMS F 1
+		{
+			EOA_SpawnNoiseMaker("Punch/Swing");
+			A_Crucible();
+			A_AlertMonsters();
+			EOA_SetWeaponRecoilOffset(frandompick( 1.0, 1.5), -2, 0, 0.25);
+			EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE);
+			If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				EOA_CheckCrucibleKill(); 
+			}
+			If (CountInv("RipAndTear"))
+			{
+				A_FireProjectile("EOA_GKSeeker", 0, 0, 0, 0);
+				A_CustomPunch(0, 1, 0, "EOA_NullPuff2", 192);
+				Return ResolveState ("Fire-Attack");
+			}
+			Else
+			{
+				Return ResolveState (Null);
+			}
+		}
+		HAMS GHIJKLMNOP 1
+		{
+			EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE);
+			If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				EOA_CheckCrucibleKill(); 
+			}
+			If (CountInv("RipAndTear"))
+			{
+				A_FireProjectile("EOA_GKSeeker", 0, 0, 0, 0);
+				A_CustomPunch(0, 1, 0, "EOA_NullPuff2", 192);
+				Return ResolveState ("Fire-Attack");
+			}
+			Else
+			{
+				Return ResolveState (Null);
+			}
+		}
+		HAMS QRSTUV 2 
+		{
+			EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE);
+			If ((GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				A_SetTics(1);
+				EOA_CheckCrucibleKill(); 
+			}
+			If (CountInv("RipAndTear"))
+			{
+				A_FireProjectile("EOA_GKSeeker", 0, 0, 0, 0);
+				A_CustomPunch(0, 1, 0, "EOA_NullPuff2", 192);
+				Return ResolveState ("Fire-Attack");
+			}
+			Else
+			{
+				Return ResolveState (Null);
+			}
+		}
+		HAMS V 0
+		{
+			A_SetTics(0);
+			If (!(GetPlayerInput(INPUT_BUTTONS) & BT_ATTACK))
+			{
+				Return ResolveState ("ReadyLoop");
+			}
+			Return ResolveState (Null);
+		}
+		TNT1 A 0
+		{
+			A_StartSound("Eternal/Crucible/Swing", CHAN_WEAPON, CHANF_OVERLAP, 0.7);
+			EOA_WeaponReady(WRF_NOBOB|WRF_NOFIRE);
+		}
+		Goto Fire+4;
+	Fire-Attack:
+		HAMS E 1 A_StartSound("GloryKillDing", CHAN_BODY, CHANF_OVERLAP, 0.7);
+		HAMS A 0 A_Warp(AAPTR_MASTER, 0, 0, 0, 0, WARPF_TESTONLY, "Fire-Attack");
+		HAMS EFGH 1;
+		HAMS I 1
+		{
+			A_TakeInventory("CrucibleAmmo", 1);
+			A_TransferPointer(AAPTR_DEFAULT, AAPTR_TRACER, AAPTR_DEFAULT, AAPTR_TARGET);
+			A_SetPitch(0, SPF_INTERPOLATE);
+			A_Stop();
+			A_GiveInventory("SwordKilled", 1, AAPTR_TRACER);
+			A_SpawnItemEx("HammerImpactFX", 20, 0, 35);
+			A_SpawnItemEx("HammerImpactShockWave", 20, 0, 35);
+			A_StartSound("Gauss/Impact", 1, 0, 0.5);
+			A_StartSound("StunBomb/Explode", 2);
+			A_StartSound("StunBomb/Shock", 3, 0, 0.5);
+			A_DropItem("TempChainsawBulletAmmo", -1);
+			A_DropItem("TempChainsawBulletAmmo", -1);
+			A_DropItem("TempChainsawShellAmmo", -1);
+			A_DropItem("TempChainsawShellAmmo", -1);
+			A_DropItem("TempChainsawRocketAmmo", -1);
+			A_DropItem("TempChainsawRocketAmmo", -1);
+			A_DropItem("TempChainsawCellAmmo", -1);
+			A_DropItem("TempChainsawCellAmmo", -1);
+			A_DropItem("MegaTempStim", -1);
+			A_DropItem("MegaTempStim", -1);
+			A_DropItem("TempArmor", -1);
+			A_DropItem("TempArmor", -1);
+		}
+		TNT1 A 0 EOA_SetWeaponRecoilOffset(frandompick( 1.0, 1.5), -2, 0, 0.25);
+		HAMS IJKLMNOPQRSTUV 1;
+		HAMS A 0
+		{
+			A_TakeInventory("RipAndTear");
+			A_TakeInventory("DeathFromAbove");
+		}
+		Goto ReadyLoop;
+		
+	UseEquipment:
+		"####" A 0;
+		Goto Super::UseEquipment;
+		
+	Spawn:
+		M026 Z -1;
+		Stop;
+	}
+}
+
+Class DECrucibleShadow : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+FLATSPRITE
+		+BRIGHT
+		RenderStyle "Add";
+		Scale 0.1;
+	}
+	States
+	{
+	Spawn:
+		M026 W 1 A_FadeOut();
+		Wait;
+	}
+}
+// Info used to store actors hit by the tracer.
+Class DECrucibleHitActor
+{
+	Actor HitActor;
+	Vector3 HitPos;
+	Vector3 HitVector;
+	double SrcAngleFromTarget;
+}
+
+// The primary tracer class used to acquire enemies to damage and trigger shootable
+// walls.
+Class DECrucibleTracer : LineTracer
+{
+	int index;
+	Array<Actor> Ignored;
+	Array<DECrucibleHitActor> HitList;
+	
+	override ETraceStatus TraceCallback()
+	{
+		if ( Results.HitType == TRACE_HitActor )
+		{
+			let mo = Results.HitActor;
+			
+			if (!mo || mo is "PlayerPawn")			return TRACE_Skip;
+			if (mo.health < 1 && !mo.bICECORPSE)	return TRACE_Skip;
+			if (!mo.bSHOOTABLE)						return TRACE_Skip;
+			
+			int size = Ignored.Size();
+			if (size > 0 && Ignored.Find(mo) < size)
+				return TRACE_Skip;
+			
+			let ent = new("DECrucibleHitActor");
+			ent.HitActor = mo;
+			ent.HitPos = Results.HitPos;
+			ent.HitVector = Results.HitVector;
+			ent.SrcAngleFromTarget = Results.SrcAngleFromTarget;
+			HitList.Push(ent);
+			return TRACE_Skip;
+		}
+		// Hit a floor, ceiling, or nothing.
+		else if (Results.HitType == TRACE_HitFloor || Results.HitType == TRACE_HitCeiling ||
+				 Results.HitType == TRACE_HitNone)	return TRACE_Stop;
+		else if (Results.HitType == TRACE_HitWall)
+		{	// Hit an upper/lower line def
+			if (Results.Tier == TIER_Upper || Results.Tier == TIER_Lower) return TRACE_Stop;
+			
+			int hf = Results.HitLine.flags;
+			// Line's blocking hitscan or everything
+			if (hf & (Line.ML_BLOCKHITSCAN|Line.ML_BLOCKEVERYTHING))
+				return TRACE_Stop;
+			// Line's not two-sided, making it fully blocking.
+			if ((hf & Line.ML_BLOCKING) && !(hf & Line.ML_TWOSIDED))
+				return TRACE_Stop;
+		}
+		return TRACE_Skip;
+	}
+}
+
+Class DECruciblePuff : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 1;
+		+NOINTERACTION
+		+INVISIBLE
+		+NOTONAUTOMAP
+		+NOBLOCKMAP
+		+ALWAYSPUFF
+		+PUFFONACTORS
+		+HITTRACER
+		+PUFFGETSOWNER
+		+NOTIMEFREEZE
+		+EXTREMEDEATH
+		+NODAMAGETHRUST
+		RenderStyle "Add";
+		Obituary "%o was maraudered by %k's Crucible Blade";
+		DamageType "Crucible";
+		PainType "Normal";
+		DeathType "Extreme";
+	}
+	States
+	{
+	Spawn:
+		PLSS A 10; //NoDelay
+		/*
+		{
+			// Do nothing if it has the NODAMAGE flag since the primary tracer will handle it.
+			if (bNODAMAGE || !target) return;
+			
+			if (tracer && (tracer.bSHOOTABLE || tracer.bVULNERABLE) && 
+				(tracer.health > 0 || tracer.bICECORPSE) &&
+				!tracer.bFRIENDLY)
+			{
+				if (target && target.health > 0 && target.player)
+				{
+					let wep = target.player.ReadyWeapon;
+					if (target.CountInv("DECrucibleDamageToken") > 0 || 
+						wep && wep.CheckAmmo(Weapon.PrimaryFire, false, false))
+					{
+						A_StartSound("Eternal/Crucible/Slice");
+						int hp = tracer.health;
+						int dmg = tracer.DamageMobj(self, target, DECrucible.CrucibleDamage, "Crucible", 
+							DECrucible.DamageFlags);
+						
+						// Check the HP difference instead of damage, because the
+						// function could be used to fool damage attempts.
+						if (tracer.health < hp && dmg > 0)
+						{
+							target.A_SetInventory("DECrucibleDamageToken",1);
+							wep.DepleteAmmo(false);
+						}
+					}
+				}
+			}
+		}
+		*/
+		Stop;
+	}
+}

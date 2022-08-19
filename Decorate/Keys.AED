@@ -1,0 +1,269 @@
+Actor SkullPillarBase
+{
+	+FLOORCLIP
+    +MOVEWITHSECTOR
+	+SHOOTABLE
+	+NOBLOOD
+	+RELATIVETOFLOOR
+	+NODAMAGE
+	+DONTTHRUST
+	+DONTBLAST
+	+DONTGIB
+    Radius 16
+    Height 36
+    Scale 0.80
+}
+
+Actor SkullKeyBase : CustomInventory
+{
+	Radius 20
+    Height 30
+    +NOTDMATCH
+    +DONTGIB
+    +INVENTORY.INTERHUBSTRIP
+    +NOGRAVITY
+    +FLOATBOB
+	+MOVEWITHSECTOR
+	+RELATIVETOFLOOR
+	+INVENTORY.QUIET
+	Floatbobstrength 0.25
+    Scale 0.45
+}
+
+Actor KeyCardBase : CustomInventory
+{
+	Radius 20
+	Height 16
+	+NOTDMATCH
+	+DONTGIB
+    +INVENTORY.INTERHUBSTRIP
+	+INVENTORY.QUIET
+	Scale .55
+}	
+
+//Key Cards
+ACTOR D4RedCard : KeyCardBase replaces RedCard
+{
+	Tag "Red Card"
+	States
+	{
+	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("KeySpaceCheck"),"KeyCorpseSpawn")
+        Goto Idle
+		
+       KeyCorpseSpawn:
+			TNT1 A 0 A_JumpIf(waterlevel>2,"Idle") //If underwater, just spawn the key
+			TNT1 A 0 A_JumpIf(GetZAt(0,64) && GetZAt(0,-64) && GetZAt(64,0) && GetZAt(-64,0) != floorz, "Idle")
+	   ContSpawn:
+            TNT1 A 1 A_SpawnItemEx("RedKeyCorpse", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION) 
+            TNT1 A 1
+            Stop	
+   	Idle:
+		KCRR ABCDDDCBAA 3 Bright
+		Loop
+	Pickup:
+		TNT1 A 0 A_GiveInventory("RedCard",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("RedKeyPickMessage")
+		Stop
+	}
+} 
+
+ACTOR D4YellowCard : KeyCardBase replaces YellowCard
+{
+    Tag "Yellow Card"
+    States
+    {
+	Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("KeySpaceCheck"),"KeyCorpseSpawn")
+        Goto Idle
+       
+       KeyCorpseSpawn:
+			TNT1 A 0 A_JumpIf(waterlevel>2,"Idle") //If underwater, just spawn the key
+			TNT1 A 0 A_JumpIf(GetZAt(0,64) && GetZAt(0,-64) && GetZAt(64,0) && GetZAt(-64,0) != floorz, "Idle")
+	   ContSpawn:
+            TNT1 A 1 A_SpawnItemEx("YellowKeyCorpse", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION) 
+            TNT1 A 1
+            Stop
+    Idle:
+        KCRY ABCDDDCBAA 3 Bright
+        Loop
+    Pickup:
+        TNT1 A 0 A_GiveInventory("YellowCard",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("YellowKeyPickMessage")
+        Stop   
+    }
+}
+ 
+ACTOR D4BlueCard : KeyCardBase replaces BlueCard
+{
+    Tag "Blue Card"
+    States
+    {
+	 Spawn:
+		TNT1 A 0 NODELAY A_JumpIf(CallACS("KeySpaceCheck"),"KeyCorpseSpawn")
+        Goto Idle
+       
+       KeyCorpseSpawn:
+			TNT1 A 0 A_JumpIf(waterlevel>2,"Idle") //If underwater, just spawn the key
+			TNT1 A 0 A_JumpIf(GetZAt(0,64) && GetZAt(0,-64) && GetZAt(64,0) && GetZAt(-64,0) != floorz, "Idle")
+	   ContSpawn:
+            TNT1 A 1 A_SpawnItemEx("BlueKeyCorpse", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION) 
+            TNT1 A 1
+            Stop
+    Idle:
+        KCRB ABCDDDCBAA 3 Bright
+        Loop
+    Pickup:
+        TNT1 A 0 A_GiveInventory("BlueCard",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("BlueKeyPickMessage")
+        Stop   
+    }
+}
+
+//Skull Keys
+Actor D4RedSkullPillar : SkullPillarBase 
+{
+    States
+    {
+    Spawn:
+        TNT1 A 0 NODELAY A_JumpIf(CallACS("GoreNestSpaceCheck"),"GoreNestSpawn")
+        Goto Idle
+       
+        GoreNestSpawn:
+            TNT1 A 0 A_Jump(128,"Idle2")
+            TNT1 A 0 A_SpawnItemEx("D4TGoreNest", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION|SXF_SETMASTER) 
+            Goto IdleInvisible
+           
+    IdleInvisible:
+        TNT1 A 5  A_JumpIfInventory("GoreNestDeathToken",1,"Idle2")
+        Loop
+		
+    Idle:
+		TNT1 A 0 A_JumpIf(CallACS("KeySpaceCheck")==0,"SpawnSkullOnly")
+    Idle2:    
+		K_PL A 4  A_SpawnItemEx("FloatingRedSkull", 0,0,37, 0,0,0,0, SXF_NOCHECKPOSITION)
+    IdleLoop:
+        K_PL A 4 Bright
+        Loop
+	SpawnSkullOnly:
+		TNT1 A 0  A_SpawnItemEx("FloatingRedSkull", 0,0,5, 0,0,0,0, SXF_NOCHECKPOSITION)
+		TNT1 A 1
+		Stop
+    }
+}
+ 
+Actor FloatingRedSkull : SkullKeyBase replaces RedSkull
+{
+	Tag "Red Skull"
+    States
+    {
+    Spawn:
+        KSKR A 0 NoDelay
+        Goto Idle
+    Idle:  
+        KSKR ABCDDDCBAA 4 Bright
+        Loop
+    Pickup:
+        TNT1 A 0 A_GiveInventory("RedSkull",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("RedSkullPickMessage")
+        Stop       
+    }
+}
+ 
+ACTOR D4YellowSkullPillar : SkullPillarBase 
+{
+    States
+    {
+	Spawn:
+        TNT1 A 0 NODELAY A_JumpIf(CallACS("GoreNestSpaceCheck"),"GoreNestSpawn")
+        Goto Idle
+       
+        GoreNestSpawn:
+            TNT1 A 0 A_Jump(128,"Idle2")
+            TNT1 A 0 A_SpawnItemEx("D4TGoreNest", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION|SXF_SETMASTER) 
+            Goto IdleInvisible
+           
+    IdleInvisible:
+        TNT1 A 5  A_JumpIfInventory("GoreNestDeathToken",1,"Idle2")
+        Loop
+		
+    Idle:
+		TNT1 A 0 A_JumpIf(CallACS("KeySpaceCheck")==0,"SpawnSkullOnly")
+    Idle2:    
+		K_PL A 4  A_SpawnItemEx("FloatingYellowSkull", 0,0,37, 0,0,0,0, SXF_NOCHECKPOSITION)
+    IdleLoop:
+        K_PL A 4 Bright
+        Loop
+	SpawnSkullOnly:
+		TNT1 A 0  A_SpawnItemEx("FloatingYellowSkull", 0,0,5, 0,0,0,0, SXF_NOCHECKPOSITION)
+		TNT1 A 1
+		Stop
+    }
+}
+   
+ACTOR FloatingYellowSkull : SkullKeyBase replaces YellowSkull
+{
+    Tag "Yellow Skull"
+    States
+    {
+    Spawn:
+        KSKY A 0 NoDelay
+        Goto Idle
+    Idle:  
+        KSKY ABCDDDCBAA 4 Bright
+        Loop
+    Pickup:
+        TNT1 A 0 A_GiveInventory("YellowSkull",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("YellowSkullPickMessage")
+        Stop       
+    }
+}
+ 
+ACTOR D4BlueSkullPillar : SkullPillarBase
+{
+    States
+    {
+	Spawn:
+        TNT1 A 0 NODELAY A_JumpIf(CallACS("GoreNestSpaceCheck"),"GoreNestSpawn")
+        Goto Idle
+       
+        GoreNestSpawn:
+            TNT1 A 0 A_Jump(128,"Idle2")
+            TNT1 A 0 A_SpawnItemEx("D4TGoreNest", 0,0,0, 0,0,0,0, SXF_NOCHECKPOSITION|SXF_SETMASTER) 
+            Goto IdleInvisible
+           
+    IdleInvisible:
+        TNT1 A 5  A_JumpIfInventory("GoreNestDeathToken",1,"Idle2")
+        Loop
+		
+    Idle:
+		TNT1 A 0 A_JumpIf(CallACS("KeySpaceCheck")==0,"SpawnSkullOnly")
+    Idle2:    
+		K_PL A 4  A_SpawnItemEx("FloatingBlueSkull", 0,0,37, 0,0,0,0, SXF_NOCHECKPOSITION)
+    IdleLoop:
+        K_PL A 4 Bright
+        Loop
+	SpawnSkullOnly:
+		TNT1 A 0  A_SpawnItemEx("FloatingBlueSkull", 0,0,5, 0,0,0,0, SXF_NOCHECKPOSITION)
+		TNT1 A 1
+		Stop
+    }
+}
+ 
+ACTOR FloatingBlueSkull : SkullKeyBase  replaces BlueSkull
+{
+    Tag "Blue Skull"
+    States
+    {
+    Spawn:
+        KSKB A 0 NoDelay
+        Goto Idle
+    Idle:  
+        KSKB ABCDDDCBAA 4 Bright
+        Loop
+    Pickup:
+        TNT1 A 0 A_GiveInventory("BlueSkull",1)
+		TNT1 A 0 ACS_NamedExecuteAlways("BlueSkullPickMessage")
+        Stop       
+    }
+}

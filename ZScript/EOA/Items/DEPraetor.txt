@@ -1,0 +1,17 @@
+//Praetor Suit Upgrades...
+
+//Environmental Resistance - Find the Praetor Suit.
+Class FasterFragCoolDown : EOA_Token{}
+Class IcebombEquipment : EOA_Token{}
+Class FasterIceCooldown : EOA_Token{}
+Class Permafrost : EOA_Token{}
+Class FrostBite : EOA_Token{}
+
+Class HitAndRun : EOA_Token{}
+Class FasterDasher : EOA_Token{}
+
+//Bloodpunch efficiency
+Class Bloodpunchefficiency : EOA_Token{}
+Class BloodierPunch : EOA_Token{} //blood punch does more damage
+Class BigBloodyTrouble : EOA_Token{} //heavy demons give a full blood punch charge
+Class ExtraPunch : EOA_Token{} //extra punch, yeah, that's it

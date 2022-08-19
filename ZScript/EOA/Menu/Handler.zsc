@@ -1,0 +1,10 @@
+class EOAE_ZF_Handler ui {
+	virtual void buttonClickCommand(EOAE_ZF_Button caller, string command) {
+	}
+	
+	virtual void buttonHeldCommand(EOAE_ZF_Button caller, string command) {
+	}
+
+	virtual void elementHoverChanged(EOAE_ZF_Element caller, string command, bool unhovered) {
+	}
+}
